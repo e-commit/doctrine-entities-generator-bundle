@@ -1,0 +1,201 @@
+{% autoescape false %}
+{% block start_tag %}
+    /*
+     * Getters / Setters (auto-generated)
+     */
+{% endblock %}
+
+{% block end_tag %}
+}
+{% endblock %}
+
+{% block block_content %}
+
+
+{% for content in request.newBlockContents %}
+
+{{ content }}
+{% endfor %}
+
+{% endblock %}
+
+{% block constructor %}
+    public function __construct()
+    {
+{% for line in request.newConstructorLines %}
+        {{ line|trim }}
+{% endfor %}
+{% if request.addInitializeEntity %}
+        $this->initializeEntity();
+{% endif %}
+    }
+{% endblock %}
+
+{% block field_hint %}
+    {% set field_hint = '' %}
+    {% set block_field_hint_name = 'field_hint_'~fieldMapping.type %}
+    {% if block(block_field_hint_name) is defined %}
+        {% set field_hint = block(block_field_hint_name)|spaceless %}
+    {% elseif types|length > 0 %}
+        {% if types[0].className  %}
+            {% set field_hint = types[0].className %}
+            {% if field_hint|first != '\\' %}
+                {% set field_hint = '\\' ~ field_hint %}
+            {% endif %}
+        {% elseif types[0].builtinType %}
+            {% set field_hint = types[0].builtinType %}
+        {% endif %}
+    {% endif %}
+
+    {% if field_hint %}
+        ?{{ field_hint }}
+    {% endif %}
+{% endblock %}
+
+{% block field_hint_decimal %}
+{# Decimal Doctrine type is a PHP string but user can give a double value #}
+{% endblock %}
+
+{% block field_set %}
+    public function {{ methodName }}({{ (block('field_hint')|spaceless) ? block('field_hint')|spaceless ~ ' ' : '' }}${{ variableName }}): self
+    {
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
+{% block field_get %}
+    public function {{ methodName }}(){{ (block('field_hint')|spaceless) ? ': ' ~  block('field_hint')|spaceless : '' }}
+    {
+        return $this->{{ fieldName }};
+    }
+{% endblock %}
+{% endautoescape %}
+
+{# Associations To One #}
+
+{% block assocation_to_one_get %}
+    public function {{ methodName }}(): ?\\{{ targetEntity }}
+    {
+        return $this->{{ fieldName }};
+    }
+{% endblock %}
+
+{% block assocation_one_to_one_unidirectional_set %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }} = null): self
+    {
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
+{%- block assocation_one_to_one_owning_set -%}
+    {{ block('assocation_one_to_one_unidirectional_set') }}
+{%- endblock -%}
+
+{% block assocation_one_to_one_reverse_set %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }} = null): self
+    {
+        if (null === ${{ variableName }} && null !== $this->{{ fieldName }}) {
+            $this->{{ fieldName }}->{{ foreignMethodName }}(null);
+        } elseif (null !== ${{ variableName }}) {
+            ${{ variableName }}->{{ foreignMethodName }}($this);
+        }
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
+{# Associations To Many #}
+
+{% block assocation_to_many_get %}
+    public function {{ methodName }}(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->{{ fieldName }};
+    }
+{% endblock %}
+
+{% block assocation_to_many_constructor %}
+    $this->{{ fieldName }} = new \Doctrine\Common\Collections\ArrayCollection();
+{% endblock %}
+
+{% block assocation_one_to_many_reverse_add %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        ${{ variableName }}->{{ foreignMethodName }}($this);
+        if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}[] = ${{ variableName }};
+        }
+
+        return $this;
+    }
+{% endblock %}
+
+{% block assocation_one_to_many_reverse_remove %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        if ($this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}->removeElement(${{ variableName }});
+        }
+        ${{ variableName }}->{{ foreignMethodName }}(null);
+
+        return $this;
+    }
+{% endblock %}
+
+{% block assocation_many_to_many_unidirectional_add %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}[] = ${{ variableName }};
+        }
+
+        return $this;
+    }
+{% endblock %}
+
+{% block assocation_many_to_many_unidirectional_remove %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        if ($this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}->removeElement(${{ variableName }});
+        }
+
+        return $this;
+    }
+{% endblock %}
+
+{%- block assocation_many_to_many_owning_add -%}
+    {{ block('assocation_many_to_many_unidirectional_add') }}
+{%- endblock -%}
+
+{%- block assocation_many_to_many_owning_remove -%}
+    {{ block('assocation_many_to_many_unidirectional_remove') }}
+{%- endblock -%}
+
+{% block assocation_many_to_many_reverse_add %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        ${{ variableName }}->{{ foreignMethodName }}($this);
+        if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}[] = ${{ variableName }};
+        }
+
+        return $this;
+    }
+{% endblock %}
+
+{% block assocation_many_to_many_reverse_remove %}
+    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    {
+        if ($this->{{ fieldName }}->contains(${{ variableName }})) {
+            $this->{{ fieldName }}->removeElement(${{ variableName }});
+        }
+        ${{ variableName }}->{{ foreignMethodName }}($this);
+
+        return $this;
+    }
+{% endblock %}

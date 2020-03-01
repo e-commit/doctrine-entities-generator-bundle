@@ -1,0 +1,16 @@
+language: php
+php:
+    - 7.2
+    - 7.3
+    - 7.4
+
+env:
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
+
+install:
+    - if [ "$DEPENDENCIES" = "low" ]; then composer update --prefer-lowest --prefer-stable; else composer install; fi;
+
+script:
+    - php vendor/phpunit/phpunit/phpunit
+    - php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --dry-run -v

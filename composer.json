@@ -1,0 +1,51 @@
+{
+    "name": "ecommit/doctrine-entities-generator-bundle",
+    "description": "Generate Doctrine ORM entities.",
+    "keywords": ["doctrine", "entity", "generator", "getter", "setter", "symfony-bundle"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hubert Lecorche",
+            "email": "contact@e-commit.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Ecommit\\DoctrineEntitiesGeneratorBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Ecommit\\DoctrineEntitiesGeneratorBundle\\Tests\\": "tests/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "doctrine/annotations": "^1.8",
+        "doctrine/dbal": "^2.10.0",
+        "doctrine/doctrine-bundle": "^2.0.3",
+        "doctrine/inflector": "^1.3",
+        "doctrine/orm": "^2.7",
+        "doctrine/persistence": "^1.1",
+        "symfony/config": "^4.4|^5.0",
+        "symfony/console": "^4.4|^5.0",
+        "symfony/doctrine-bridge": "^4.4.5|^5.0.5",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/http-kernel": "^4.4|^5.0",
+        "symfony/property-info": "^4.4|^5.0",
+        "symfony/twig-bundle": "^4.4|^5.0",
+        "twig/twig": "^2.12.0|^3.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16.1",
+        "phpunit/phpunit": "^8.4",
+        "symfony/filesystem": "^4.4|^5.0",
+        "symfony/finder": "^4.4|^5.0",
+        "symfony/yaml": "^4.4|^5.0"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

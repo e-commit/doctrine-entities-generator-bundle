@@ -1,0 +1,22 @@
+doctrine:
+    dbal:
+        connections:
+            default:
+                driver: pdo_sqlite
+                logging: false
+                memory: true
+        types:
+            my_custom_type: Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Doctrine\Type\MyCustomType
+    orm:
+        auto_generate_proxy_classes: false
+        entity_managers:
+            default:
+                connection: default
+                auto_mapping: true
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%entity_dir%'
+                        prefix: '%entity_prefix%'
+                naming_strategy: doctrine.orm.naming_strategy.underscore

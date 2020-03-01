@@ -1,0 +1,96 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the EcommitDoctrineEntitiesGeneratorBundle package.
+ *
+ * (c) E-commit <contact@e-commit.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sub_class")
+ */
+class SubClass extends MainClass
+{
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $name;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer1", inversedBy="sub")
+     * @ORM\JoinColumn(name="first_initializer_id", referencedColumnName="id")
+     */
+    protected $firstInitializer;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer2")
+     * @ORM\JoinColumn(name="second_initializer_id", referencedColumnName="id")
+     */
+    protected $secondInitializer;
+
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    protected $decimalField;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $dateField;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $booleanField;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $textField;
+
+    /**
+     * @ORM\Column(type="object")
+     */
+    protected $objectField;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $arrayField;
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    protected $simpleArrayField;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    protected $jsonField;
+
+    /**
+     * @ORM\Column(type="guid")
+     */
+    protected $guidField;
+
+    /**
+     * @ORM\Column(type="my_custom_type")
+     *
+     * Type not defined in template
+     */
+    protected $customField;
+
+    /*
+     * Getters / Setters (auto-generated)
+     */
+}
