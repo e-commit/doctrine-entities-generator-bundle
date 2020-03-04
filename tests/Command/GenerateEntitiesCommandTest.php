@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\Command;
 
-use Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesConsole;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesCommand;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
 
-class GenerateEntitiesConsoleTest extends AbstractTest
+class GenerateEntitiesCommandTest extends AbstractTest
 {
     public function testExecute(): void
     {
@@ -61,7 +61,7 @@ class GenerateEntitiesConsoleTest extends AbstractTest
     {
         $application = new Application();
 
-        $command = new GenerateEntitiesConsole(
+        $command = new GenerateEntitiesCommand(
             self::$container->get(EntitySearcher::class),
             $this->getEntityGeneratorMock()
         );

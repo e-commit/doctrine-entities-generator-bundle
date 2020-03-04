@@ -18,7 +18,7 @@
         </service>
         <service id="Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher" alias="ecommit_doctrine_entities_generator.entity_searcher" public="false" />
 
-        <service id="Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesConsole" class="Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesConsole" public="false">
+        <service id="Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesCommand" class="Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesCommand" public="false">
             <argument type="service" id="ecommit_doctrine_entities_generator.entity_searcher" />
             <argument type="service" id="ecommit_doctrine_entities_generator.entity_generator" />
             <tag name="console.command"/>
