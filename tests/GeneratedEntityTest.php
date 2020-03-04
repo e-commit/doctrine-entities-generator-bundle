@@ -157,6 +157,33 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertSame(['c' => 2], $subClass->getJsonField());
     }
 
+    /**
+     * @dataProvider getTestSetNullFieldProvider
+     */
+    public function testSetNullField($setter, $getter): void
+    {
+        $subClass = new SubClass();
+        $subClass->$setter(null);
+        $this->assertNull($subClass->$getter());
+    }
+
+    public function getTestSetNullFieldProvider(): array
+    {
+        return [
+            ['setName', 'getName'],
+            ['setDecimalField', 'getDecimalField'],
+            ['setDateField', 'getDateField'],
+            ['setBooleanField', 'getBooleanField'],
+            ['setTextField', 'getTextField'],
+            ['setObjectField', 'getObjectField'],
+            ['setArrayField', 'getArrayField'],
+            ['setSimpleArrayField', 'getSimpleArrayField'],
+            ['setJsonField', 'getJsonField'],
+            ['setGuidField', 'getGuidField'],
+            ['setCustomField', 'getCustomField'],
+        ];
+    }
+
     public function testAssociationOneToOneUnidirectional(): void
     {
         $firstInitializer = $this->createInitializer2();
