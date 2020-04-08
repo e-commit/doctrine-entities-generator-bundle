@@ -190,14 +190,14 @@ class SubClass extends MainClass
         return $this->simpleArrayField;
     }
 
-    public function setJsonField(?array $jsonField): self
+    public function setJsonField($jsonField): self
     {
         $this->jsonField = $jsonField;
 
         return $this;
     }
 
-    public function getJsonField(): ?array
+    public function getJsonField()
     {
         return $this->jsonField;
     }
