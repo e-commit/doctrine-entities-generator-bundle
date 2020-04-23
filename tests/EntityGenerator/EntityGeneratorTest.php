@@ -94,7 +94,7 @@ class EntityGeneratorTest extends AbstractTest
         $method->setAccessible(true);
 
         $this->expectException(TagNotFoundException::class);
-        $this->expectExceptionMessage('Start tag or end tag is not found');
+        $this->expectExceptionMessage('Class "Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author": Start tag or end tag is not found');
         $method->invokeArgs($entityGenerator, [new \ReflectionClass(Author::class)]);
     }
 
@@ -144,7 +144,7 @@ class EntityGeneratorTest extends AbstractTest
     public function testGenerateClassIgnore($class): void
     {
         $this->expectException(ClassNotManagedException::class);
-        $this->expectExceptionMessage('Class "'.$class.'" cannot be generated (mapped super class or IgnoreGenerateEntity annotation is used)');
+        $this->expectExceptionMessage('Class "'.$class.'" cannot be generated (Is IgnoreGenerateEntity annotation used ?)');
 
         $entityManager = $this->getEntityGeneratorMock();
         $entityManager->generate($class);

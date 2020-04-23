@@ -69,7 +69,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
-            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (mapped super class or IgnoreGenerateEntity annotation is used)', $className));
+            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity annotation used ?)', $className));
         }
 
         $fileParts = $this->getFileParts($reflectionClass);
@@ -121,7 +121,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $content = file_get_contents($reflectionClass->getFileName());
         $pattern = $this->getPattern($reflectionClass);
         if (!preg_match($pattern, $content, $fileParts)) {
-            throw new TagNotFoundException('Start tag or end tag is not found');
+            throw new TagNotFoundException(sprintf('Class "%s": Start tag or end tag is not found', $reflectionClass->getName()));
         }
 
         return $fileParts;
