@@ -13,16 +13,67 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
-class MainClass extends \Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\MappedSuperclass
+ */
+class MainClass
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $toto;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * Protected field in mapped superclass: Not mapped by Doctrine annotation
+     */
+    protected $tutu;
+
+    public function getMainMethod(): string
+    {
+        return 'OK';
+    }
+
     public function addValues(int $id): void
     {
         $this->id = $id;
         $this->toto = 'TOTO '.$id;
+        $this->tutu = 'TUTU '.$id;
     }
 
-    public function getId(): int
+    /*
+     * Getters / Setters (auto-generated)
+     */
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setToto(?string $toto): self
+    {
+        $this->toto = $toto;
+
+        return $this;
+    }
+
+    public function getToto(): ?string
+    {
+        return $this->toto;
     }
 }

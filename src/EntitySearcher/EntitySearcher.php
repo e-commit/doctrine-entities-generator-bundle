@@ -81,12 +81,8 @@ class EntitySearcher implements EntitySearcherInterface
             return false;
         }
 
-        if ($metadata->isMappedSuperclass) {
-            return false;
-        }
-
         $reflectionClass = $metadata->getReflectionClass();
-        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface() || $reflectionClass->isTrait()) {
+        if ($reflectionClass->isInterface() || $reflectionClass->isTrait()) {
             return false;
         }
 

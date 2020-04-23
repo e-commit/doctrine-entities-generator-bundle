@@ -145,7 +145,7 @@ class EntitySearcherTest extends KernelTestCase
             [Initializer3::class, true],
             [Initializer4::class, true],
             [Initializer5::class, true],
-            [MainClass::class, false],
+            [MainClass::class, true],
             [NotGenerate::class, false],
             [Sale::class, true],
             [SubClass::class, true],
@@ -190,6 +190,7 @@ class EntitySearcherTest extends KernelTestCase
             Initializer3::class,
             Initializer4::class,
             Initializer5::class,
+            MainClass::class,
             Sale::class,
             SubClass::class,
         ]];
@@ -205,6 +206,7 @@ class EntitySearcherTest extends KernelTestCase
             Initializer3::class,
             Initializer4::class,
             Initializer5::class,
+            MainClass::class,
             Sale::class,
             SubClass::class,
         ]];
@@ -225,6 +227,7 @@ class EntitySearcherTest extends KernelTestCase
             Initializer3::class,
             Initializer4::class,
             Initializer5::class,
+            MainClass::class,
             Sale::class,
             SubClass::class,
         ]];

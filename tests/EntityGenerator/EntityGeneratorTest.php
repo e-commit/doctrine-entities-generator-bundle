@@ -154,7 +154,6 @@ class EntityGeneratorTest extends AbstractTest
     {
         return [
             [NotGenerate::class],
-            [MainClass::class],
         ];
     }
 
@@ -194,6 +193,8 @@ class EntityGeneratorTest extends AbstractTest
 
             //Extends
             [MainClass::class, 'id', true],
+            [MainClass::class, 'toto', true],
+            [MainClass::class, 'tutu', true],
             [SubClass::class, 'id', false],
 
             //Public
@@ -353,6 +354,7 @@ class EntityGeneratorTest extends AbstractTest
             [Initializer1::class],
             [Initializer2::class],
             [Initializer3::class],
+            [MainClass::class],
             [Sale::class],
             [SubClass::class],
         ];

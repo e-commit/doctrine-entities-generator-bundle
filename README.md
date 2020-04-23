@@ -97,8 +97,6 @@ $ php bin/console ecommit:doctrine:generate-entities App/Entity/*
 
 The bundle generates getters-setters methods for an entity only if :
 * The PHP class is a Doctrine ORM entity; and
-* The entity is not a "Mapped super class"; and
-* The entity is not abstract; and
 * The entity is not an interface; and
 * The entity is not a trait; and
 * The entity doesn't use the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` annotation.

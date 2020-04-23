@@ -24,16 +24,29 @@ class MainClass
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $toto;
+    private $toto;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * Protected field in mapped superclass: Not mapped by Doctrine annotation
+     */
+    protected $tutu;
 
     public function getMainMethod(): string
     {
         return 'OK';
+    }
+
+    public function addValues(int $id): void
+    {
+        $this->id = $id;
+        $this->toto = 'TOTO '.$id;
+        $this->tutu = 'TUTU '.$id;
     }
 
     /*
