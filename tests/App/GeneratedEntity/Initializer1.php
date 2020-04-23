@@ -70,7 +70,7 @@ class Initializer1 implements EntityInitializerInterface
         return $this->name;
     }
 
-    public function setSub(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass $sub = null): self
+    public function setSub(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass $sub): self
     {
         if (null === $sub && null !== $this->sub) {
             $this->sub->setFirstInitializer(null);

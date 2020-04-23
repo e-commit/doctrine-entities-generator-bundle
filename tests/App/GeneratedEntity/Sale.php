@@ -67,7 +67,7 @@ class Sale
         return $this->countSales;
     }
 
-    public function setBook(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book $book = null): self
+    public function setBook(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book $book): self
     {
         $this->book = $book;
 

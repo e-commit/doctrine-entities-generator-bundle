@@ -82,7 +82,7 @@ class Book
         return $this->title;
     }
 
-    public function setCategory(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category $category = null): self
+    public function setCategory(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category $category): self
     {
         $this->category = $category;
 

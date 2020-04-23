@@ -83,7 +83,7 @@
 {% endblock %}
 
 {% block assocation_one_to_one_unidirectional_set %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }} = null): self
+    public function {{ methodName }}(?\\{{ targetEntity }} ${{ variableName }}): self
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -96,7 +96,7 @@
 {%- endblock -%}
 
 {% block assocation_one_to_one_reverse_set %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }} = null): self
+    public function {{ methodName }}(?\\{{ targetEntity }} ${{ variableName }}): self
     {
         if (null === ${{ variableName }} && null !== $this->{{ fieldName }}) {
             $this->{{ fieldName }}->{{ foreignMethodName }}(null);

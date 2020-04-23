@@ -226,7 +226,7 @@ class SubClass extends MainClass
         return $this->customField;
     }
 
-    public function setFirstInitializer(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1 $firstInitializer = null): self
+    public function setFirstInitializer(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1 $firstInitializer): self
     {
         $this->firstInitializer = $firstInitializer;
 
@@ -238,7 +238,7 @@ class SubClass extends MainClass
         return $this->firstInitializer;
     }
 
-    public function setSecondInitializer(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2 $secondInitializer = null): self
+    public function setSecondInitializer(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2 $secondInitializer): self
     {
         $this->secondInitializer = $secondInitializer;
 
