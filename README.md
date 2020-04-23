@@ -12,7 +12,7 @@ methods for Doctrine ORM entities.
 Install the bundle with Composer : In your project directory, execute the following command :
 
 ```bash
-$ composer require ecommit/doctrine-entities-generator-bundle:1.*@dev
+$ composer require ecommit/doctrine-entities-generator-bundle:1.*@dev --dev
 ```
 
 Enable the bundle in the `config/bundles.php` file for your project :
