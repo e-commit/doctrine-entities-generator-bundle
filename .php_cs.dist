@@ -14,29 +14,43 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('tests/App/var')
 ;
 
+$rules = [
+    '@Symfony' => true,
+    '@Symfony:risky' => true,
+    '@DoctrineAnnotation' => true,
+    '@PHP56Migration' =>  true,
+    '@PHP56Migration:risky' => true,
+    '@PHP71Migration' => true,
+    '@PHP71Migration:risky' => true,
+    'array_syntax' => ['syntax' => 'short'],
+    'fopen_flags' => true,
+    'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+    'linebreak_after_opening_tag' => true,
+    'mb_str_functions' => true,
+    'no_php4_constructor' => true,
+    'no_unreachable_default_argument_value' => true,
+    'no_useless_else' => true,
+    'no_useless_return' => true,
+    'ordered_imports' => true,
+    'phpdoc_order' => true,
+    'protected_to_private' => false,
+    'fully_qualified_strict_types' => false,
+];
+
+if (\PHP_VERSION_ID >= 70300) {
+    $rules = array_merge($rules, [
+        '@PHP73Migration' => true,
+    ]);
+}
+if (\PHP_VERSION_ID >= 70400) {
+    $rules = array_merge($rules, [
+        '@PHP74Migration' => true,
+        '@PHP74Migration:risky' => true,
+    ]);
+}
+
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
-    ->setRules([
-        '@Symfony' => true,
-        '@Symfony:risky' => true,
-        '@DoctrineAnnotation' => true,
-        '@PHP56Migration' =>  true,
-        '@PHP56Migration:risky' => true,
-        '@PHP71Migration' => true,
-        '@PHP71Migration:risky' => true,
-        '@PHP73Migration' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'fopen_flags' => true,
-        'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
-        'linebreak_after_opening_tag' => true,
-        'mb_str_functions' => true,
-        'no_php4_constructor' => true,
-        'no_unreachable_default_argument_value' => true,
-        'no_useless_else' => true,
-        'no_useless_return' => true,
-        'ordered_imports' => true,
-        'phpdoc_order' => true,
-        'protected_to_private' => false,
-    ])
+    ->setRules($rules)
     ->setFinder($finder)
 ;

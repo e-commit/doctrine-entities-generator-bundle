@@ -39,7 +39,7 @@
         "twig/twig": "^2.12.0|^3.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16.1",
+        "friendsofphp/php-cs-fixer": "^2.17.1",
         "phpunit/phpunit": "^8.4",
         "symfony/filesystem": "^4.4|^5.0",
         "symfony/finder": "^4.4|^5.0",

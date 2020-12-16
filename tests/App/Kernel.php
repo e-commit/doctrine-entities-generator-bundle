@@ -28,7 +28,7 @@ class Kernel extends BaseKernel
         $loader->load(__DIR__.'/config/framework.yaml');
         $loader->load(__DIR__.'/config/doctrine.yaml');
 
-        $loader->load(function (ContainerBuilder $container) use ($loader): void {
+        $loader->load(function (ContainerBuilder $container): void {
             $container->setParameter('entity_dir', $this->getEntityDir());
             $container->setParameter('entity_prefix', $this->getEntityPrefix());
         });
