@@ -4,7 +4,7 @@ The EcommitDoctrineEntitiesGeneratorBundle bundle (for Symfony) allows the user 
 methods for Doctrine ORM entities.
 
 
-[![Build Status](https://travis-ci.org/e-commit/doctrine-entities-generator-bundle.svg?branch=master)](https://travis-ci.org/e-commit/doctrine-entities-generator-bundle)
+[![Build Status](https://travis-ci.com/e-commit/doctrine-entities-generator-bundle.svg?branch=master)](https://travis-ci.com/e-commit/doctrine-entities-generator-bundle)
 
 
 ## Installation ##
