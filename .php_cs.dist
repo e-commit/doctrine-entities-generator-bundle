@@ -33,7 +33,7 @@ if (\PHP_VERSION_ID >= 70400) {
     ]);
 }
 
-$rules = [
+$rules = array_merge($rules, [
     '@Symfony' => true,
     '@Symfony:risky' => true,
     '@DoctrineAnnotation' => true,
@@ -50,7 +50,7 @@ $rules = [
     'phpdoc_order' => true,
     'protected_to_private' => false,
     'fully_qualified_strict_types' => false,
-];
+]);
 
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
