@@ -15,13 +15,28 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 $rules = [
-    '@Symfony' => true,
-    '@Symfony:risky' => true,
-    '@DoctrineAnnotation' => true,
     '@PHP56Migration' =>  true,
     '@PHP56Migration:risky' => true,
     '@PHP71Migration' => true,
     '@PHP71Migration:risky' => true,
+];
+
+if (\PHP_VERSION_ID >= 70300) {
+    $rules = array_merge($rules, [
+        '@PHP73Migration' => true,
+    ]);
+}
+if (\PHP_VERSION_ID >= 70400) {
+    $rules = array_merge($rules, [
+        '@PHP74Migration' => true,
+        '@PHP74Migration:risky' => true,
+    ]);
+}
+
+$rules = [
+    '@Symfony' => true,
+    '@Symfony:risky' => true,
+    '@DoctrineAnnotation' => true,
     'array_syntax' => ['syntax' => 'short'],
     'fopen_flags' => true,
     'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
@@ -36,18 +51,6 @@ $rules = [
     'protected_to_private' => false,
     'fully_qualified_strict_types' => false,
 ];
-
-if (\PHP_VERSION_ID >= 70300) {
-    $rules = array_merge($rules, [
-        '@PHP73Migration' => true,
-    ]);
-}
-if (\PHP_VERSION_ID >= 70400) {
-    $rules = array_merge($rules, [
-        '@PHP74Migration' => true,
-        '@PHP74Migration:risky' => true,
-    ]);
-}
 
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
