@@ -53,6 +53,12 @@ class SubClass extends MainClass
     protected $bar;
 
     /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+
+    /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     protected $decimalField;
@@ -291,5 +297,17 @@ class SubClass extends MainClass
     public function getBar(): ?Bar
     {
         return $this->bar;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
     }
 }

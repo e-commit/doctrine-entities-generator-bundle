@@ -334,6 +334,9 @@ class EntityGenerator implements EntityGeneratorInterface
         $targetEntity = $associationMapping['targetEntity'];
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
+        if ($request->reflectionClass->getName() === $targetEntity) {
+            $targetEntityAlias = 'self';
+        }
 
         $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {

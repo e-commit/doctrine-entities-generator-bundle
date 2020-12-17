@@ -52,6 +52,12 @@ class SubClass extends MainClass
     protected $bar;
 
     /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+
+    /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     protected $decimalField;
