@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
@@ -111,8 +113,7 @@ class EntityGenerator implements EntityGeneratorInterface
             'request' => $request,
         ]);
 
-        $content = file_get_contents($reflectionClass->getFileName());
-        $content = preg_replace($this->getPattern($reflectionClass), sprintf('$1$2%s$4$5', $newBlockContent), $content);
+        $content = preg_replace($this->getPattern($reflectionClass), sprintf('$1$2%s$4$5', $newBlockContent), $request->getSourceCode());
         $this->writeFile($reflectionClass, $content);
     }
 
@@ -325,6 +326,8 @@ class EntityGenerator implements EntityGeneratorInterface
         $fieldName = $associationMapping['fieldName'];
         $targetEntity = $associationMapping['targetEntity'];
 
+        $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
+
         $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
             $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, $block.'_set', [
@@ -333,6 +336,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                 'targetEntity' => $targetEntity,
+                'targetEntityAlias' => $targetEntityAlias,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
             ]);
@@ -344,6 +348,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
+                'targetEntityAlias' => $targetEntityAlias,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
             ]);
@@ -355,6 +360,10 @@ class EntityGenerator implements EntityGeneratorInterface
         $fieldName = $associationMapping['fieldName'];
         $targetEntity = $associationMapping['targetEntity'];
 
+        $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
+        $collectionAlias = $request->useStatementManipulator->addUseStatementIfNecessary(Collection::class);
+        $collectionAliasInConstructor = $request->useStatementManipulator->addUseStatementIfNecessary(ArrayCollection::class);
+
         $addMethodName = $this->buildMethodName(self::TYPE_ADD, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $addMethodName)) {
             $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, $block.'_add', [
@@ -363,8 +372,10 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_ADD, $fieldName),
                 'targetEntity' => $targetEntity,
+                'targetEntityAlias' => $targetEntityAlias,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
+                'collectionAlias' => $collectionAlias,
             ]);
         }
 
@@ -376,8 +387,10 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_REMOVE, $fieldName),
                 'targetEntity' => $targetEntity,
+                'targetEntityAlias' => $targetEntityAlias,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
+                'collectionAlias' => $collectionAlias,
             ]);
         }
 
@@ -387,16 +400,21 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
+                'targetEntityAlias' => $targetEntityAlias,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
+                'collectionAlias' => $collectionAlias,
             ]);
         }
 
         $request->newConstructorLines[] = $this->renderBlock($request->reflectionClass, 'assocation_to_many_constructor', [
             'fieldName' => $fieldName,
             'targetEntity' => $targetEntity,
+            'targetEntityAlias' => $targetEntityAlias,
             'request' => $request,
             'associationMapping' => $associationMapping,
+            'collectionAlias' => $collectionAlias,
+            'collectionAliasInConstructor' => $collectionAliasInConstructor,
         ]);
     }
 

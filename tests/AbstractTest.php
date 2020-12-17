@@ -60,7 +60,7 @@ abstract class AbstractTest extends KernelTestCase
             ->getMock();
 
         $mock->method('writeFile')->willReturnCallback(function (\ReflectionClass $reflectionClass, string $content): void {
-            $filename = $this->tempFolder.'/'.$reflectionClass->getShortName().'.php';
+            $filename = $this->tempFolder.'/'.str_replace('/', '_', $this->getClassSubPath($reflectionClass->getName())).'.php';
             file_put_contents($filename, $content);
         });
 
@@ -69,10 +69,10 @@ abstract class AbstractTest extends KernelTestCase
 
     protected function checkGeneratedClass($class): void
     {
-        $reflectionClass = new \ReflectionClass($class);
+        $className = $this->getClassSubPath($class);
 
-        $file = $this->tempFolder.'/'.$reflectionClass->getShortName().'.php';
-        $expectedFile = __DIR__.'/App/GeneratedEntity/'.$reflectionClass->getShortName().'.php';
+        $file = $this->tempFolder.'/'.str_replace('/', '_', $className).'.php';
+        $expectedFile = __DIR__.'/App/GeneratedEntity/'.$className.'.php';
         $expectedContent = file_get_contents($expectedFile);
         $expectedContent = str_replace(
             'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity',
@@ -84,5 +84,13 @@ abstract class AbstractTest extends KernelTestCase
             $expectedContent,
             file_get_contents($file)
         );
+    }
+
+    protected function getClassSubPath($class): string
+    {
+        $className = str_replace('Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\\', '', $class);
+        $className = str_replace('\\', '/', $className);
+
+        return $className;
     }
 }

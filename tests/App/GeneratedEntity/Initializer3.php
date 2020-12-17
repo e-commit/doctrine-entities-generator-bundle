@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,7 +45,7 @@ class Initializer3
 
     public function __construct()
     {
-        $this->authors = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->authors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,7 +53,7 @@ class Initializer3
         return $this->id;
     }
 
-    public function addAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function addAuthor(Author $author): self
     {
         if (!$this->authors->contains($author)) {
             $this->authors[] = $author;
@@ -60,7 +62,7 @@ class Initializer3
         return $this;
     }
 
-    public function removeAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function removeAuthor(Author $author): self
     {
         if ($this->authors->contains($author)) {
             $this->authors->removeElement($author);
@@ -69,7 +71,7 @@ class Initializer3
         return $this;
     }
 
-    public function getAuthors(): \Doctrine\Common\Collections\Collection
+    public function getAuthors(): Collection
     {
         return $this->authors;
     }

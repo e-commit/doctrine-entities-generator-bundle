@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
@@ -49,7 +51,7 @@ class Initializer2 implements EntityInitializerInterface
 
     public function __construct()
     {
-        $this->authors = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->authors = new ArrayCollection();
         $this->initializeEntity();
     }
 
@@ -58,7 +60,7 @@ class Initializer2 implements EntityInitializerInterface
         return $this->id;
     }
 
-    public function addAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function addAuthor(Author $author): self
     {
         if (!$this->authors->contains($author)) {
             $this->authors[] = $author;
@@ -67,7 +69,7 @@ class Initializer2 implements EntityInitializerInterface
         return $this;
     }
 
-    public function removeAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function removeAuthor(Author $author): self
     {
         if ($this->authors->contains($author)) {
             $this->authors->removeElement($author);
@@ -76,7 +78,7 @@ class Initializer2 implements EntityInitializerInterface
         return $this;
     }
 
-    public function getAuthors(): \Doctrine\Common\Collections\Collection
+    public function getAuthors(): Collection
     {
         return $this->authors;
     }

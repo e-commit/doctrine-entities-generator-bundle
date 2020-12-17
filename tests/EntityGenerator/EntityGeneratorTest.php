@@ -24,6 +24,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer1;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer2;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer3;
@@ -357,6 +359,8 @@ class EntityGeneratorTest extends AbstractTest
             [MainClass::class],
             [Sale::class],
             [SubClass::class],
+            [Foo::class],
+            [Bar::class],
         ];
     }
 

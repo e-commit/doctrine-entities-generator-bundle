@@ -18,6 +18,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer1;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer2;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer3;
@@ -185,6 +187,8 @@ class EntitySearcherTest extends KernelTestCase
             Author::class,
             Book::class,
             Category::class,
+            Bar::class,
+            Foo::class,
             Initializer1::class,
             Initializer2::class,
             Initializer3::class,
@@ -201,6 +205,8 @@ class EntitySearcherTest extends KernelTestCase
             Author::class,
             Book::class,
             Category::class,
+            Bar::class,
+            Foo::class,
             Initializer1::class,
             Initializer2::class,
             Initializer3::class,
@@ -222,6 +228,8 @@ class EntitySearcherTest extends KernelTestCase
             Author::class,
             Book::class,
             Category::class,
+            Bar::class,
+            Foo::class,
             Initializer1::class,
             Initializer2::class,
             Initializer3::class,
@@ -235,6 +243,11 @@ class EntitySearcherTest extends KernelTestCase
         $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/S*', [
             Sale::class,
             SubClass::class,
+        ]];
+
+        $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/Foo/*', [
+            Bar::class,
+            Foo::class,
         ]];
 
         return $data;

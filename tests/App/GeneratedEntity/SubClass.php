@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Bar;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo as MyFoo;
 
 /**
  * @ORM\Entity
@@ -37,6 +39,18 @@ class SubClass extends MainClass
      * @ORM\JoinColumn(name="second_initializer_id", referencedColumnName="id")
      */
     protected $secondInitializer;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo")
+     * @ORM\JoinColumn(name="foo_id", referencedColumnName="foo_id")
+     */
+    protected $foo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Bar")
+     * @ORM\JoinColumn(name="bar_id", referencedColumnName="bar_id")
+     */
+    protected $bar;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -89,6 +103,11 @@ class SubClass extends MainClass
      * Type not defined in template
      */
     protected $customField;
+
+    public function getMyFoo(): ?MyFoo
+    {
+        return $this->foo;
+    }
 
     /*
      * Getters / Setters (auto-generated)
@@ -226,27 +245,51 @@ class SubClass extends MainClass
         return $this->customField;
     }
 
-    public function setFirstInitializer(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1 $firstInitializer): self
+    public function setFirstInitializer(?Initializer1 $firstInitializer): self
     {
         $this->firstInitializer = $firstInitializer;
 
         return $this;
     }
 
-    public function getFirstInitializer(): ?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1
+    public function getFirstInitializer(): ?Initializer1
     {
         return $this->firstInitializer;
     }
 
-    public function setSecondInitializer(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2 $secondInitializer): self
+    public function setSecondInitializer(?Initializer2 $secondInitializer): self
     {
         $this->secondInitializer = $secondInitializer;
 
         return $this;
     }
 
-    public function getSecondInitializer(): ?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2
+    public function getSecondInitializer(): ?Initializer2
     {
         return $this->secondInitializer;
+    }
+
+    public function setFoo(?MyFoo $foo): self
+    {
+        $this->foo = $foo;
+
+        return $this;
+    }
+
+    public function getFoo(): ?MyFoo
+    {
+        return $this->foo;
+    }
+
+    public function setBar(?Bar $bar): self
+    {
+        $this->bar = $bar;
+
+        return $this;
+    }
+
+    public function getBar(): ?Bar
+    {
+        return $this->bar;
     }
 }

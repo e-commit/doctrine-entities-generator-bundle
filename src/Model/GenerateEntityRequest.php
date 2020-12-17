@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Model;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 
 class GenerateEntityRequest
@@ -38,6 +39,11 @@ class GenerateEntityRequest
      */
     public $doctrineExtractor;
 
+    /**
+     * @var UseStatementManipulator
+     */
+    public $useStatementManipulator;
+
     public $newBlockContents = [];
 
     public $newConstructorLines = [];
@@ -50,5 +56,11 @@ class GenerateEntityRequest
         $this->fileParts = $fileParts;
         $this->classMetadata = $classMetadata;
         $this->doctrineExtractor = $doctrineExtractor;
+        $this->useStatementManipulator = new UseStatementManipulator(file_get_contents($reflectionClass->getFileName()));
+    }
+
+    public function getSourceCode(): string
+    {
+        return $this->useStatementManipulator->getSourceCode();
     }
 }

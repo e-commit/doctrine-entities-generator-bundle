@@ -36,7 +36,6 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'phpdoc_order' => true,
         'protected_to_private' => false,
-        'fully_qualified_strict_types' => false,
     ])
     ->setFinder($finder)
 ;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo as MyFoo;
 
 /**
  * @ORM\Entity
@@ -37,6 +38,18 @@ class SubClass extends MainClass
      * @ORM\JoinColumn(name="second_initializer_id", referencedColumnName="id")
      */
     protected $secondInitializer;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo")
+     * @ORM\JoinColumn(name="foo_id", referencedColumnName="foo_id")
+     */
+    protected $foo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar")
+     * @ORM\JoinColumn(name="bar_id", referencedColumnName="bar_id")
+     */
+    protected $bar;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -89,6 +102,11 @@ class SubClass extends MainClass
      * Type not defined in template
      */
     protected $customField;
+
+    public function getMyFoo(): ?MyFoo
+    {
+        return $this->foo;
+    }
 
     /*
      * Getters / Setters (auto-generated)

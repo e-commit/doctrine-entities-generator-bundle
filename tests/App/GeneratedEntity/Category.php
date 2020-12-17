@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
 
@@ -57,7 +59,7 @@ class Category
 
     public function __construct()
     {
-        $this->books = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     public function setCategoryId(?int $categoryId): self
@@ -96,7 +98,7 @@ class Category
         return $this->customField;
     }
 
-    public function addBook(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book $book): self
+    public function addBook(Book $book): self
     {
         $book->setCategory($this);
         if (!$this->books->contains($book)) {
@@ -106,7 +108,7 @@ class Category
         return $this;
     }
 
-    public function removeBook(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book $book): self
+    public function removeBook(Book $book): self
     {
         if ($this->books->contains($book)) {
             $this->books->removeElement($book);
@@ -116,7 +118,7 @@ class Category
         return $this;
     }
 
-    public function getBooks(): \Doctrine\Common\Collections\Collection
+    public function getBooks(): Collection
     {
         return $this->books;
     }

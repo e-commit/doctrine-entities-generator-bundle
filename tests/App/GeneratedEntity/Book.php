@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,8 +63,8 @@ class Book
 
     public function __construct()
     {
-        $this->authors = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->sales = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->authors = new ArrayCollection();
+        $this->sales = new ArrayCollection();
     }
 
     public function getBookId(): ?int
@@ -82,19 +84,19 @@ class Book
         return $this->title;
     }
 
-    public function setCategory(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    public function getCategory(): ?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function addAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function addAuthor(Author $author): self
     {
         if (!$this->authors->contains($author)) {
             $this->authors[] = $author;
@@ -103,7 +105,7 @@ class Book
         return $this;
     }
 
-    public function removeAuthor(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author $author): self
+    public function removeAuthor(Author $author): self
     {
         if ($this->authors->contains($author)) {
             $this->authors->removeElement($author);
@@ -112,12 +114,12 @@ class Book
         return $this;
     }
 
-    public function getAuthors(): \Doctrine\Common\Collections\Collection
+    public function getAuthors(): Collection
     {
         return $this->authors;
     }
 
-    public function addSale(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Sale $sale): self
+    public function addSale(Sale $sale): self
     {
         $sale->setBook($this);
         if (!$this->sales->contains($sale)) {
@@ -127,7 +129,7 @@ class Book
         return $this;
     }
 
-    public function removeSale(\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Sale $sale): self
+    public function removeSale(Sale $sale): self
     {
         if ($this->sales->contains($sale)) {
             $this->sales->removeElement($sale);
@@ -137,7 +139,7 @@ class Book
         return $this;
     }
 
-    public function getSales(): \Doctrine\Common\Collections\Collection
+    public function getSales(): Collection
     {
         return $this->sales;
     }

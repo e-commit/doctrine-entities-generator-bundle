@@ -67,14 +67,14 @@ class Sale
         return $this->countSales;
     }
 
-    public function setBook(?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book $book): self
+    public function setBook(?Book $book): self
     {
         $this->book = $book;
 
         return $this;
     }
 
-    public function getBook(): ?\Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book
+    public function getBook(): ?Book
     {
         return $this->book;
     }

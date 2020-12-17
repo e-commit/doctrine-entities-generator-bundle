@@ -76,14 +76,14 @@
 {# Associations To One #}
 
 {% block assocation_to_one_get %}
-    public function {{ methodName }}(): ?\\{{ targetEntity }}
+    public function {{ methodName }}(): ?{{ targetEntityAlias }}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block assocation_one_to_one_unidirectional_set %}
-    public function {{ methodName }}(?\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}(?{{ targetEntityAlias }} ${{ variableName }}): self
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -96,7 +96,7 @@
 {%- endblock -%}
 
 {% block assocation_one_to_one_reverse_set %}
-    public function {{ methodName }}(?\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}(?{{ targetEntityAlias }} ${{ variableName }}): self
     {
         if (null === ${{ variableName }} && null !== $this->{{ fieldName }}) {
             $this->{{ fieldName }}->{{ foreignMethodName }}(null);
@@ -112,18 +112,18 @@
 {# Associations To Many #}
 
 {% block assocation_to_many_get %}
-    public function {{ methodName }}(): \Doctrine\Common\Collections\Collection
+    public function {{ methodName }}(): {{ collectionAlias }}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block assocation_to_many_constructor %}
-    $this->{{ fieldName }} = new \Doctrine\Common\Collections\ArrayCollection();
+    $this->{{ fieldName }} = new {{ collectionAliasInConstructor }}();
 {% endblock %}
 
 {% block assocation_one_to_many_reverse_add %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         ${{ variableName }}->{{ foreignMethodName }}($this);
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
@@ -135,7 +135,7 @@
 {% endblock %}
 
 {% block assocation_one_to_many_reverse_remove %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
@@ -147,7 +147,7 @@
 {% endblock %}
 
 {% block assocation_many_to_many_unidirectional_add %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}[] = ${{ variableName }};
@@ -158,7 +158,7 @@
 {% endblock %}
 
 {% block assocation_many_to_many_unidirectional_remove %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
@@ -177,7 +177,7 @@
 {%- endblock -%}
 
 {% block assocation_many_to_many_reverse_add %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         ${{ variableName }}->{{ foreignMethodName }}($this);
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
@@ -189,7 +189,7 @@
 {% endblock %}
 
 {% block assocation_many_to_many_reverse_remove %}
-    public function {{ methodName }}(\\{{ targetEntity }} ${{ variableName }}): self
+    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
