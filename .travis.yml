@@ -3,6 +3,7 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - 8.0
 
 env:
     - DEPENDENCIES="high"
@@ -13,4 +14,4 @@ install:
 
 script:
     - php vendor/phpunit/phpunit/phpunit
-    - php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --dry-run -v
+    - export PHP_CS_FIXER_IGNORE_ENV=1 && php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --dry-run -v
