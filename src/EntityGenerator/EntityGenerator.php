@@ -16,7 +16,8 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
@@ -51,6 +52,11 @@ class EntityGenerator implements EntityGeneratorInterface
      */
     protected $twig;
 
+    /**
+     * @var Inflector
+     */
+    protected $inflector;
+
     protected $template;
 
     public function __construct(EntitySearcherInterface $searcher, ManagerRegistry $registry, Environment $twig, string $template)
@@ -59,6 +65,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $this->registry = $registry;
         $this->twig = $twig;
         $this->template = $template;
+        $this->inflector = InflectorFactory::create()->build();
     }
 
     public function generate(string $className): void
@@ -420,9 +427,9 @@ class EntityGenerator implements EntityGeneratorInterface
 
     protected function buildMethodName(string $type, string $fieldName): string
     {
-        $methodName = $type.Inflector::classify($fieldName);
+        $methodName = $type.$this->inflector->classify($fieldName);
         if (\in_array($type, [self::TYPE_ADD, self::TYPE_REMOVE])) {
-            $methodName = Inflector::singularize($methodName);
+            $methodName = $this->inflector->singularize($methodName);
         }
 
         return $methodName;
@@ -430,9 +437,9 @@ class EntityGenerator implements EntityGeneratorInterface
 
     protected function buildVariableName(string $type, string $variableName): string
     {
-        $variableName = Inflector::camelize($variableName);
+        $variableName = $this->inflector->camelize($variableName);
         if (\in_array($type, [self::TYPE_ADD, self::TYPE_REMOVE])) {
-            $variableName = Inflector::singularize($variableName);
+            $variableName = $this->inflector->singularize($variableName);
         }
 
         return $variableName;
