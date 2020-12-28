@@ -52,10 +52,15 @@ class SubClass extends MainClass
     protected $bar;
 
     /**
-     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass")
+     * @ORM\ManyToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass", mappedBy="parent")
+     */
+    protected $children;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)

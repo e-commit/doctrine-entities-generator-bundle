@@ -371,6 +371,9 @@ class EntityGenerator implements EntityGeneratorInterface
         $targetEntity = $associationMapping['targetEntity'];
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
+        if ($request->reflectionClass->getName() === $targetEntity) {
+            $targetEntityAlias = 'self';
+        }
         $collectionAlias = $request->useStatementManipulator->addUseStatementIfNecessary(Collection::class);
         $collectionAliasInConstructor = $request->useStatementManipulator->addUseStatementIfNecessary(ArrayCollection::class);
 

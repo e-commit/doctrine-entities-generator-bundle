@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Bar;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo as MyFoo;
@@ -53,10 +55,15 @@ class SubClass extends MainClass
     protected $bar;
 
     /**
-     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass")
+     * @ORM\ManyToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass", mappedBy="parent")
+     */
+    protected $children;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -118,6 +125,11 @@ class SubClass extends MainClass
     /*
      * Getters / Setters (auto-generated)
      */
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     public function setName(?string $name): self
     {
@@ -309,5 +321,30 @@ class SubClass extends MainClass
     public function getParent(): ?self
     {
         return $this->parent;
+    }
+
+    public function addChild(self $child): self
+    {
+        $child->setParent($this);
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+        }
+
+        return $this;
+    }
+
+    public function removeChild(self $child): self
+    {
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
+        }
+        $child->setParent(null);
+
+        return $this;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
     }
 }
