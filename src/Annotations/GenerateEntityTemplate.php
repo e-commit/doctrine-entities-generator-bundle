@@ -13,12 +13,29 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Annotations;
 
-use Doctrine\Common\Annotations\Annotation;
+use Attribute;
 
 /**
  * @Annotation
  * @Target("CLASS")
  */
-final class GenerateEntityTemplate extends Annotation
+#[Attribute(Attribute::TARGET_CLASS)]
+final class GenerateEntityTemplate
 {
+    public $template;
+
+    public function __construct($data)
+    {
+        if (\is_string($data)) {
+            $this->template = $data;
+        } elseif (isset($data['value'])) {
+            $this->template = $data['value'];
+        } else {
+            $this->template = $data['template'] ?? null;
+        }
+
+        if (null === $this->template || '' === $this->template || !\is_string($this->template)) {
+            throw new \BadMethodCallException(sprintf('Missing property "template" on annotation "%s".', static::class));
+        }
+    }
 }

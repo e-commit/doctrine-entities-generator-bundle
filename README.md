@@ -99,7 +99,7 @@ The bundle generates getters-setters methods for an entity only if :
 * The PHP class is a Doctrine ORM entity; and
 * The entity is not an interface; and
 * The entity is not a trait; and
-* The entity doesn't use the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` annotation.
+* The entity doesn't use the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` annotation / attribute.
 
 The bundle generates getters-setters methods for an entity property only if :
 * The property is defined directly in the entity (and is not defined in an inherited class or a trait); and
@@ -131,7 +131,7 @@ ecommit_doctrine_entities_generator:
 
 **Solution 3 - Create a custom template in entity**
 
-You can also override the theme to be used by the bundle only for an entity. To do this, use
+You can override the theme to be used by the bundle only for an entity. To do this, use
 the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate` annotation:
 
 ```php
@@ -143,6 +143,28 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
  * @ORM\Table(name="category")
  * @GenerateEntityTemplate("your_template.php.twig")
  */
+class Category
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="category_id")
+     */
+    protected $categoryId;
+    //...
+}
+```
+
+Or you can also use the  `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate` attribute (**≥ PHP 8**):
+
+```php
+use Doctrine\ORM\Mapping as ORM;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="category")
+ */
+#[GenerateEntityTemplate("your_template.php.twig")]
 class Category
 {
     /**
@@ -282,6 +304,28 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
  * @ORM\Table(name="category")
  * @IgnoreGenerateEntity
  */
+class Category
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="category_id")
+     */
+    protected $categoryId;
+    //...
+}
+```
+
+Or you can also use the  `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` attribute (**≥ PHP 8**):
+
+```php
+use Doctrine\ORM\Mapping as ORM;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="category")
+ */
+#[IgnoreGenerateEntity]
 class Category
 {
     /**

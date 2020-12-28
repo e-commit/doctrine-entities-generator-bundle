@@ -34,6 +34,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGeneratePhp8;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplatePhp8;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
@@ -349,7 +351,7 @@ class EntityGeneratorTest extends AbstractTest
 
     public function getTestGenerateProvider(): array
     {
-        return [
+        $data = [
             [Author::class],
             [Book::class],
             [Category::class],
@@ -357,11 +359,18 @@ class EntityGeneratorTest extends AbstractTest
             [Initializer2::class],
             [Initializer3::class],
             [MainClass::class],
+            [OverrideTemplatePhp8::class],
             [Sale::class],
             [SubClass::class],
             [Foo::class],
             [Bar::class],
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $data[] = [NotGeneratePhp8::class];
+        }
+
+        return $data;
     }
 
     /**

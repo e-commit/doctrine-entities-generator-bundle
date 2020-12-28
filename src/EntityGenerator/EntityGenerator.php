@@ -153,10 +153,15 @@ class EntityGenerator implements EntityGeneratorInterface
         $this->registry->getManagerForClass($reflectionClass->getName());
 
         $templateName = $this->template;
-        $reader = new AnnotationReader();
-        $annotation = $reader->getClassAnnotation($reflectionClass, GenerateEntityTemplate::class);
-        if ($annotation && null !== $annotation->value) {
-            $templateName = $annotation->value;
+        $annotation = null;
+        if (\PHP_VERSION_ID >= 80000 && ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null)) {
+            $annotation = $attribute->newInstance();
+        } else {
+            $reader = new AnnotationReader();
+            $annotation = $reader->getClassAnnotation($reflectionClass, GenerateEntityTemplate::class);
+        }
+        if ($annotation && null !== $annotation->template) {
+            $templateName = $annotation->template;
         }
 
         $template = $this->twig->load($templateName);

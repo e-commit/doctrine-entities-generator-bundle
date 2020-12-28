@@ -72,13 +72,25 @@ abstract class AbstractTest extends KernelTestCase
         $className = $this->getClassSubPath($class);
 
         $file = $this->tempFolder.'/'.str_replace('/', '_', $className).'.php';
-        $expectedFile = __DIR__.'/App/GeneratedEntity/'.$className.'.php';
-        $expectedContent = file_get_contents($expectedFile);
-        $expectedContent = str_replace(
-            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity',
-            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
-            $expectedContent
-        );
+        $expectedContent = null;
+        foreach (['GeneratedEntity'.\PHP_MAJOR_VERSION.\PHP_MINOR_VERSION, 'GeneratedEntity'] as $generatedFolder) {
+            $expectedFile = __DIR__.'/App/'.$generatedFolder.'/'.$className.'.php';
+            if (!file_exists($expectedFile)) {
+                continue;
+            }
+
+            $expectedContent = file_get_contents($expectedFile);
+            $expectedContent = str_replace(
+                'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\\'.$generatedFolder,
+                'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
+                $expectedContent
+            );
+
+            break;
+        }
+        if (null === $expectedContent) {
+            throw new \Exception('Template not found: '.$className);
+        }
 
         $this->assertSame(
             $expectedContent,
