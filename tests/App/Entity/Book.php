@@ -21,6 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Book
 {
+    use PriceTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -52,8 +54,6 @@ class Book
      * @ORM\OneToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale", mappedBy="book")
      */
     protected $sales;
-
-    use PriceTrait;
 
     /*
      * Getters / Setters (auto-generated)

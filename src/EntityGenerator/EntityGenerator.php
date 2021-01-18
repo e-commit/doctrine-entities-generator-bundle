@@ -222,13 +222,13 @@ class EntityGenerator implements EntityGeneratorInterface
             }
         }
 
-        $endStartTagLine = mb_substr_count($request->fileParts['beforeBlock'], PHP_EOL) + mb_substr_count($request->fileParts['startTag'], PHP_EOL) + 1;
+        $endStartTagLine = mb_substr_count($request->fileParts['beforeBlock'], \PHP_EOL) + mb_substr_count($request->fileParts['startTag'], \PHP_EOL) + 1;
         $startLimit = $endStartTagLine + 1;
         if ($reflectionMethod->getStartLine() < $startLimit) {
             return true;
         }
 
-        $startEndTagLine = $endStartTagLine + mb_substr_count($request->fileParts['block'], PHP_EOL);
+        $startEndTagLine = $endStartTagLine + mb_substr_count($request->fileParts['block'], \PHP_EOL);
         $endLimit = $startEndTagLine - 1;
         if ($reflectionMethod->getStartLine() > $endLimit) {
             return true;
