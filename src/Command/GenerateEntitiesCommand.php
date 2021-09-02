@@ -34,6 +34,8 @@ class GenerateEntitiesCommand extends Command
 
     protected static $defaultName = 'ecommit:doctrine:generate-entities';
 
+    protected static $defaultDescription = 'Generate Doctrine ORM entities';
+
     public function __construct(EntitySearcherInterface $searcher, EntityGeneratorInterface $generator)
     {
         $this->searcher = $searcher;
@@ -46,7 +48,7 @@ class GenerateEntitiesCommand extends Command
     {
         $this
             ->addArgument('class', InputArgument::REQUIRED, 'Class name or class name prefix')
-            ->setDescription('Generate Doctrine ORM entities')
+            ->setDescription(self::$defaultDescription) //Compatibility with Symfony < 5.3
         ;
     }
 
