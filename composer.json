@@ -49,6 +49,9 @@
         "symfony/finder": "^4.4|^5.0",
         "symfony/yaml": "^4.4|^5.0"
     },
+    "conflict": {
+        "symfony/doctrine-bridge": "4.4.34|5.3.11"
+    },
     "config": {
         "sort-packages": true
     }
