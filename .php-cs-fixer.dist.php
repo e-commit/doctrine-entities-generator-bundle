@@ -14,7 +14,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('tests/App/var')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,

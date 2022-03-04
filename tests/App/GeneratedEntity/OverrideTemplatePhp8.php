@@ -20,7 +20,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
  * @ORM\Entity
  * @ORM\Table(name="override_template_php8")
  */
-#[GenerateEntityTemplate("custom_php8.php.twig")]
+#[GenerateEntityTemplate('custom_php8.php.twig')]
 class OverrideTemplatePhp8
 {
     /**
