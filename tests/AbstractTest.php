@@ -51,10 +51,10 @@ abstract class AbstractTest extends KernelTestCase
     {
         $mock = $this->getMockBuilder(EntityGenerator::class)
             ->setConstructorArgs([
-                self::$container->get(EntitySearcher::class),
-                self::$container->get(ManagerRegistry::class),
-                self::$container->get(Environment::class),
-                self::$container->getParameter('ecommit_doctrine_entities_generator.template'),
+                $this->getContainer()->get(EntitySearcher::class),
+                $this->getContainer()->get(ManagerRegistry::class),
+                $this->getContainer()->get(Environment::class),
+                $this->getContainer()->getParameter('ecommit_doctrine_entities_generator.template'),
             ])
             ->onlyMethods(['writeFile'])
             ->getMock();

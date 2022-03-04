@@ -44,7 +44,7 @@ class Kernel extends BaseKernel
         return 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity';
     }
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new TwigBundle(),
@@ -54,7 +54,7 @@ class Kernel extends BaseKernel
         ];
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }

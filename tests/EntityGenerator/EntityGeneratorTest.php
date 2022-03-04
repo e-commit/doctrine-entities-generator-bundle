@@ -88,9 +88,9 @@ class EntityGeneratorTest extends AbstractTest
     public function testGetFilePartsTagNotFound($template): void
     {
         $entityGenerator = new EntityGenerator(
-            self::$container->get(EntitySearcher::class),
-            self::$container->get(ManagerRegistry::class),
-            self::$container->get(Environment::class),
+            $this->getContainer()->get(EntitySearcher::class),
+            $this->getContainer()->get(ManagerRegistry::class),
+            $this->getContainer()->get(Environment::class),
             $template
         );
         $reflectionClass = new \ReflectionClass(EntityGenerator::class);
@@ -177,8 +177,8 @@ class EntityGeneratorTest extends AbstractTest
         $request = new GenerateEntityRequest(
             $reflectionClass,
             $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]),
-            self::$container->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
-            new DoctrineExtractor(self::$container->get(ManagerRegistry::class)->getManagerForClass($class))
+            $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
+            new DoctrineExtractor($this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class))
         );
 
         $result = $propertyIsDefinedInClassFileReflection->invokeArgs($entityGenerator, [
@@ -225,8 +225,8 @@ class EntityGeneratorTest extends AbstractTest
         $request = new GenerateEntityRequest(
             $reflectionClass,
             $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]),
-            self::$container->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
-            new DoctrineExtractor(self::$container->get(ManagerRegistry::class)->getManagerForClass($class))
+            $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
+            new DoctrineExtractor($this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class))
         );
 
         $result = $propertyIsDefinedInClassFileReflection->invokeArgs($entityGenerator, [

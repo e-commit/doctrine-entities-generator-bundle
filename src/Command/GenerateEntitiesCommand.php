@@ -48,7 +48,6 @@ class GenerateEntitiesCommand extends Command
     {
         $this
             ->addArgument('class', InputArgument::REQUIRED, 'Class name or class name prefix')
-            ->setDescription(self::$defaultDescription) //Compatibility with Symfony < 5.3
         ;
     }
 

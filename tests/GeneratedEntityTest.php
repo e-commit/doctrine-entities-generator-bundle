@@ -36,7 +36,7 @@ class GeneratedEntityTest extends KernelTestCase
 
     protected $databaseIsInitialized = false;
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return GeneratedEntityKernel::class;
     }

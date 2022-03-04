@@ -55,13 +55,13 @@ class EntitySearcherTest extends KernelTestCase
 
     public function testServiceClass(): void
     {
-        $service = self::$container->get('ecommit_doctrine_entities_generator.entity_searcher');
+        $service = $this->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher');
         $this->assertInstanceOf(EntitySearcher::class, $service);
     }
 
     public function testAliasServiceClass(): void
     {
-        $service = self::$container->get(EntitySearcher::class);
+        $service = $this->getContainer()->get(EntitySearcher::class);
         $this->assertInstanceOf(EntitySearcher::class, $service);
     }
 
@@ -320,7 +320,7 @@ class EntitySearcherTest extends KernelTestCase
      */
     public function testSearch($input, $expectedResult): void
     {
-        $result = self::$container->get(EntitySearcher::class)->search($input);
+        $result = $this->getContainer()->get(EntitySearcher::class)->search($input);
 
         sort($result);
 

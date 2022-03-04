@@ -62,7 +62,7 @@ class GenerateEntitiesCommandTest extends AbstractTest
         $application = new Application();
 
         $command = new GenerateEntitiesCommand(
-            self::$container->get(EntitySearcher::class),
+            $this->getContainer()->get(EntitySearcher::class),
             $this->getEntityGeneratorMock()
         );
 
