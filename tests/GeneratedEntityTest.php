@@ -29,14 +29,17 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GeneratedEntityTest extends KernelTestCase
 {
-    protected static $class = GeneratedEntityKernel::class;
-
     /**
      * @var EntityManagerInterface
      */
     protected $em;
 
     protected $databaseIsInitialized = false;
+
+    protected static function getKernelClass()
+    {
+        return GeneratedEntityKernel::class;
+    }
 
     protected function setUp(): void
     {

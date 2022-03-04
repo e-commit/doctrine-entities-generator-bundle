@@ -35,7 +35,7 @@
         "symfony/console": "^4.4|^5.0",
         "symfony/dependency-injection": "^4.4.12|^5.1.4",
         "symfony/doctrine-bridge": "^4.4.6|^5.0.6",
-        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/framework-bundle": "^4.4.38|^5.4.5",
         "symfony/http-kernel": "^4.4|^5.0",
         "symfony/polyfill-php80": "^1.19",
         "symfony/property-info": "^4.4|^5.0",
