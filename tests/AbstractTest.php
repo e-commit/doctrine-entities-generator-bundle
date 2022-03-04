@@ -73,7 +73,7 @@ abstract class AbstractTest extends KernelTestCase
 
         $file = $this->tempFolder.'/'.str_replace('/', '_', $className).'.php';
         $expectedContent = null;
-        foreach (['GeneratedEntity'.\PHP_MAJOR_VERSION.\PHP_MINOR_VERSION, 'GeneratedEntity'] as $generatedFolder) {
+        foreach (['GeneratedEntity'.\PHP_MAJOR_VERSION, 'GeneratedEntity'] as $generatedFolder) {
             $expectedFile = __DIR__.'/App/'.$generatedFolder.'/'.$className.'.php';
             if (!file_exists($expectedFile)) {
                 continue;

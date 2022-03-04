@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity80;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity8;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
