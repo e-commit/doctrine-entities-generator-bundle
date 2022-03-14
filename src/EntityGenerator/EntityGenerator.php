@@ -149,7 +149,7 @@ class EntityGenerator implements EntityGeneratorInterface
 
     protected function renderBlock(\ReflectionClass $reflectionClass, string $blockName, array $parameters = []): string
     {
-        //Load Doctrine annotations
+        // Load Doctrine annotations
         $this->registry->getManagerForClass($reflectionClass->getName());
 
         $templateName = $this->template;

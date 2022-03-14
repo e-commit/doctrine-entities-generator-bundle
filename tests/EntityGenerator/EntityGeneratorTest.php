@@ -195,16 +195,16 @@ class EntityGeneratorTest extends AbstractTest
             [Author::class, 'authorId', true],
             [Author::class, 'badProperty', false],
 
-            //Extends
+            // Extends
             [MainClass::class, 'id', true],
             [MainClass::class, 'toto', true],
             [MainClass::class, 'tutu', true],
             [SubClass::class, 'id', false],
 
-            //Public
+            // Public
             [Author::class, 'phoneNumber', false],
 
-            //Defined in trait
+            // Defined in trait
             [Book::class, 'price', false],
         ];
     }
@@ -242,20 +242,20 @@ class EntityGeneratorTest extends AbstractTest
         return [
             [Author::class, 'badMethod', false],
 
-            //Extends
+            // Extends
             [SubClass::class, 'getMainMethod', true],
 
-            //Defined in trait
+            // Defined in trait
             [Book::class, 'renderPrice', true],
 
-            //Before block
+            // Before block
             [Author::class, 'getFullName', true],
             [Category::class, 'methodBeforeBlock', true],
 
-            //After block
+            // After block
             [Category::class, 'methodAfterBlock', true],
 
-            //Inside block
+            // Inside block
             [Category::class, 'getName', false],
         ];
     }

@@ -41,7 +41,7 @@ class Initializer1 implements EntityInitializerInterface
 
     public function initializeEntity(): void
     {
-        //EntityInitializerInterface is used without collection
+        // EntityInitializerInterface is used without collection
     }
 
     /*

@@ -35,7 +35,7 @@ class Initializer5 implements EntityInitializerInterface
 
     public function __construct()
     {
-        //EntityInitializerInterface is used, without collection
+        // EntityInitializerInterface is used, without collection
     }
 
     /*

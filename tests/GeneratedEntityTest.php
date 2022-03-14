@@ -260,38 +260,38 @@ class GeneratedEntityTest extends KernelTestCase
         $sub = $this->createSubClass(2, $firstInitializer);
         $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
         $this->assertSame('Initializer1 name 1', $sub->getFirstInitializer()->getName());
-        //$firstInitializer is not tested (because reverse side)
+        // $firstInitializer is not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
         $sub = $this->em->getRepository(SubClass::class)->find(2);
         $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
         $this->assertSame(1, $sub->getFirstInitializer()->getId());
-        //$firstInitializer is not tested (because reverse side)
+        // $firstInitializer is not tested (because reverse side)
 
         $sub->setFirstInitializer(null);
         $this->assertNull($sub->getFirstInitializer());
-        //Initializer1 is not tested (because reverse side)
+        // Initializer1 is not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
         $sub = $this->em->getRepository(SubClass::class)->find(2);
         $this->assertNull($sub->getFirstInitializer());
-        //Initializer1 is not tested (because reverse side)
+        // Initializer1 is not tested (because reverse side)
 
         $firstInitializer = $this->createInitializer1(2);
         $this->em->persist($firstInitializer);
         $sub->setFirstInitializer($firstInitializer);
         $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
         $this->assertSame('Initializer1 name 2', $sub->getFirstInitializer()->getName());
-        //Initializer1 is not tested (because reverse side)
+        // Initializer1 is not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
         $sub = $this->em->getRepository(SubClass::class)->find(2);
         $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
         $this->assertSame('Initializer1 name 2', $sub->getFirstInitializer()->getName());
-        //Initializer1 is not tested (because reverse side)
+        // Initializer1 is not tested (because reverse side)
     }
 
     public function testAssociationOneToManyReverse(): void
@@ -480,7 +480,7 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertCount(1, $book->getAuthors());
         $this->assertSame(5, $book->getAuthors()->first()->getAuthorId());
         $this->assertTrue($book->getAuthors()->contains($author));
-        //$author is not tested (because reverse side)
+        // $author is not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
@@ -490,12 +490,12 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertCount(1, $book->getAuthors());
         $this->assertSame(5, $book->getAuthors()->first()->getAuthorId());
         $this->assertTrue($book->getAuthors()->contains($author));
-        //$author is not tested (because reverse side)
+        // $author is not tested (because reverse side)
 
         $author->removeBook($book);
         $this->assertInstanceOf(Collection::class, $book->getAuthors());
         $this->assertCount(0, $book->getAuthors());
-        //$author is not tested (because reverse side)
+        // $author is not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
@@ -503,7 +503,7 @@ class GeneratedEntityTest extends KernelTestCase
         $author1 = $this->em->getRepository(Author::class)->find(5);
         $this->assertInstanceOf(Collection::class, $book->getAuthors());
         $this->assertCount(0, $book->getAuthors());
-        //$author1 is not tested (because reverse side)
+        // $author1 is not tested (because reverse side)
 
         $author2 = $this->createAuthor(6);
         $book->addAuthor($author1);
@@ -512,7 +512,7 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertCount(2, $book->getAuthors());
         $this->assertTrue($book->getAuthors()->contains($author1));
         $this->assertTrue($book->getAuthors()->contains($author2));
-        //$author1 and $author2 are not tested (because reverse side)
+        // $author1 and $author2 are not tested (because reverse side)
         $this->em->flush();
         $this->em->clear();
 
@@ -523,7 +523,7 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertCount(2, $book->getAuthors());
         $this->assertTrue($book->getAuthors()->contains($author1));
         $this->assertTrue($book->getAuthors()->contains($author2));
-        //$author1 and $author2 are not tested (because reverse side)
+        // $author1 and $author2 are not tested (because reverse side)
     }
 
     protected function createSubClass(int $id, Initializer1 $firstInitializer = null, Initializer2 $secondInitializer = null): SubClass
@@ -536,7 +536,7 @@ class GeneratedEntityTest extends KernelTestCase
         $subClass->setName('Name '.$id)
             ->setFirstInitializer($firstInitializer)
             ->setSecondInitializer($secondInitializer)
-            ->setDecimalField(0.55) //Give a double - Doctrine will return string
+            ->setDecimalField(0.55) // Give a double - Doctrine will return string
             ->setDateField(new \DateTime('2020-01-01 00:00:00'))
             ->setBooleanField(true)
             ->setTextField('Text '.$id)

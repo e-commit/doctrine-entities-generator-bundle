@@ -38,7 +38,7 @@ class OverrideTemplatePhp8
      * Getters / Setters (auto-generated)
      */
 
-    //Override
+    // Override
     public function setId(?int $id): self
     {
         $this->Id = $id;
@@ -51,7 +51,7 @@ class OverrideTemplatePhp8
         return $this->Id;
     }
 
-    //Override
+    // Override
     public function setName(?string $name): self
     {
         $this->name = $name;

@@ -39,7 +39,7 @@ class Initializer4
 
     public function __construct()
     {
-        //EntityInitializerInterface is not used, with collection
+        // EntityInitializerInterface is not used, with collection
     }
 
     /*

@@ -40,7 +40,7 @@ class Initializer2 implements EntityInitializerInterface
 
     public function initializeEntity(): void
     {
-        //EntityInitializerInterface is used with collection
+        // EntityInitializerInterface is used with collection
     }
 
     /*
