@@ -40,19 +40,32 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
 
 class EntityGeneratorTest extends AbstractTest
 {
+    public function testServiceIsPrivate(): void
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
+    }
+
+    public function testAliasServiceIsPrivate(): void
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        self::$kernel->getContainer()->get(EntityGenerator::class);
+    }
+
     public function testServiceClass(): void
     {
-        $service = self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
+        $service = self::getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
         $this->assertInstanceOf(EntityGenerator::class, $service);
     }
 
     public function testAliasServiceClass(): void
     {
-        $service = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $service = self::getContainer()->get(EntityGenerator::class);
         $this->assertInstanceOf(EntityGenerator::class, $service);
     }
 
@@ -61,7 +74,7 @@ class EntityGeneratorTest extends AbstractTest
      */
     public function testGetFilePartsValid($class, $fixturesDir): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $reflectionClass = new \ReflectionClass(EntityGenerator::class);
         $method = $reflectionClass->getMethod('getFileParts');
         $method->setAccessible(true);
@@ -88,9 +101,9 @@ class EntityGeneratorTest extends AbstractTest
     public function testGetFilePartsTagNotFound($template): void
     {
         $entityGenerator = new EntityGenerator(
-            $this->getContainer()->get(EntitySearcher::class),
-            $this->getContainer()->get(ManagerRegistry::class),
-            $this->getContainer()->get(Environment::class),
+            self::getContainer()->get(EntitySearcher::class),
+            self::getContainer()->get(ManagerRegistry::class),
+            self::getContainer()->get(Environment::class),
             $template
         );
         $reflectionClass = new \ReflectionClass(EntityGenerator::class);
@@ -112,7 +125,7 @@ class EntityGeneratorTest extends AbstractTest
 
     public function testRenderBlock(): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $reflectionClass = new \ReflectionClass(EntityGenerator::class);
         $method = $reflectionClass->getMethod('renderBlock');
         $method->setAccessible(true);
@@ -166,7 +179,7 @@ class EntityGeneratorTest extends AbstractTest
      */
     public function testPropertyIsDefinedInClassFile($class, $property, $expectedResult): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
         $getFilePartsReflection = $entityGeneratorReflection->getMethod('getFileParts');
         $getFilePartsReflection->setAccessible(true);
@@ -214,7 +227,7 @@ class EntityGeneratorTest extends AbstractTest
      */
     public function testMethodIsDefinedOutsideBlock($class, $method, $expectedResult): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
         $getFilePartsReflection = $entityGeneratorReflection->getMethod('getFileParts');
         $getFilePartsReflection->setAccessible(true);
@@ -265,7 +278,7 @@ class EntityGeneratorTest extends AbstractTest
      */
     public function testBuildMethodName($type, $fieldName, $expectedResult): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
         $method = $entityGeneratorReflection->getMethod('buildMethodName');
         $method->setAccessible(true);
@@ -304,7 +317,7 @@ class EntityGeneratorTest extends AbstractTest
      */
     public function testBuildVariableName($type, $variableName, $expectedResult): void
     {
-        $entityGenerator = self::$kernel->getContainer()->get(EntityGenerator::class);
+        $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
         $method = $entityGeneratorReflection->getMethod('buildVariableName');
         $method->setAccessible(true);
