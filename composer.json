@@ -28,7 +28,7 @@
         "doctrine/doctrine-bundle": "^1.12.3|^2.4.5",
         "doctrine/inflector": "^1.4|^2.0",
         "doctrine/orm": "^2.7",
-        "doctrine/persistence": "^1.1|^2.0",
+        "doctrine/persistence": "^1.1|^2.0|^3.0",
         "nikic/php-parser": "^4.10",
         "symfony/config": "^5.4|^6.0",
         "symfony/console": "^5.4|^6.0",
