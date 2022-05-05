@@ -22,20 +22,28 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class GenerateEntityTemplate
 {
+    /**
+     * @var string
+     */
     public $template;
 
+    /**
+     * @param mixed $data
+     */
     public function __construct($data)
     {
+        $template = null;
         if (\is_string($data)) {
-            $this->template = $data;
-        } elseif (isset($data['value'])) {
-            $this->template = $data['value'];
-        } else {
-            $this->template = $data['template'] ?? null;
+            $template = $data;
+        } elseif (\is_array($data) && isset($data['value'])) {
+            $template = $data['value'];
+        } elseif (\is_array($data)) {
+            $template = $data['template'] ?? null;
         }
 
-        if (null === $this->template || '' === $this->template || !\is_string($this->template)) {
+        if (null === $template || '' === $template || !\is_string($template)) {
             throw new \BadMethodCallException(sprintf('Missing property "template" on annotation "%s".', static::class));
         }
+        $this->template = $template;
     }
 }

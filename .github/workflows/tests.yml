@@ -42,6 +42,11 @@ jobs:
                         description: 'with Coding Standards'
                         coding-standards: true
 
+                    #Static Analysis (min PHP version)
+                    -   php-version: '7.2'
+                        description: 'with Static Analysis'
+                        static-analysis: true
+
         name: PHP ${{ matrix.php-version }} ${{ matrix.description }}
 
         runs-on: 'ubuntu-latest'
@@ -84,7 +89,7 @@ jobs:
                 run: composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
             -   name: Run PHPUnit
-                if: matrix.coding-standards != true
+                if: matrix.coding-standards != true && matrix.static-analysis != true
                 run: php vendor/phpunit/phpunit/phpunit
 
             -   name: Run PHP CS Fixer
@@ -100,3 +105,7 @@ jobs:
             -   name: Check license year
                 if: matrix.coding-standards
                 run: cat LICENSE |grep -E "\(c\) ([0-9]+\-)*`date +%G`"
+
+            -   name: Run Psalm
+                if: matrix.static-analysis
+                run: php vendor/bin/psalm --stats --output-format=github

@@ -15,5 +15,8 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator;
 
 interface EntityGeneratorInterface
 {
+    /**
+     * @param class-string $className
+     */
     public function generate(string $className): void;
 }

@@ -57,6 +57,9 @@ class EntityGenerator implements EntityGeneratorInterface
      */
     protected $inflector;
 
+    /**
+     * @var string
+     */
     protected $template;
 
     public function __construct(EntitySearcherInterface $searcher, ManagerRegistry $registry, Environment $twig, string $template)
@@ -76,12 +79,16 @@ class EntityGenerator implements EntityGeneratorInterface
             throw new ClassNotManagedException(sprintf('Class "%s" not managed', $className));
         }
         $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
+        if (!$metadata instanceof ClassMetadataInfo) {
+            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Metatada not found)', $className));
+        }
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
             throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity annotation used ?)', $className));
         }
 
         $fileParts = $this->getFileParts($reflectionClass);
+        /** @psalm-suppress ArgumentTypeCoercion */
         $doctrineExtractor = new DoctrineExtractor($entityManager);
         $request = new GenerateEntityRequest(
             $reflectionClass,
@@ -90,7 +97,11 @@ class EntityGenerator implements EntityGeneratorInterface
             $doctrineExtractor
         );
 
-        foreach ($doctrineExtractor->getProperties($className) as $property) {
+        $properties = $doctrineExtractor->getProperties($className);
+        if (null === $properties) {
+            $properties = [];
+        }
+        foreach ($properties as $property) {
             if (!$this->propertyIsDefinedInClassFile($request, $property)) {
                 continue;
             }
@@ -154,6 +165,7 @@ class EntityGenerator implements EntityGeneratorInterface
 
         $templateName = $this->template;
         $annotation = null;
+        /** @psalm-suppress UndefinedMethod */
         if (\PHP_VERSION_ID >= 80000 && ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null)) {
             $annotation = $attribute->newInstance();
         } else {

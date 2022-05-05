@@ -48,7 +48,8 @@
         "phpunit/phpunit": "^8.5.23",
         "symfony/filesystem": "^5.4|^6.0",
         "symfony/finder": "^5.4|^6.0",
-        "symfony/yaml": "^5.4|^6.0"
+        "symfony/yaml": "^5.4|^6.0",
+        "vimeo/psalm": "^4.23"
     },
     "config": {
         "sort-packages": true

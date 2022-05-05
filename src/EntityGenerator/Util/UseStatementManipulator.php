@@ -29,12 +29,39 @@ use PhpParser\PrettyPrinter\Standard;
  */
 class UseStatementManipulator
 {
+    /**
+     * @var Parser\Php7
+     */
     protected $parser;
+
+    /**
+     * @var Lexer\Emulative
+     */
     protected $lexer;
 
+    /**
+     * @var Standard
+     */
+    protected $printer;
+
+    /**
+     * @var string
+     */
     protected $sourceCode;
+
+    /**
+     * @var array|null
+     */
     protected $oldStmts;
+
+    /**
+     * @var array
+     */
     protected $oldTokens;
+
+    /**
+     * @var array|null
+     */
     protected $newStmts;
 
     public function __construct(string $sourceCode)
@@ -62,6 +89,9 @@ class UseStatementManipulator
         $this->sourceCode = $sourceCode;
         $this->oldStmts = $this->parser->parse($sourceCode);
         $this->oldTokens = $this->lexer->getTokens();
+        if (null === $this->oldStmts) {
+            return;
+        }
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NodeVisitor\CloningVisitor());
@@ -134,6 +164,7 @@ class UseStatementManipulator
         }
 
         $newUseNode = (new Builder\Use_($class, Node\Stmt\Use_::TYPE_NORMAL))->getNode();
+        /** @psalm-suppress PropertyTypeCoercion */
         array_splice(
             $namespaceNode->stmts,
             $targetIndex,
@@ -148,6 +179,10 @@ class UseStatementManipulator
 
     protected function updateSourceCodeFromNewStmts(): void
     {
+        if (null === $this->newStmts || null === $this->oldStmts) {
+            return;
+        }
+
         $newCode = $this->printer->printFormatPreserving(
             $this->newStmts,
             $this->oldStmts,
@@ -162,19 +197,25 @@ class UseStatementManipulator
 
     protected function getNamespaceNode(): Node\Stmt\Namespace_
     {
-        $node = $this->findFirstNode(function ($node) {
+        $node = $this->findFirstNode(/** @param mixed $node */ function ($node) {
             return $node instanceof Node\Stmt\Namespace_;
         });
 
-        if (!$node) {
+        if (!$node || !$node instanceof Node\Stmt\Namespace_) {
             throw new \Exception('Could not find namespace node');
         }
 
         return $node;
     }
 
+    /**
+     * @return Node|null
+     */
     protected function findFirstNode(callable $filterCallback)
     {
+        if (null === $this->newStmts) {
+            return null;
+        }
         $traverser = new NodeTraverser();
         $visitor = new NodeVisitor\FirstFindingVisitor($filterCallback);
         $traverser->addVisitor($visitor);
@@ -183,14 +224,18 @@ class UseStatementManipulator
         return $visitor->getFoundNode();
     }
 
-    protected function isInSameNamespace($class)
+    protected function isInSameNamespace(string $class): bool
     {
-        $namespace = mb_substr($class, 0, mb_strrpos($class, '\\'));
+        $currentNamespace = $this->getNamespaceNode()->name;
+        $namespace = self::getNamespace($class);
+        if (null === $currentNamespace) {
+            return '' === $namespace;
+        }
 
-        return $this->getNamespaceNode()->name->toCodeString() === $namespace;
+        return $currentNamespace->toCodeString() === $namespace;
     }
 
-    private function createBlankLineNode()
+    private function createBlankLineNode(): Node
     {
         return (new Builder\Use_('__EXTRA__LINE', Node\Stmt\Use_::TYPE_NORMAL))
             ->getNode()
@@ -213,10 +258,15 @@ class UseStatementManipulator
             return $fullClassName;
         }
 
-        return mb_substr($fullClassName, mb_strrpos($fullClassName, '\\') + 1);
+        $lastSlashPosition = mb_strrpos($fullClassName, '\\');
+        if (false === $lastSlashPosition) {
+            return $fullClassName;
+        }
+
+        return mb_substr($fullClassName, $lastSlashPosition + 1);
     }
 
-    public static function areClassesAlphabetical(string $class1, string $class2)
+    public static function areClassesAlphabetical(string $class1, string $class2): bool
     {
         $arr1 = [$class1, $class2];
         $arr2 = [$class1, $class2];

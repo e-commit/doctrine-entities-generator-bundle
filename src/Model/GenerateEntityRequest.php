@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Model;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 
@@ -30,7 +30,7 @@ class GenerateEntityRequest
     public $fileParts;
 
     /**
-     * @var ClassMetadata
+     * @var ClassMetadataInfo
      */
     public $classMetadata;
 
@@ -44,13 +44,22 @@ class GenerateEntityRequest
      */
     public $useStatementManipulator;
 
+    /**
+     * @var array
+     */
     public $newBlockContents = [];
 
+    /**
+     * @var array
+     */
     public $newConstructorLines = [];
 
+    /**
+     * @var bool
+     */
     public $addInitializeEntity = false;
 
-    public function __construct(\ReflectionClass $reflectionClass, array $fileParts, ClassMetadata $classMetadata, DoctrineExtractor $doctrineExtractor)
+    public function __construct(\ReflectionClass $reflectionClass, array $fileParts, ClassMetadataInfo $classMetadata, DoctrineExtractor $doctrineExtractor)
     {
         $this->reflectionClass = $reflectionClass;
         $this->fileParts = $fileParts;
