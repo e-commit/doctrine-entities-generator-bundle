@@ -239,7 +239,7 @@ class UseStatementManipulator
     {
         return (new Builder\Use_('__EXTRA__LINE', Node\Stmt\Use_::TYPE_NORMAL))
             ->getNode()
-            ;
+        ;
     }
 
     public static function getNamespace(string $fullClassName): string
