@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^7.4|^8.0",
         "ext-mbstring": "*",
         "doctrine/annotations": "^1.8",
         "doctrine/collections": "^1.0",

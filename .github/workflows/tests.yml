@@ -14,7 +14,7 @@ jobs:
             matrix:
                 include:
                     #Mini (for each Symfony version)
-                    -   php-version: '7.2'
+                    -   php-version: '7.4'
                         symfony-version: '5.4.*'
                         composer-flags: '--prefer-stable --prefer-lowest'
                         description: 'with SF 5.4.* lowest'
@@ -46,7 +46,6 @@ jobs:
                         description: 'with SF 6.2.*'
 
                     #PHP versions
-                    -   php-version: '7.2'
                     -   php-version: '7.4'
                     -   php-version: '8.0'
                     -   php-version: '8.1'
@@ -58,7 +57,7 @@ jobs:
                         coding-standards: true
 
                     #Static Analysis (min PHP version)
-                    -   php-version: '7.2'
+                    -   php-version: '7.4'
                         description: 'with Static Analysis'
                         static-analysis: true
 
