@@ -68,6 +68,11 @@ class SubClass extends MainClass
     protected $decimalField;
 
     /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    protected ?string $decimalFieldWithHint;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $dateField;

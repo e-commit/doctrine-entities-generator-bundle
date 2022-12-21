@@ -258,6 +258,7 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $fieldName = $fieldMapping['fieldName'];
         $types = $request->doctrineExtractor->getTypes($request->reflectionClass->getName(), $fieldName);
+        $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
 
         if (null === $request->doctrineExtractor->isWritable($request->reflectionClass->getName(), $fieldName)) {
             $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
@@ -267,6 +268,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     'fieldName' => $fieldName,
                     'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                     'types' => $types,
+                    'phpType' => $phpType,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
                 ]);
@@ -279,6 +281,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'types' => $types,
+                'phpType' => $phpType,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
             ]);

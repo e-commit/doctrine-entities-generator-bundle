@@ -53,7 +53,10 @@
 {% endblock %}
 
 {% block field_hint_decimal %}
-{# Decimal Doctrine type is a PHP string but user can give a double value #}
+{# Decimal Doctrine type is a PHP string but user can give a double value - Remove hint unless hint equals "string" on the property PHP hint #}
+{% if phpType and (phpType.__toString() == '?string' or phpType.__toString() == 'string') %}
+    string
+{% endif %}
 {% endblock %}
 
 {% block field_set %}
