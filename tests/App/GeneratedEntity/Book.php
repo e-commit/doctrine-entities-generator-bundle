@@ -114,6 +114,9 @@ class Book
         return $this;
     }
 
+    /**
+     * @return Collection<int, Author>
+     */
     public function getAuthors(): Collection
     {
         return $this->authors;
@@ -139,6 +142,9 @@ class Book
         return $this;
     }
 
+    /**
+     * @return Collection<int, Sale>
+     */
     public function getSales(): Collection
     {
         return $this->sales;

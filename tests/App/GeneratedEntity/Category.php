@@ -118,6 +118,9 @@ class Category
         return $this;
     }
 
+    /**
+     * @return Collection<int, Book>
+     */
     public function getBooks(): Collection
     {
         return $this->books;

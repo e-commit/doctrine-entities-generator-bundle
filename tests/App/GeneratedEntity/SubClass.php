@@ -360,6 +360,9 @@ class SubClass extends MainClass
         return $this;
     }
 
+    /**
+     * @return Collection<int, self>
+     */
     public function getChildren(): Collection
     {
         return $this->children;

@@ -78,6 +78,9 @@ class Initializer2 implements EntityInitializerInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Author>
+     */
     public function getAuthors(): Collection
     {
         return $this->authors;

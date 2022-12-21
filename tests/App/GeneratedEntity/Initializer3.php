@@ -71,6 +71,9 @@ class Initializer3
         return $this;
     }
 
+    /**
+     * @return Collection<int, Author>
+     */
     public function getAuthors(): Collection
     {
         return $this->authors;

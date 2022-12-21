@@ -115,6 +115,9 @@
 {# Associations To Many #}
 
 {% block assocation_to_many_get %}
+    /**
+     * @return {{ collectionAlias }}<int, {{ targetEntityAlias }}>
+     */
     public function {{ methodName }}(): {{ collectionAlias }}
     {
         return $this->{{ fieldName }};
