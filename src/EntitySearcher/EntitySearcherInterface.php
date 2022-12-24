@@ -17,7 +17,13 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 
 interface EntitySearcherInterface
 {
+    /**
+     * @return array<class-string>
+     */
     public function search(string $input): array;
 
+    /**
+     * @param ClassMetadata<object> $metadata
+     */
     public function classCanBeGenerated(ClassMetadata $metadata): bool;
 }

@@ -1,0 +1,26 @@
+parameters:
+    ignoreErrors:
+        - '#is never read, only written#'
+        -
+            message: '#no value type specified in iterable type array#'
+            path: tests/
+        -
+            message: '#Cannot call method.+(null|false)#'
+            path: tests/GeneratedEntityTest.php
+        -
+            message: '#(Property|Method).+no (return )*type specified#'
+            paths:
+                - tests/App/Entity/
+                - tests/App/GeneratedEntity/
+        - # arrays in Doctrine\ORM\Mapping\ClassMetadataInfo -> AssociationMapping not defined
+            message: '#Method Ecommit\\DoctrineEntitiesGeneratorBundle\\EntityGenerator\\EntityGenerator::addAssociation.*\(\) has parameter \$associationMapping with no value type specified in iterable type array#'
+            path: src/EntityGenerator/EntityGenerator.php
+
+
+
+
+        - # PHP 8 is required
+            message: '#Call to an undefined method ReflectionClass<object>::getAttributes#'
+            paths:
+                - src/EntityGenerator/EntityGenerator.php
+                - src/EntitySearcher/EntitySearcher.php

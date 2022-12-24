@@ -29,12 +29,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GeneratedEntityTest extends KernelTestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    protected $databaseIsInitialized = false;
+    protected bool $databaseIsInitialized = false;
 
     protected static function getKernelClass(): string
     {
@@ -44,7 +41,9 @@ class GeneratedEntityTest extends KernelTestCase
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->em = self::$kernel->getContainer()->get('doctrine')->getManager();
+        /** @var EntityManagerInterface $em */
+        $em = self::$kernel->getContainer()->get('doctrine')->getManager();
+        $this->em = $em;
 
         if (false === $this->databaseIsInitialized) {
             $schemaTool = new SchemaTool($this->em);
@@ -174,7 +173,7 @@ class GeneratedEntityTest extends KernelTestCase
     /**
      * @dataProvider getTestSetNullFieldProvider
      */
-    public function testSetNullField($setter, $getter): void
+    public function testSetNullField(string $setter, string $getter): void
     {
         $subClass = new SubClass();
         $subClass->$setter(null);
@@ -251,7 +250,7 @@ class GeneratedEntityTest extends KernelTestCase
 
         $sub = $this->createSubClass(3);
         $firstInitializer->setSub($sub);
-        $this->assertInstanceOf(SubClass::class, $firstInitializer->getSub());
+        $this->assertInstanceOf(SubClass::class, $firstInitializer->getSub()); // @phpstan-ignore-line
         $this->assertSame(3, $firstInitializer->getSub()->getId());
         $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
         $this->assertSame(1, $sub->getFirstInitializer()->getId());
@@ -294,7 +293,7 @@ class GeneratedEntityTest extends KernelTestCase
         $firstInitializer = $this->createInitializer1(2);
         $this->em->persist($firstInitializer);
         $sub->setFirstInitializer($firstInitializer);
-        $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer());
+        $this->assertInstanceOf(Initializer1::class, $sub->getFirstInitializer()); // @phpstan-ignore-line
         $this->assertSame('Initializer1 name 2', $sub->getFirstInitializer()->getName());
         // Initializer1 is not tested (because reverse side)
         $this->em->flush();
@@ -591,7 +590,7 @@ class GeneratedEntityTest extends KernelTestCase
     {
         $book = new Book();
         $book->setTitle('Title '.$suffix)
-            ->definePrice(10.5);
+            ->definePrice('10.5');
         if ($category) {
             $book->setCategory($category);
         }

@@ -50,17 +50,17 @@ class UseStatementManipulator
     protected $sourceCode;
 
     /**
-     * @var array|null
+     * @var array<Node\Stmt>|null
      */
     protected $oldStmts;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $oldTokens;
 
     /**
-     * @var array|null
+     * @var array<Node>|null
      */
     protected $newStmts;
 
@@ -113,6 +113,10 @@ class UseStatementManipulator
         $targetIndex = null;
         $addLineBreak = false;
         $lastUseStmtIndex = null;
+        /**
+         * @var int       $index
+         * @var Node\Stmt $stmt
+         */
         foreach ($namespaceNode->stmts as $index => $stmt) {
             if ($stmt instanceof Node\Stmt\Use_) {
                 // I believe this is an array to account for use statements with {}
@@ -164,7 +168,6 @@ class UseStatementManipulator
         }
 
         $newUseNode = (new Builder\Use_($class, Node\Stmt\Use_::TYPE_NORMAL))->getNode();
-        /** @psalm-suppress PropertyTypeCoercion */
         array_splice(
             $namespaceNode->stmts,
             $targetIndex,
@@ -192,7 +195,7 @@ class UseStatementManipulator
         // replace the "fake" item that may be in the code (allowing for different indentation)
         $newCode = preg_replace('/use __EXTRA__LINE;/', '', $newCode);
 
-        $this->setSourceCode($newCode);
+        $this->setSourceCode((string) $newCode);
     }
 
     protected function getNamespaceNode(): Node\Stmt\Namespace_

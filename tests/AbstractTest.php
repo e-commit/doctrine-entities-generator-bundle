@@ -23,7 +23,7 @@ use Twig\Environment;
 
 abstract class AbstractTest extends KernelTestCase
 {
-    protected $tempFolder;
+    protected string $tempFolder;
 
     protected function setUp(): void
     {
@@ -47,7 +47,10 @@ abstract class AbstractTest extends KernelTestCase
         parent::tearDown();
     }
 
-    protected function getEntityGeneratorMock(): MockObject
+    /**
+     * @return MockObject&EntityGenerator
+     */
+    protected function getEntityGeneratorMock()
     {
         $mock = $this->getMockBuilder(EntityGenerator::class)
             ->setConstructorArgs([
@@ -67,7 +70,7 @@ abstract class AbstractTest extends KernelTestCase
         return $mock;
     }
 
-    protected function checkGeneratedClass($class): void
+    protected function checkGeneratedClass(string $class): void
     {
         $className = $this->getClassSubPath($class);
 
@@ -79,7 +82,7 @@ abstract class AbstractTest extends KernelTestCase
                 continue;
             }
 
-            $expectedContent = file_get_contents($expectedFile);
+            $expectedContent = (string) file_get_contents($expectedFile);
             $expectedContent = str_replace(
                 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\\'.$generatedFolder,
                 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
@@ -98,7 +101,7 @@ abstract class AbstractTest extends KernelTestCase
         );
     }
 
-    protected function getClassSubPath($class): string
+    protected function getClassSubPath(string $class): string
     {
         $className = str_replace('Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\\', '', $class);
         $className = str_replace('\\', '/', $className);

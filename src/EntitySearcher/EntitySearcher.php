@@ -46,6 +46,9 @@ class EntitySearcher implements EntitySearcherInterface
         return $classes;
     }
 
+    /**
+     * @return array<class-string>
+     */
     protected function searchInManager(ObjectManager $manager, string $input): array
     {
         $metadataFactory = $manager->getMetadataFactory();
@@ -86,7 +89,6 @@ class EntitySearcher implements EntitySearcherInterface
             return false;
         }
 
-        /** @psalm-suppress UndefinedMethod */
         if (\PHP_VERSION_ID >= 80000 && \count($reflectionClass->getAttributes(IgnoreGenerateEntity::class)) > 0) {
             return false;
         }

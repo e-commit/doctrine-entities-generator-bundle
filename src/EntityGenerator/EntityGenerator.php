@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
@@ -30,6 +31,11 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Twig\Environment;
 
+/**
+ * @phpstan-import-type FieldMapping from ClassMetadataInfo
+ * @phpstan-import-type AssociationMapping from ClassMetadataInfo
+ * @phpstan-import-type FileParts from GenerateEntityRequest
+ */
 class EntityGenerator implements EntityGeneratorInterface
 {
     public const TYPE_GET = 'get';
@@ -75,7 +81,7 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $reflectionClass = new \ReflectionClass($className);
         $entityManager = $this->registry->getManagerForClass($className);
-        if (!$entityManager) {
+        if (!$entityManager || !$entityManager instanceof EntityManagerInterface) {
             throw new ClassNotManagedException(sprintf('Class "%s" not managed', $className));
         }
         $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
@@ -88,7 +94,6 @@ class EntityGenerator implements EntityGeneratorInterface
         }
 
         $fileParts = $this->getFileParts($reflectionClass);
-        /** @psalm-suppress ArgumentTypeCoercion */
         $doctrineExtractor = new DoctrineExtractor($entityManager);
         $request = new GenerateEntityRequest(
             $reflectionClass,
@@ -131,21 +136,33 @@ class EntityGenerator implements EntityGeneratorInterface
             'request' => $request,
         ]);
 
+        /** @var string $content */
         $content = preg_replace($this->getPattern($reflectionClass), sprintf('$1$2%s$4$5', $newBlockContent), $request->getSourceCode());
         $this->writeFile($reflectionClass, $content);
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     *
+     * @return FileParts
+     */
     protected function getFileParts(\ReflectionClass $reflectionClass): array
     {
-        $content = file_get_contents($reflectionClass->getFileName());
+        /** @var string $content */
+        $content = file_get_contents((string) $reflectionClass->getFileName());
         $pattern = $this->getPattern($reflectionClass);
         if (!preg_match($pattern, $content, $fileParts)) {
             throw new TagNotFoundException(sprintf('Class "%s": Start tag or end tag is not found', $reflectionClass->getName()));
         }
+        /** @var FileParts $fileParts */
+        $fileParts = $fileParts;
 
         return $fileParts;
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
     protected function getPattern(\ReflectionClass $reflectionClass): string
     {
         $startTag = $this->renderBlock($reflectionClass, 'start_tag');
@@ -158,6 +175,10 @@ class EntityGenerator implements EntityGeneratorInterface
         );
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     * @param array<mixed>             $parameters
+     */
     protected function renderBlock(\ReflectionClass $reflectionClass, string $blockName, array $parameters = []): string
     {
         // Load Doctrine annotations
@@ -165,7 +186,6 @@ class EntityGenerator implements EntityGeneratorInterface
 
         $templateName = $this->template;
         $annotation = null;
-        /** @psalm-suppress UndefinedMethod */
         if (\PHP_VERSION_ID >= 80000 && ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null)) {
             $annotation = $attribute->newInstance();
         } else {
@@ -182,7 +202,7 @@ class EntityGenerator implements EntityGeneratorInterface
 
         $template->displayBlock($blockName, $parameters);
 
-        $content = ob_get_clean();
+        $content = (string) ob_get_clean();
 
         if ("\n" === $content[0]) {
             $content = mb_substr($content, 1);
@@ -239,13 +259,13 @@ class EntityGenerator implements EntityGeneratorInterface
             }
         }
 
-        $endStartTagLine = mb_substr_count($request->fileParts['beforeBlock'], \PHP_EOL) + mb_substr_count($request->fileParts['startTag'], \PHP_EOL) + 1;
+        $endStartTagLine = mb_substr_count((string) $request->fileParts['beforeBlock'], \PHP_EOL) + mb_substr_count((string) $request->fileParts['startTag'], \PHP_EOL) + 1;
         $startLimit = $endStartTagLine + 1;
         if ($reflectionMethod->getStartLine() < $startLimit) {
             return true;
         }
 
-        $startEndTagLine = $endStartTagLine + mb_substr_count($request->fileParts['block'], \PHP_EOL);
+        $startEndTagLine = $endStartTagLine + mb_substr_count((string) $request->fileParts['block'], \PHP_EOL);
         $endLimit = $startEndTagLine - 1;
         if ($reflectionMethod->getStartLine() > $endLimit) {
             return true;
@@ -254,6 +274,9 @@ class EntityGenerator implements EntityGeneratorInterface
         return false;
     }
 
+    /**
+     * @param FieldMapping $fieldMapping
+     */
     protected function addField(GenerateEntityRequest $request, array $fieldMapping): void
     {
         $fieldName = $fieldMapping['fieldName'];
@@ -288,6 +311,9 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
+    /**
+     * @param AssociationMapping $associationMapping
+     */
     protected function addAssociation(GenerateEntityRequest $request, array $associationMapping): void
     {
         if ($associationMapping['type'] & ClassMetadataInfo::TO_ONE && $associationMapping['mappedBy']) {
@@ -348,6 +374,9 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
+    /**
+     * @param AssociationMapping $associationMapping
+     */
     protected function addAssociationToOne(GenerateEntityRequest $request, array $associationMapping, string $block, ?string $foreignMethodNameSet): void
     {
         $fieldName = $associationMapping['fieldName'];
@@ -385,6 +414,9 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
+    /**
+     * @param AssociationMapping $associationMapping
+     */
     protected function addAssociationToMany(GenerateEntityRequest $request, array $associationMapping, string $block, ?string $foreignMethodNameAdd, ?string $foreignMethodNameRemove): void
     {
         $fieldName = $associationMapping['fieldName'];
@@ -471,8 +503,11 @@ class EntityGenerator implements EntityGeneratorInterface
         return $variableName;
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
     protected function writeFile(\ReflectionClass $reflectionClass, string $content): void
     {
-        file_put_contents($reflectionClass->getFileName(), $content);
+        file_put_contents((string) $reflectionClass->getFileName(), $content);
     }
 }

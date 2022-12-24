@@ -17,20 +17,29 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 
+/**
+ * @phpstan-type FileParts array{
+ *      beforeBlock: ?string,
+ *      startTag: string,
+ *      block: ?string,
+ *      endTag: string,
+ *      afterBlock: ?string
+ * }
+ */
 class GenerateEntityRequest
 {
     /**
-     * @var \ReflectionClass
+     * @var \ReflectionClass<object>
      */
     public $reflectionClass;
 
     /**
-     * @var array
+     * @var FileParts
      */
     public $fileParts;
 
     /**
-     * @var ClassMetadataInfo
+     * @var ClassMetadataInfo<object>
      */
     public $classMetadata;
 
@@ -45,12 +54,12 @@ class GenerateEntityRequest
     public $useStatementManipulator;
 
     /**
-     * @var array
+     * @var array<string>
      */
     public $newBlockContents = [];
 
     /**
-     * @var array
+     * @var array<string>
      */
     public $newConstructorLines = [];
 
@@ -59,13 +68,18 @@ class GenerateEntityRequest
      */
     public $addInitializeEntity = false;
 
+    /**
+     * @param \ReflectionClass<object>  $reflectionClass
+     * @param FileParts                 $fileParts
+     * @param ClassMetadataInfo<object> $classMetadata
+     */
     public function __construct(\ReflectionClass $reflectionClass, array $fileParts, ClassMetadataInfo $classMetadata, DoctrineExtractor $doctrineExtractor)
     {
         $this->reflectionClass = $reflectionClass;
         $this->fileParts = $fileParts;
         $this->classMetadata = $classMetadata;
         $this->doctrineExtractor = $doctrineExtractor;
-        $this->useStatementManipulator = new UseStatementManipulator(file_get_contents($reflectionClass->getFileName()));
+        $this->useStatementManipulator = new UseStatementManipulator((string) file_get_contents((string) $reflectionClass->getFileName()));
     }
 
     public function getSourceCode(): string

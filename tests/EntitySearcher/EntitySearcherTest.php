@@ -44,13 +44,13 @@ class EntitySearcherTest extends KernelTestCase
     public function testServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher');
+        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher'); // @phpstan-ignore-line
     }
 
     public function testAliasServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get(EntitySearcher::class);
+        self::$kernel->getContainer()->get(EntitySearcher::class); // @phpstan-ignore-line
     }
 
     public function testServiceClass(): void
@@ -68,7 +68,7 @@ class EntitySearcherTest extends KernelTestCase
     /**
      * @dataProvider getTestInputMatchesClassProvider
      */
-    public function testInputMatchesClass($input, $expectedResult): void
+    public function testInputMatchesClass(string $input, bool $expectedResult): void
     {
         $managerRegistry = $this->createMock(ManagerRegistry::class);
 
@@ -124,9 +124,11 @@ class EntitySearcherTest extends KernelTestCase
     }
 
     /**
+     * @param class-string<object> $class
+     *
      * @dataProvider getTestClassCanBeGeneratedProvider
      */
-    public function testClassCanBeGenerated($class, $expectedResult): void
+    public function testClassCanBeGenerated(string $class, bool $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = self::$kernel->getContainer()->get('doctrine');
@@ -138,7 +140,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestClassCanBeGeneratedProvider()
+    public function getTestClassCanBeGeneratedProvider(): array
     {
         return [
             [Author::class, true],
@@ -160,7 +162,7 @@ class EntitySearcherTest extends KernelTestCase
     /**
      * @dataProvider getTestProvider
      */
-    public function testSearchInManager($input, $expectedResult): void
+    public function testSearchInManager(string $input, array $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = self::$kernel->getContainer()->get('doctrine');
@@ -170,6 +172,7 @@ class EntitySearcherTest extends KernelTestCase
         $reflectionClass = new \ReflectionClass(EntitySearcher::class);
         $method = $reflectionClass->getMethod('searchInManager');
         $method->setAccessible(true);
+        /** @var array $result */
         $result = $method->invokeArgs($entitySearcher, [
             $manager,
             $input,
@@ -180,7 +183,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestProvider()
+    public function getTestProvider(): array
     {
         $data = [];
 
@@ -318,7 +321,7 @@ class EntitySearcherTest extends KernelTestCase
     /**
      * @dataProvider getTestProvider
      */
-    public function testSearch($input, $expectedResult): void
+    public function testSearch(string $input, array $expectedResult): void
     {
         $result = self::getContainer()->get(EntitySearcher::class)->search($input);
 

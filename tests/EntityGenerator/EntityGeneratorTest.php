@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntityGenerator;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\EntityGenerator;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
@@ -43,18 +44,21 @@ use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
 
+/**
+ * @phpstan-import-type FileParts from GenerateEntityRequest
+ */
 class EntityGeneratorTest extends AbstractTest
 {
     public function testServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
+        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator'); // @phpstan-ignore-line
     }
 
     public function testAliasServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get(EntityGenerator::class);
+        self::$kernel->getContainer()->get(EntityGenerator::class); // @phpstan-ignore-line
     }
 
     public function testServiceClass(): void
@@ -70,14 +74,16 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestGetFilePartsValidProvider
      */
-    public function testGetFilePartsValid($class, $fixturesDir): void
+    public function testGetFilePartsValid(string $class, string $fixturesDir): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $reflectionClass = new \ReflectionClass(EntityGenerator::class);
         $method = $reflectionClass->getMethod('getFileParts');
         $method->setAccessible(true);
+        /** @var FileParts $result */
         $result = $method->invokeArgs($entityGenerator, [new \ReflectionClass($class)]);
 
         $this->assertSame(file_get_contents(__DIR__.'/../fixtures/getFileParts/'.$fixturesDir.'/beforeBlock.txt'), $result['beforeBlock']);
@@ -98,7 +104,7 @@ class EntityGeneratorTest extends AbstractTest
     /**
      * @dataProvider getTestGetFilePartsTagNotFoundProvider
      */
-    public function testGetFilePartsTagNotFound($template): void
+    public function testGetFilePartsTagNotFound(string $template): void
     {
         $entityGenerator = new EntityGenerator(
             self::getContainer()->get(EntitySearcher::class),
@@ -135,9 +141,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestGenerateClassNotManagedProvider
      */
-    public function testGenerateClassNotManaged($class): void
+    public function testGenerateClassNotManaged(string $class): void
     {
         $this->expectException(ClassNotManagedException::class);
         $this->expectExceptionMessage('Class "'.$class.'" not managed');
@@ -146,7 +153,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateClassNotManagedProvider()
+    public function getTestGenerateClassNotManagedProvider(): array
     {
         return [
             [NotEntity::class],
@@ -156,9 +163,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestGenerateClassIgnoreProvider
      */
-    public function testGenerateClassIgnore($class): void
+    public function testGenerateClassIgnore(string $class): void
     {
         $this->expectException(ClassNotManagedException::class);
         $this->expectExceptionMessage('Class "'.$class.'" cannot be generated (Is IgnoreGenerateEntity annotation used ?)');
@@ -167,7 +175,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateClassIgnoreProvider()
+    public function getTestGenerateClassIgnoreProvider(): array
     {
         return [
             [NotGenerate::class],
@@ -175,9 +183,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestPropertyIsDefinedInClassFileProvider
      */
-    public function testPropertyIsDefinedInClassFile($class, $property, $expectedResult): void
+    public function testPropertyIsDefinedInClassFile(string $class, string $property, bool $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
@@ -187,11 +196,15 @@ class EntityGeneratorTest extends AbstractTest
         $propertyIsDefinedInClassFileReflection->setAccessible(true);
 
         $reflectionClass = new \ReflectionClass($class);
+        /** @var FileParts $fileParts */
+        $fileParts = $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]);
+        /** @var EntityManagerInterface $em */
+        $em = $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class);
         $request = new GenerateEntityRequest(
             $reflectionClass,
-            $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]),
-            $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
-            new DoctrineExtractor($this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class))
+            $fileParts,
+            $em->getClassMetadata($class),
+            new DoctrineExtractor($em)
         );
 
         $result = $propertyIsDefinedInClassFileReflection->invokeArgs($entityGenerator, [
@@ -223,9 +236,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestMethodIsDefinedOutsideBlockProvider
      */
-    public function testMethodIsDefinedOutsideBlock($class, $method, $expectedResult): void
+    public function testMethodIsDefinedOutsideBlock(string $class, string $method, bool $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
@@ -235,11 +249,15 @@ class EntityGeneratorTest extends AbstractTest
         $propertyIsDefinedInClassFileReflection->setAccessible(true);
 
         $reflectionClass = new \ReflectionClass($class);
+        /** @var FileParts $fileParts */
+        $fileParts = $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]);
+        /** @var EntityManagerInterface $em */
+        $em = $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class);
         $request = new GenerateEntityRequest(
             $reflectionClass,
-            $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]),
-            $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class)->getClassMetadata($class),
-            new DoctrineExtractor($this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class))
+            $fileParts,
+            $em->getClassMetadata($class),
+            new DoctrineExtractor($em)
         );
 
         $result = $propertyIsDefinedInClassFileReflection->invokeArgs($entityGenerator, [
@@ -276,7 +294,7 @@ class EntityGeneratorTest extends AbstractTest
     /**
      * @dataProvider getTestBuildMethodNameProdiver
      */
-    public function testBuildMethodName($type, $fieldName, $expectedResult): void
+    public function testBuildMethodName(string $type, string $fieldName, string $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
@@ -315,7 +333,7 @@ class EntityGeneratorTest extends AbstractTest
     /**
      * @dataProvider getTestBuildVariableNameProvider
      */
-    public function testBuildVariableName($type, $variableName, $expectedResult): void
+    public function testBuildVariableName(string $type, string $variableName, string $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
         $entityGeneratorReflection = new \ReflectionClass(EntityGenerator::class);
@@ -352,9 +370,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestGenerateProvider
      */
-    public function testGenerate($class): void
+    public function testGenerate(string $class): void
     {
         $entityManager = $this->getEntityGeneratorMock();
         $entityManager->generate($class);
@@ -387,9 +406,10 @@ class EntityGeneratorTest extends AbstractTest
     }
 
     /**
+     * @param class-string $class
      * @dataProvider getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver
      */
-    public function testGenerateEntityInitializerInterfaceNotUsedException($class): void
+    public function testGenerateEntityInitializerInterfaceNotUsedException(string $class): void
     {
         $this->expectException(EntityInitializerInterfaceNotUsedException::class);
         $this->expectExceptionMessage('Class "'.$class.'": __construct method is used. Remove it and implement "Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface" interface');
@@ -398,7 +418,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver()
+    public function getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver(): array
     {
         return [
             [Initializer4::class],

@@ -17,7 +17,7 @@ trait PriceTrait
 {
     use \Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 
-    public function definePrice($price): self
+    public function definePrice(?string $price): self
     {
         $this->price = $price;
 
