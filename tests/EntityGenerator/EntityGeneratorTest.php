@@ -75,6 +75,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestGetFilePartsValidProvider
      */
     public function testGetFilePartsValid(string $class, string $fixturesDir): void
@@ -142,6 +143,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestGenerateClassNotManagedProvider
      */
     public function testGenerateClassNotManaged(string $class): void
@@ -164,6 +166,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestGenerateClassIgnoreProvider
      */
     public function testGenerateClassIgnore(string $class): void
@@ -184,6 +187,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestPropertyIsDefinedInClassFileProvider
      */
     public function testPropertyIsDefinedInClassFile(string $class, string $property, bool $expectedResult): void
@@ -237,6 +241,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestMethodIsDefinedOutsideBlockProvider
      */
     public function testMethodIsDefinedOutsideBlock(string $class, string $method, bool $expectedResult): void
@@ -371,6 +376,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestGenerateProvider
      */
     public function testGenerate(string $class): void
@@ -407,6 +413,7 @@ class EntityGeneratorTest extends AbstractTest
 
     /**
      * @param class-string $class
+     *
      * @dataProvider getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver
      */
     public function testGenerateEntityInitializerInterfaceNotUsedException(string $class): void
