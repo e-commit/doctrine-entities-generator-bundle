@@ -21,13 +21,13 @@ class UseStatementManipulatorTest extends TestCase
     public function testAddUseStatementIfNecessarySameNamespace(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('MySecondClass', $manipulator->addUseStatementIfNecessary('Foo\Bar\MySecondClass'));
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
@@ -36,11 +36,11 @@ CODE;
     public function testAddUseStatementIfNecessaryNamespaceNotFound(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-class MyClass
-{
-}
-CODE;
+            <?php
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not find namespace node');
@@ -50,15 +50,15 @@ CODE;
     public function testAddUseStatementIfNecessaryAlreadyExist(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\MySecondClass;
+            use Foo\Bar\Sub\MySecondClass;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('MySecondClass', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\MySecondClass'));
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
@@ -67,15 +67,15 @@ CODE;
     public function testAddUseStatementIfNecessaryAliasAlreadyExist(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\MySecondClass as MyAlias;
+            use Foo\Bar\Sub\MySecondClass as MyAlias;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('MyAlias', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\MySecondClass'));
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
@@ -84,15 +84,15 @@ CODE;
     public function testAddUseStatementIfNecessaryConflict(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Other\MySecondClass;
+            use Foo\Bar\Other\MySecondClass;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('\Foo\Bar\Sub\MySecondClass', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\MySecondClass'));
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
@@ -101,15 +101,15 @@ CODE;
     public function testAddUseStatementIfNecessaryAliasConflict(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Other\MySecondClass as Hello;
+            use Foo\Bar\Other\MySecondClass as Hello;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('\Foo\Bar\Sub\Hello', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Hello'));
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
@@ -118,28 +118,28 @@ CODE;
     public function testAddUseStatementIfNecessaryBeforeAlphabetical(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Apple;
-use Foo\Bar\Sub\Tomato;
+            use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Tomato;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $expectedSourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Apple;
-use Foo\Bar\Sub\Bean;
-use Foo\Bar\Sub\Tomato;
+            use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub\Tomato;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('Bean', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean'));
         $this->assertSame($expectedSourceCode, $manipulator->getSourceCode());
@@ -148,28 +148,28 @@ CODE;
     public function testAddUseStatementIfNecessaryBottom(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Apple;
-use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Bean;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $expectedSourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Apple;
-use Foo\Bar\Sub\Bean;
-use Foo\Bar\Sub\Tomato;
+            use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub\Tomato;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('Tomato', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Tomato'));
         $this->assertSame($expectedSourceCode, $manipulator->getSourceCode());
@@ -178,28 +178,28 @@ CODE;
     public function testAddUseStatementIfNecessaryBadOrder(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Tomato;
-use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Tomato;
+            use Foo\Bar\Sub\Apple;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $expectedSourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Bean;
-use Foo\Bar\Sub\Tomato;
-use Foo\Bar\Sub\Apple;
+            use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub\Tomato;
+            use Foo\Bar\Sub\Apple;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('Bean', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean'));
         $this->assertSame($expectedSourceCode, $manipulator->getSourceCode());
@@ -208,23 +208,23 @@ CODE;
     public function testAddUseStatementIfNecessaryOnyOneUse(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $expectedSourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub\Bean;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('Bean', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean'));
         $this->assertSame($expectedSourceCode, $manipulator->getSourceCode());
@@ -233,26 +233,26 @@ CODE;
     public function testAddUseStatementIfNecessaryWithUseNamespace(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub as MySub;
+            use Foo\Bar\Sub as MySub;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $expectedSourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
+            <?php
+            namespace Foo\Bar;
 
-use Foo\Bar\Sub as MySub;
-use Foo\Bar\Sub\Bean;
+            use Foo\Bar\Sub as MySub;
+            use Foo\Bar\Sub\Bean;
 
-class MyClass
-{
-}
-CODE;
+            class MyClass
+            {
+            }
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->assertSame('Bean', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean'));
         $this->assertSame($expectedSourceCode, $manipulator->getSourceCode());
@@ -261,9 +261,9 @@ CODE;
     public function testAddUseStatementIfNecessaryClassNotFound(): void
     {
         $sourceCode = <<<'CODE'
-<?php
-namespace Foo\Bar;
-CODE;
+            <?php
+            namespace Foo\Bar;
+            CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not find a class!');
