@@ -17,19 +17,23 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="sale")
  */
 class Sale
 {
     /**
      * @ORM\Id
+     *
      * @ORM\ManyToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book", inversedBy="sales")
+     *
      * @ORM\JoinColumn(name="book_id", referencedColumnName="book_id", nullable=false)
      */
     protected $book;
 
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="smallint")
      */
     protected $year;

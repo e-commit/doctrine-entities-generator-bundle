@@ -18,13 +18,16 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="category")
+ *
  * @GenerateEntityTemplate("custom_end_tag.php.twig")
  */
 class Category
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", name="category_id")
      */
     protected $categoryId;

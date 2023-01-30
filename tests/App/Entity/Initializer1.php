@@ -18,13 +18,16 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="initializer1")
  */
 class Initializer1 implements EntityInitializerInterface
 {
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer", name="id")
      */
     protected $id;

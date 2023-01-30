@@ -22,6 +22,7 @@ class MainClass
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", name="id")
      */
     private $id;

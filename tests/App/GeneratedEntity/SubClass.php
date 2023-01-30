@@ -21,6 +21,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo as
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="sub_class")
  */
 class SubClass extends MainClass
@@ -32,30 +33,35 @@ class SubClass extends MainClass
 
     /**
      * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1", inversedBy="sub")
+     *
      * @ORM\JoinColumn(name="first_initializer_id", referencedColumnName="id")
      */
     protected $firstInitializer;
 
     /**
      * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2")
+     *
      * @ORM\JoinColumn(name="second_initializer_id", referencedColumnName="id")
      */
     protected $secondInitializer;
 
     /**
      * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo")
+     *
      * @ORM\JoinColumn(name="foo_id", referencedColumnName="foo_id")
      */
     protected $foo;
 
     /**
      * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Bar")
+     *
      * @ORM\JoinColumn(name="bar_id", referencedColumnName="bar_id")
      */
     protected $bar;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass", inversedBy="children")
+     *
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;

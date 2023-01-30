@@ -18,6 +18,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table(name="not_generate")
  *
  * @IgnoreGenerateEntity
@@ -26,6 +27,7 @@ class NotGenerate
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", name="author_id")
      */
     protected $Id;
