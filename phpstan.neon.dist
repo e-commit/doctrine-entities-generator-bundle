@@ -9,6 +9,7 @@ parameters:
         - tests
     excludePaths:
         - tests/App/var
+    treatPhpDocTypesAsCertain: false
     symfony:
         containerXmlPath: tests/App/var/cache/test/Ecommit_DoctrineEntitiesGeneratorBundle_Tests_App_KernelTestDebugContainer.xml
         consoleApplicationLoader: tests/phpstan/console-application.php
