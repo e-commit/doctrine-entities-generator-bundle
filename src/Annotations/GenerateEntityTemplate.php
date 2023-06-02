@@ -28,9 +28,6 @@ final class GenerateEntityTemplate
      */
     public $template;
 
-    /**
-     * @param mixed $data
-     */
     public function __construct($data)
     {
         $template = null;
