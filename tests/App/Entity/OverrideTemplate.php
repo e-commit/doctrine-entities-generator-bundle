@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity8;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
@@ -19,10 +19,10 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
 /**
  * @ORM\Entity
  *
- * @ORM\Table(name="override_template_php8")
+ * @ORM\Table(name="override_template")
  */
-#[GenerateEntityTemplate('custom_php8.php.twig')]
-class OverrideTemplatePhp8
+#[GenerateEntityTemplate('custom.php.twig')]
+class OverrideTemplate
 {
     /**
      * @ORM\Id
@@ -39,30 +39,4 @@ class OverrideTemplatePhp8
     /*
      * Getters / Setters (auto-generated)
      */
-
-    // Override
-    public function setId(?int $id): self
-    {
-        $this->Id = $id;
-
-        return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->Id;
-    }
-
-    // Override
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 }

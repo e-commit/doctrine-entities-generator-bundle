@@ -26,9 +26,9 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer3;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer4;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerate;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGeneratePhp8;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplatePhp8;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAnnotation;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -152,8 +152,8 @@ class EntitySearcherTest extends KernelTestCase
             [Initializer4::class, true],
             [Initializer5::class, true],
             [MainClass::class, true],
-            [NotGenerate::class, false],
-            [NotGeneratePhp8::class, (\PHP_VERSION_ID >= 80000) ? false : true],
+            [NotGenerateAnnotation::class, false],
+            [NotGenerateAttribute::class, false],
             [Sale::class, true],
             [SubClass::class, true],
         ];
@@ -208,112 +208,56 @@ class EntitySearcherTest extends KernelTestCase
             Foo::class,
         ]];
 
-        if (\PHP_VERSION_ID >= 80000) {
-            $data[] = ['*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
+        $data[] = ['*', [
+            Author::class,
+            Book::class,
+            Category::class,
+            Bar::class,
+            Foo::class,
+            Initializer1::class,
+            Initializer2::class,
+            Initializer3::class,
+            Initializer4::class,
+            Initializer5::class,
+            MainClass::class,
+            OverrideTemplate::class,
+            Sale::class,
+            SubClass::class,
+        ]];
 
-            $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
+        $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
+            Author::class,
+            Book::class,
+            Category::class,
+            Bar::class,
+            Foo::class,
+            Initializer1::class,
+            Initializer2::class,
+            Initializer3::class,
+            Initializer4::class,
+            Initializer5::class,
+            MainClass::class,
+            OverrideTemplate::class,
+            Sale::class,
+            SubClass::class,
+        ]];
 
-            $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
-        } else {
-            $data[] = ['*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                NotGeneratePhp8::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
-
-            $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                NotGeneratePhp8::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
-
-            $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
-                Author::class,
-                Book::class,
-                Category::class,
-                Bar::class,
-                Foo::class,
-                Initializer1::class,
-                Initializer2::class,
-                Initializer3::class,
-                Initializer4::class,
-                Initializer5::class,
-                MainClass::class,
-                NotGeneratePhp8::class,
-                OverrideTemplatePhp8::class,
-                Sale::class,
-                SubClass::class,
-            ]];
-        }
+        $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
+            Author::class,
+            Book::class,
+            Category::class,
+            Bar::class,
+            Foo::class,
+            Initializer1::class,
+            Initializer2::class,
+            Initializer3::class,
+            Initializer4::class,
+            Initializer5::class,
+            MainClass::class,
+            OverrideTemplate::class,
+            Sale::class,
+            SubClass::class,
+        ]];
 
         return $data;
     }

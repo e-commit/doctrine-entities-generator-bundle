@@ -34,9 +34,9 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer4;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerate;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGeneratePhp8;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplatePhp8;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAnnotation;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
@@ -181,7 +181,10 @@ class EntityGeneratorTest extends AbstractTest
     public function getTestGenerateClassIgnoreProvider(): array
     {
         return [
-            [NotGenerate::class],
+            [
+                NotGenerateAttribute::class,
+                NotGenerateAnnotation::class,
+            ],
         ];
     }
 
@@ -397,16 +400,12 @@ class EntityGeneratorTest extends AbstractTest
             [Initializer2::class],
             [Initializer3::class],
             [MainClass::class],
-            [OverrideTemplatePhp8::class],
+            [OverrideTemplate::class],
             [Sale::class],
             [SubClass::class],
             [Foo::class],
             [Bar::class],
         ];
-
-        if (\PHP_VERSION_ID < 80000) {
-            $data[] = [NotGeneratePhp8::class];
-        }
 
         return $data;
     }

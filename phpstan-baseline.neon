@@ -15,16 +15,3 @@ parameters:
         - # arrays in Doctrine\ORM\Mapping\ClassMetadataInfo -> AssociationMapping not defined
             message: '#Method Ecommit\\DoctrineEntitiesGeneratorBundle\\EntityGenerator\\EntityGenerator::addAssociation.*\(\) has parameter \$associationMapping with no value type specified in iterable type array#'
             path: src/EntityGenerator/EntityGenerator.php
-
-
-
-
-        - # PHP 8 is required
-            message: '#Call to an undefined method ReflectionClass<object>::getAttributes#'
-            paths:
-                - src/EntityGenerator/EntityGenerator.php
-                - src/EntitySearcher/EntitySearcher.php
-        - # PHP 8 is required (with union types)
-            message: '#__construct\(\) has parameter \$data with no type specified#'
-            paths:
-                - src/Annotations/GenerateEntityTemplate.php

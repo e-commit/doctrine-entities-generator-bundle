@@ -28,7 +28,10 @@ final class GenerateEntityTemplate
      */
     public $template;
 
-    public function __construct($data)
+    /**
+     * @param string|array{value ?: string, template ?: string}|null $data
+     */
+    public function __construct(string|array|null $data)
     {
         $template = null;
         if (\is_string($data)) {

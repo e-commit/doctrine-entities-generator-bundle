@@ -89,7 +89,7 @@ class EntitySearcher implements EntitySearcherInterface
             return false;
         }
 
-        if (\PHP_VERSION_ID >= 80000 && \count($reflectionClass->getAttributes(IgnoreGenerateEntity::class)) > 0) {
+        if (\count($reflectionClass->getAttributes(IgnoreGenerateEntity::class)) > 0) {
             return false;
         }
 

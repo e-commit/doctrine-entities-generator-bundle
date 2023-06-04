@@ -186,7 +186,7 @@ class EntityGenerator implements EntityGeneratorInterface
 
         $templateName = $this->template;
         $annotation = null;
-        if (\PHP_VERSION_ID >= 80000 && ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null)) {
+        if ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null) {
             $annotation = $attribute->newInstance();
         } else {
             $reader = new AnnotationReader();

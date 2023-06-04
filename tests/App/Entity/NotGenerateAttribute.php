@@ -19,11 +19,10 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
 /**
  * @ORM\Entity
  *
- * @ORM\Table(name="not_generate")
- *
- * @IgnoreGenerateEntity
+ * @ORM\Table(name="not_generate_attribute")
  */
-class NotGenerate
+#[IgnoreGenerateEntity]
+class NotGenerateAttribute
 {
     /**
      * @ORM\Id
@@ -36,4 +35,8 @@ class NotGenerate
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
+
+    /*
+     * Getters / Setters (auto-generated)
+     */
 }

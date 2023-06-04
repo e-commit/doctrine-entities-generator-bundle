@@ -50,7 +50,7 @@ class GenerateEntitiesCommandTest extends AbstractTest
         $commandTester = $this->createCommandTester();
 
         $this->expectException(\Exception::class);
-        $this->expectErrorMessage('No class found');
+        $this->expectExceptionMessage('No class found');
 
         $commandTester->execute([
             'class' => 'BadValue',

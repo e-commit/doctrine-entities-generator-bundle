@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
@@ -19,10 +19,11 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
 /**
  * @ORM\Entity
  *
- * @ORM\Table(name="not_generate_php8")
+ * @ORM\Table(name="not_generate_annotation")
+ *
+ * @IgnoreGenerateEntity
  */
-#[IgnoreGenerateEntity]
-class NotGeneratePhp8
+class NotGenerateAnnotation
 {
     /**
      * @ORM\Id
@@ -35,32 +36,4 @@ class NotGeneratePhp8
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
-
-    /*
-     * Getters / Setters (auto-generated)
-     */
-
-    public function setId(?int $id): self
-    {
-        $this->Id = $id;
-
-        return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->Id;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 }
