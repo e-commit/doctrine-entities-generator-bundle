@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Annotations;
 
-use Attribute;
-
 /**
  * @Annotation
  *
