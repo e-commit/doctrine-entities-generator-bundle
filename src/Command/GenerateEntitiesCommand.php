@@ -15,11 +15,13 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Command;
 
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\EntityGeneratorInterface;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcherInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'ecommit:doctrine:generate-entities', description: 'Generate Doctrine ORM entities')]
 class GenerateEntitiesCommand extends Command
 {
     /**
@@ -31,10 +33,6 @@ class GenerateEntitiesCommand extends Command
      * @var EntityGeneratorInterface
      */
     protected $generator;
-
-    protected static $defaultName = 'ecommit:doctrine:generate-entities';
-
-    protected static $defaultDescription = 'Generate Doctrine ORM entities';
 
     public function __construct(EntitySearcherInterface $searcher, EntityGeneratorInterface $generator)
     {
@@ -51,7 +49,7 @@ class GenerateEntitiesCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $classes = $this->searcher->search($input->getArgument('class'));
         if (0 === \count($classes)) {
