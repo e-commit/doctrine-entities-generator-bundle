@@ -14,26 +14,18 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="not_generate_attribute")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'not_generate_attribute')]
 #[IgnoreGenerateEntity]
 class NotGenerateAttribute
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer", name="author_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'author_id')]
     protected $Id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $name;
 
     /*

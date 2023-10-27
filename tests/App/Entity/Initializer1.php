@@ -16,30 +16,19 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="initializer1")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'initializer1')]
 class Initializer1 implements EntityInitializerInterface
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue
-     *
-     * @ORM\Column(type="integer", name="id")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', name: 'id')]
     protected $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass", mappedBy="firstInitializer")
-     */
+    #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass', mappedBy: 'firstInitializer')]
     protected $sub;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $name;
 
     public function initializeEntity(): void

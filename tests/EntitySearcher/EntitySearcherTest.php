@@ -26,7 +26,6 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer3;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer4;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAnnotation;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
@@ -152,7 +151,6 @@ class EntitySearcherTest extends KernelTestCase
             [Initializer4::class, true],
             [Initializer5::class, true],
             [MainClass::class, true],
-            [NotGenerateAnnotation::class, false],
             [NotGenerateAttribute::class, false],
             [Sale::class, true],
             [SubClass::class, true],

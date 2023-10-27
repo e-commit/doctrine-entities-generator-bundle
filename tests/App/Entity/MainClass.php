@@ -15,27 +15,17 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 class MainClass
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer", name="id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'id')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $toto;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * Protected field in mapped superclass: Not mapped by Doctrine annotation
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $tutu;
 
     public function getMainMethod(): string

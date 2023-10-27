@@ -17,40 +17,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="author")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'author')]
 class Author
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer", name="author_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'author_id')]
     protected $authorId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string", length=20)
-     *
-     * Not generated (public field)
+     * Not generated (public field).
      */
+    #[ORM\Column(type: 'string', length: 20)]
     public $phoneNumber;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book", mappedBy="authors")
-     */
+    #[ORM\ManyToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book', mappedBy: 'authors')]
     protected $books;
 
     public function getFullName(): string

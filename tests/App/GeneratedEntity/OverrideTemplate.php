@@ -14,26 +14,18 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="override_template")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'override_template')]
 #[GenerateEntityTemplate('custom.php.twig')]
 class OverrideTemplate
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer", name="author_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'author_id')]
     protected $Id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $name;
 
     /*

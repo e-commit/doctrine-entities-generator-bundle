@@ -16,39 +16,24 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="category")
- *
- * @GenerateEntityTemplate("custom_end_tag.php.twig")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
+#[GenerateEntityTemplate('custom_end_tag.php.twig')]
 class Category
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $name;
 
-    /**
-     * @ORM\Column(type="my_custom_type")
-     *
-     * Type defined in template
-     */
+    #[ORM\Column(type: 'my_custom_type')]
     protected $customField;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book", mappedBy="category")
-     */
+    #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book', mappedBy: 'category')]
     protected $books;
 
     public function methodBeforeBlock(): string

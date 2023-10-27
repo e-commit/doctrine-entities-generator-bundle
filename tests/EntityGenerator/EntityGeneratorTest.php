@@ -34,7 +34,6 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer4;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAnnotation;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
@@ -172,7 +171,7 @@ class EntityGeneratorTest extends AbstractTest
     public function testGenerateClassIgnore(string $class): void
     {
         $this->expectException(ClassNotManagedException::class);
-        $this->expectExceptionMessage('Class "'.$class.'" cannot be generated (Is IgnoreGenerateEntity annotation used ?)');
+        $this->expectExceptionMessage('Class "'.$class.'" cannot be generated (Is IgnoreGenerateEntity attribute used ?)');
 
         $entityManager = $this->getEntityGeneratorMock();
         $entityManager->generate($class);
@@ -183,7 +182,6 @@ class EntityGeneratorTest extends AbstractTest
         return [
             [
                 NotGenerateAttribute::class,
-                NotGenerateAnnotation::class,
             ],
         ];
     }

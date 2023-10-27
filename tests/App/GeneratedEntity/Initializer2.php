@@ -18,30 +18,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="initializer2")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'initializer2')]
 class Initializer2 implements EntityInitializerInterface
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue
-     *
-     * @ORM\Column(type="integer", name="id")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', name: 'id')]
     protected $id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author")
-     *
-     * @ORM\JoinTable(name="initializer2_author",
-     *     joinColumns={@ORM\JoinColumn(name="id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="author_id", referencedColumnName="author_id")}
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author')]
+    #[ORM\JoinTable(name: 'initializer2_author')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'author_id', referencedColumnName: 'author_id')]
     protected $authors;
 
     public function initializeEntity(): void

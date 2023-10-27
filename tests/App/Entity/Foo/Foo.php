@@ -15,20 +15,13 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="foo")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'foo')]
 class Foo
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue
-     *
-     * @ORM\Column(type="integer", name="foo_id")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', name: 'foo_id')]
     protected $fooId;
 
     /*

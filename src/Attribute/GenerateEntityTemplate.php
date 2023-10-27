@@ -11,14 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Annotations;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Attribute;
 
-/**
- * @Annotation
- *
- * @Target("CLASS")
- */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class IgnoreGenerateEntity
+final class GenerateEntityTemplate
 {
+    public function __construct(public string $template)
+    {
+    }
 }

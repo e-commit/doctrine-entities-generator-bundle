@@ -45,21 +45,15 @@ For example:
 ```php
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $name;
 
     /*
@@ -99,7 +93,7 @@ The bundle generates getters-setters methods for an entity only if :
 * The PHP class is a Doctrine ORM entity; and
 * The entity is not an interface; and
 * The entity is not a trait; and
-* The entity doesn't use the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` annotation / attribute.
+* The entity doesn't use the `Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity` attribute.
 
 The bundle generates getters-setters methods for an entity property only if :
 * The property is defined directly in the entity (and is not defined in an inherited class or a trait); and
@@ -132,45 +126,19 @@ ecommit_doctrine_entities_generator:
 **Solution 3 - Create a custom template in entity**
 
 You can override the theme to be used by the bundle only for an entity. To do this, use
-the `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate` annotation:
+the `Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate` attribute:
 
 ```php
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- * @GenerateEntityTemplate("your_template.php.twig")
- */
-class Category
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
-    protected $categoryId;
-    //...
-}
-```
-
-Or you can also use the  `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate` attribute (**≥ PHP 8**):
-
-```php
-use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
 #[GenerateEntityTemplate("your_template.php.twig")]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
     //...
 }
@@ -202,19 +170,15 @@ and use as follows:
 
 ```php
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- * @GenerateEntityTemplate("your_template.php.twig")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
+#[GenerateEntityTemplate('your_template.php.twig')]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
     //...
 
@@ -241,26 +205,18 @@ and its `initializeEntity` method.
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
 class Category implements EntityInitializerInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Book", mappedBy="category")
-     */
+    #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book', mappedBy: 'category')]
     protected $books;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     public function initializeEntity(): void
@@ -293,45 +249,19 @@ The start and/or end tag was not found in your entity.
 Not all entities are processed (see the "Usage" section to find out which classes can be generated).
 
 You can ignore the generation of getters-setters methods for an entity by using the
-`Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` annotation :
+`Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity` attribute :
 
 ```php
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- * @IgnoreGenerateEntity
- */
-class Category
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
-    protected $categoryId;
-    //...
-}
-```
-
-Or you can also use the  `Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity` attribute (**≥ PHP 8**):
-
-```php
-use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="category")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'category')]
 #[IgnoreGenerateEntity]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="category_id")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', name: 'category_id')]
     protected $categoryId;
     //...
 }
@@ -351,6 +281,7 @@ See the last two questions.
 
 The bundle only works under the following conditions :
 
+* The Doctrine attributes are used (Doctrine annotations are not compatible).
 * Only one entity (PHP class) per PHP file
 * Inside each entity (PHP class) :
     * Only one property per line

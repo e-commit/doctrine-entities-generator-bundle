@@ -11,17 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Attribute;
 
-use Doctrine\ORM\Mapping as ORM;
-
-trait PriceTrait
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final class IgnoreGenerateEntity
 {
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $price;
-
-    public function renderPrice(): string
-    {
-        return (string) $this->price;
-    }
 }

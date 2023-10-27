@@ -16,7 +16,7 @@ doctrine:
                 mappings:
                     App:
                         is_bundle: false
-                        type: annotation
+                        type: attribute
                         dir: '%entity_dir%'
                         prefix: '%entity_prefix%'
                 naming_strategy: doctrine.orm.naming_strategy.underscore

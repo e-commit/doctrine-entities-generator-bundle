@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
@@ -21,7 +20,7 @@ use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\GenerateEntityTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcherInterface;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\ClassNotManagedException;
@@ -90,7 +89,7 @@ class EntityGenerator implements EntityGeneratorInterface
         }
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
-            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity annotation used ?)', $className));
+            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
         }
 
         $fileParts = $this->getFileParts($reflectionClass);
@@ -181,19 +180,9 @@ class EntityGenerator implements EntityGeneratorInterface
      */
     protected function renderBlock(\ReflectionClass $reflectionClass, string $blockName, array $parameters = []): string
     {
-        // Load Doctrine annotations
-        $this->registry->getManagerForClass($reflectionClass->getName());
-
         $templateName = $this->template;
-        $annotation = null;
         if ($attribute = $reflectionClass->getAttributes(GenerateEntityTemplate::class)[0] ?? null) {
-            $annotation = $attribute->newInstance();
-        } else {
-            $reader = new AnnotationReader();
-            $annotation = $reader->getClassAnnotation($reflectionClass, GenerateEntityTemplate::class);
-        }
-        if ($annotation && null !== $annotation->template) {
-            $templateName = $annotation->template;
+            $templateName = $attribute->newInstance()->template;
         }
 
         $template = $this->twig->load($templateName);

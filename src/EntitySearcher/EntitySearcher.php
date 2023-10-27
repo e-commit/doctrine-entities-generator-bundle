@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Annotations\IgnoreGenerateEntity;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity;
 
 class EntitySearcher implements EntitySearcherInterface
 {
@@ -90,12 +89,6 @@ class EntitySearcher implements EntitySearcherInterface
         }
 
         if (\count($reflectionClass->getAttributes(IgnoreGenerateEntity::class)) > 0) {
-            return false;
-        }
-
-        $reader = new AnnotationReader();
-        $annotation = $reader->getClassAnnotation($reflectionClass, IgnoreGenerateEntity::class);
-        if ($annotation) {
             return false;
         }
 
