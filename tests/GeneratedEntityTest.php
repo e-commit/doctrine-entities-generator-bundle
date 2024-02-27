@@ -537,7 +537,7 @@ class GeneratedEntityTest extends KernelTestCase
         // $author1 and $author2 are not tested (because reverse side)
     }
 
-    protected function createSubClass(int $id, Initializer1 $firstInitializer = null, Initializer2 $secondInitializer = null): SubClass
+    protected function createSubClass(int $id, ?Initializer1 $firstInitializer = null, ?Initializer2 $secondInitializer = null): SubClass
     {
         $object = new MyObject();
         $object->hello = 'world '.$id;
@@ -563,7 +563,7 @@ class GeneratedEntityTest extends KernelTestCase
         return $subClass;
     }
 
-    protected function createInitializer1(int $suffix, SubClass $sub = null): Initializer1
+    protected function createInitializer1(int $suffix, ?SubClass $sub = null): Initializer1
     {
         $firstInitializer = new Initializer1();
         $firstInitializer->setName('Initializer1 name '.$suffix);
@@ -575,7 +575,7 @@ class GeneratedEntityTest extends KernelTestCase
         return $firstInitializer;
     }
 
-    protected function createInitializer2(Author $author = null): Initializer2
+    protected function createInitializer2(?Author $author = null): Initializer2
     {
         $secondInitializer = new Initializer2();
         if ($author) {
@@ -586,7 +586,7 @@ class GeneratedEntityTest extends KernelTestCase
         return $secondInitializer;
     }
 
-    protected function createBook(int $suffix, Category $category = null, Author $author = null): Book
+    protected function createBook(int $suffix, ?Category $category = null, ?Author $author = null): Book
     {
         $book = new Book();
         $book->setTitle('Title '.$suffix)
@@ -602,7 +602,7 @@ class GeneratedEntityTest extends KernelTestCase
         return $book;
     }
 
-    protected function createCategory(int $id, Book $book = null): Category
+    protected function createCategory(int $id, ?Book $book = null): Category
     {
         $category = new Category();
         $category->setCategoryId($id)
@@ -616,7 +616,7 @@ class GeneratedEntityTest extends KernelTestCase
         return $category;
     }
 
-    protected function createAuthor(int $id, Book $book = null): Author
+    protected function createAuthor(int $id, ?Book $book = null): Author
     {
         $author = new Author();
         $author->setAuthorId($id)
