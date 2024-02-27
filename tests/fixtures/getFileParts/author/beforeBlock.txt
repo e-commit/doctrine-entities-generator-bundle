@@ -29,6 +29,9 @@ class Author
     #[ORM\Column(type: 'string', length: 255)]
     protected $lastName;
 
+    #[ORM\Embedded(class: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Address')]
+    protected $address;
+
     /**
      * Not generated (public field).
      */

@@ -31,6 +31,9 @@ class Author
     #[ORM\Column(type: 'string', length: 255)]
     protected $lastName;
 
+    #[ORM\Embedded(class: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Address')]
+    protected $address;
+
     /**
      * Not generated (public field).
      */
@@ -116,5 +119,17 @@ class Author
     public function getBooks(): Collection
     {
         return $this->books;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
     }
 }

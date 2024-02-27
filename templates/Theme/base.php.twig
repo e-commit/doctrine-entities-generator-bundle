@@ -76,6 +76,24 @@
 {% endblock %}
 {% endautoescape %}
 
+{# Embedded #}
+
+{% block embedded_get %}
+    public function {{ methodName }}(): ?{{ targetClassAlias }}
+    {
+        return $this->{{ fieldName }};
+    }
+{% endblock %}
+
+{% block embedded_set %}
+    public function {{ methodName }}(?{{ targetClassAlias }} ${{ variableName }}): self
+    {
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
 {# Associations To One #}
 
 {% block assocation_to_one_get %}

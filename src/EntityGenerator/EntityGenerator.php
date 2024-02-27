@@ -32,6 +32,7 @@ use Twig\Environment;
 
 /**
  * @phpstan-import-type FieldMapping from ClassMetadataInfo
+ * @phpstan-import-type EmbeddedClassMapping from ClassMetadataInfo
  * @phpstan-import-type AssociationMapping from ClassMetadataInfo
  * @phpstan-import-type FileParts from GenerateEntityRequest
  */
@@ -111,7 +112,11 @@ class EntityGenerator implements EntityGeneratorInterface
             }
 
             if ($metadata->hasField($property)) {
-                $this->addField($request, $metadata->fieldMappings[$property]);
+                if (\array_key_exists($property, $metadata->fieldMappings)) {
+                    $this->addField($request, $metadata->fieldMappings[$property]);
+                } else {
+                    $this->addEmbedded($request, $property, $metadata->embeddedClasses[$property]);
+                }
             } elseif ($metadata->hasAssociation($property)) {
                 $this->addAssociation($request, $metadata->associationMappings[$property]);
             }
@@ -296,6 +301,47 @@ class EntityGenerator implements EntityGeneratorInterface
                 'phpType' => $phpType,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
+            ]);
+        }
+    }
+
+    /**
+     * @param EmbeddedClassMapping $embeddedMapping
+     */
+    protected function addEmbedded(GenerateEntityRequest $request, string $fieldName, array $embeddedMapping): void
+    {
+        $targetClass = $embeddedMapping['class'];
+        $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
+
+        $targetClassAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetClass);
+        if ($request->reflectionClass->getName() === $targetClass) {
+            $targetClassAlias = 'self';
+        }
+
+        $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
+        if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
+            $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'embedded_set', [
+                'methodName' => $setMethodName,
+                'fieldName' => $fieldName,
+                'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
+                'targetClass' => $targetClass,
+                'targetClassAlias' => $targetClassAlias,
+                'phpType' => $phpType,
+                'request' => $request,
+                'embeddedMapping' => $embeddedMapping,
+            ]);
+        }
+
+        $getMethodName = $this->buildMethodName(self::TYPE_GET, $fieldName);
+        if (!$this->methodIsDefinedOutsideBlock($request, $getMethodName)) {
+            $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'embedded_get', [
+                'methodName' => $getMethodName,
+                'fieldName' => $fieldName,
+                'targetClass' => $targetClass,
+                'targetClassAlias' => $targetClassAlias,
+                'phpType' => $phpType,
+                'request' => $request,
+                'embeddedMapping' => $embeddedMapping,
             ]);
         }
     }

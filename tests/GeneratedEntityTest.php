@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category;
@@ -618,10 +619,15 @@ class GeneratedEntityTest extends KernelTestCase
 
     protected function createAuthor(int $id, ?Book $book = null): Author
     {
+        $address = new Address();
+        $address->setPostalCode('74000')
+            ->setCity('Annecy');
+
         $author = new Author();
         $author->setAuthorId($id)
             ->setFirstName('First name '.$id)
             ->setLastName('Last name '.$id)
+            ->setAddress($address)
             ->phoneNumber = 'PHONE';
         if ($book) {
             $author->addBook($book);
