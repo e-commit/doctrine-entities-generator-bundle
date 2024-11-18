@@ -159,7 +159,7 @@ class EntityGenerator implements EntityGeneratorInterface
             throw new TagNotFoundException(\sprintf('Class "%s": Start tag or end tag is not found', $reflectionClass->getName()));
         }
         /** @var FileParts $fileParts */
-        $fileParts = $fileParts;
+        $fileParts = $fileParts; // @phpstan-ignore-line
 
         return $fileParts;
     }
