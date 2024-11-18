@@ -14,10 +14,6 @@ jobs:
             matrix:
                 include:
                     #Mini (for each Symfony version)
-                    -   php-version: '8.0'
-                        symfony-version: '5.4.*'
-                        composer-flags: '--prefer-stable --prefer-lowest'
-                        description: 'with SF 5.4.* lowest'
                     -   php-version: '8.1'
                         symfony-version: '6.4.*'
                         composer-flags: '--prefer-stable --prefer-lowest'
@@ -26,14 +22,12 @@ jobs:
                         symfony-version: '7.0.*'
                         composer-flags: '--prefer-stable --prefer-lowest'
                         description: 'with SF 7.0.* lowest'
+                    -   php-version: '8.2'
+                        symfony-version: '7.1.*'
+                        composer-flags: '--prefer-stable --prefer-lowest'
+                        description: 'with SF 7.1.* lowest'
 
                     #Symfony versions
-                    -   php-version: '8.3'
-                        symfony-version: '5.4.*'
-                        description: 'with SF 5.4.*'
-                    -   php-version: '8.3'
-                        symfony-version: '5.4.*@dev'
-                        description: 'with SF 5.4.* dev'
                     -   php-version: '8.3'
                         symfony-version: '6.4.*'
                         description: 'with SF 6.4.*'
@@ -47,11 +41,16 @@ jobs:
                         symfony-version: '7.0.*@dev'
                         description: 'with SF 7.0.* dev'
                     -   php-version: '8.3'
+                        symfony-version: '7.1.*'
+                        description: 'with SF 7.1.*'
+                    -   php-version: '8.3'
                         symfony-version: '7.1.*@dev'
                         description: 'with SF 7.1.* dev'
+                    -   php-version: '8.3'
+                        symfony-version: '7.2.*@dev'
+                        description: 'with SF 7.2.* dev'
 
                     #PHP versions
-                    -   php-version: '8.0'
                     -   php-version: '8.1'
                     -   php-version: '8.2'
                     -   php-version: '8.3'
@@ -62,7 +61,7 @@ jobs:
                         coding-standards: true
 
                     #Static Analysis (min PHP version)
-                    -   php-version: '8.0'
+                    -   php-version: '8.1'
                         description: 'with Static Analysis'
                         static-analysis: true
 
