@@ -82,15 +82,15 @@ class EntityGenerator implements EntityGeneratorInterface
         $reflectionClass = new \ReflectionClass($className);
         $entityManager = $this->registry->getManagerForClass($className);
         if (!$entityManager || !$entityManager instanceof EntityManagerInterface) {
-            throw new ClassNotManagedException(sprintf('Class "%s" not managed', $className));
+            throw new ClassNotManagedException(\sprintf('Class "%s" not managed', $className));
         }
         $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
         if (!$metadata instanceof ClassMetadataInfo) {
-            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Metatada not found)', $className));
+            throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Metatada not found)', $className));
         }
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
-            throw new ClassNotManagedException(sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
+            throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
         }
 
         $fileParts = $this->getFileParts($reflectionClass);
@@ -128,7 +128,7 @@ class EntityGenerator implements EntityGeneratorInterface
 
         if (\count($request->newConstructorLines) > 0 || $request->addInitializeEntity) {
             if ($this->methodIsDefinedOutsideBlock($request, '__construct')) {
-                throw new EntityInitializerInterfaceNotUsedException(sprintf('Class "%s": __construct method is used. Remove it and implement "%s" interface', $className, EntityInitializerInterface::class));
+                throw new EntityInitializerInterfaceNotUsedException(\sprintf('Class "%s": __construct method is used. Remove it and implement "%s" interface', $className, EntityInitializerInterface::class));
             }
 
             array_unshift($request->newBlockContents, $this->renderBlock($reflectionClass, 'constructor', [
@@ -141,7 +141,7 @@ class EntityGenerator implements EntityGeneratorInterface
         ]);
 
         /** @var string $content */
-        $content = preg_replace($this->getPattern($reflectionClass), sprintf('$1$2%s$4$5', $newBlockContent), $request->getSourceCode());
+        $content = preg_replace($this->getPattern($reflectionClass), \sprintf('$1$2%s$4$5', $newBlockContent), $request->getSourceCode());
         $this->writeFile($reflectionClass, $content);
     }
 
@@ -156,7 +156,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $content = file_get_contents((string) $reflectionClass->getFileName());
         $pattern = $this->getPattern($reflectionClass);
         if (!preg_match($pattern, $content, $fileParts)) {
-            throw new TagNotFoundException(sprintf('Class "%s": Start tag or end tag is not found', $reflectionClass->getName()));
+            throw new TagNotFoundException(\sprintf('Class "%s": Start tag or end tag is not found', $reflectionClass->getName()));
         }
         /** @var FileParts $fileParts */
         $fileParts = $fileParts;
@@ -172,7 +172,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $startTag = $this->renderBlock($reflectionClass, 'start_tag');
         $endTag = $this->renderBlock($reflectionClass, 'end_tag');
 
-        return sprintf(
+        return \sprintf(
             '/^(?P<beforeBlock>.*)(?P<startTag>%s)(?P<block>.*)(?P<endTag>%s)(?P<afterBlock>.*)/is',
             preg_quote($startTag, '/'),
             preg_quote($endTag, '/')

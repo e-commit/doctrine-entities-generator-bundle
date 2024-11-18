@@ -59,7 +59,7 @@ class GenerateEntitiesCommand extends Command
         foreach ($classes as $class) {
             $this->generator->generate($class);
 
-            $output->writeln(sprintf('-> Class "%s" has been generated.', $class));
+            $output->writeln(\sprintf('-> Class "%s" has been generated.', $class));
         }
 
         return 0;
