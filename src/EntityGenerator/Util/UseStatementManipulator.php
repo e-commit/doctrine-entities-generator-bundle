@@ -19,6 +19,7 @@ use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
 use PhpParser\Parser;
+use PhpParser\PhpVersion;
 use PhpParser\PrettyPrinter\Standard;
 
 /**
@@ -29,7 +30,7 @@ use PhpParser\PrettyPrinter\Standard;
  */
 class UseStatementManipulator
 {
-    protected Parser\Php7 $parser;
+    protected Parser $parser;
     protected Lexer\Emulative $lexer;
     protected Standard $printer;
 
@@ -51,14 +52,22 @@ class UseStatementManipulator
 
     public function __construct(string $sourceCode)
     {
-        $this->lexer = new Lexer\Emulative([
-            'usedAttributes' => [
-                'comments',
-                'startLine', 'endLine',
-                'startTokenPos', 'endTokenPos',
-            ],
-        ]);
-        $this->parser = new Parser\Php7($this->lexer);
+        /* @legacy Support for nikic/php-parser v4 */
+        if (class_exists(PhpVersion::class)) {
+            $version = PhpVersion::fromString(\PHP_VERSION);
+            $this->lexer = new Lexer\Emulative($version);
+            $this->parser = new Parser\Php8($this->lexer, $version);
+        } else {
+            $this->lexer = new Lexer\Emulative([
+                'usedAttributes' => [
+                    'comments',
+                    'startLine', 'endLine',
+                    'startTokenPos', 'endTokenPos',
+                ],
+            ]);
+            $this->parser = new Parser\Php7($this->lexer);
+        }
+
         $this->printer = new Standard();
 
         $this->setSourceCode($sourceCode);
@@ -73,7 +82,14 @@ class UseStatementManipulator
     {
         $this->sourceCode = $sourceCode;
         $this->oldStmts = $this->parser->parse($sourceCode);
-        $this->oldTokens = $this->lexer->getTokens();
+
+        /* @legacy Support for nikic/php-parser v4 */
+        if (\is_callable([$this->parser, 'getTokens'])) {
+            $this->oldTokens = $this->parser->getTokens();
+        } elseif (\is_callable($this->lexer->getTokens(...))) {
+            $this->oldTokens = $this->lexer->getTokens();
+        }
+
         if (null === $this->oldStmts) {
             return;
         }
