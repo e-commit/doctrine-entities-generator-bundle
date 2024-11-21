@@ -12,6 +12,3 @@ parameters:
             paths:
                 - tests/App/Entity/
                 - tests/App/GeneratedEntity/
-        - # arrays in Doctrine\ORM\Mapping\ClassMetadataInfo -> AssociationMapping not defined
-            message: '#Method Ecommit\\DoctrineEntitiesGeneratorBundle\\EntityGenerator\\EntityGenerator::addAssociation.*\(\) has parameter \$associationMapping with no value type specified in iterable type array#'
-            path: src/EntityGenerator/EntityGenerator.php

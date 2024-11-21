@@ -18,7 +18,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\AssociationMapping;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\EmbeddedClassMapping;
+use Doctrine\ORM\Mapping\FieldMapping;
+use Doctrine\ORM\Mapping\InverseSideMapping;
+use Doctrine\ORM\Mapping\OwningSideMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
@@ -31,9 +36,6 @@ use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Twig\Environment;
 
 /**
- * @phpstan-import-type FieldMapping from ClassMetadataInfo
- * @phpstan-import-type EmbeddedClassMapping from ClassMetadataInfo
- * @phpstan-import-type AssociationMapping from ClassMetadataInfo
  * @phpstan-import-type FileParts from GenerateEntityRequest
  */
 class EntityGenerator implements EntityGeneratorInterface
@@ -43,37 +45,10 @@ class EntityGenerator implements EntityGeneratorInterface
     public const TYPE_ADD = 'add';
     public const TYPE_REMOVE = 'remove';
 
-    /**
-     * @var EntitySearcherInterface
-     */
-    protected $searcher;
+    protected Inflector $inflector;
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
-     * @var Inflector
-     */
-    protected $inflector;
-
-    /**
-     * @var string
-     */
-    protected $template;
-
-    public function __construct(EntitySearcherInterface $searcher, ManagerRegistry $registry, Environment $twig, string $template)
+    public function __construct(protected EntitySearcherInterface $searcher, protected ManagerRegistry $registry, protected Environment $twig, protected string $template)
     {
-        $this->searcher = $searcher;
-        $this->registry = $registry;
-        $this->twig = $twig;
-        $this->template = $template;
         $this->inflector = InflectorFactory::create()->build();
     }
 
@@ -85,9 +60,6 @@ class EntityGenerator implements EntityGeneratorInterface
             throw new ClassNotManagedException(\sprintf('Class "%s" not managed', $className));
         }
         $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
-        if (!$metadata instanceof ClassMetadataInfo) {
-            throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Metatada not found)', $className));
-        }
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
             throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
@@ -268,12 +240,9 @@ class EntityGenerator implements EntityGeneratorInterface
         return false;
     }
 
-    /**
-     * @param FieldMapping $fieldMapping
-     */
-    protected function addField(GenerateEntityRequest $request, array $fieldMapping): void
+    protected function addField(GenerateEntityRequest $request, FieldMapping $fieldMapping): void
     {
-        $fieldName = $fieldMapping['fieldName'];
+        $fieldName = $fieldMapping->fieldName;
         $types = $request->doctrineExtractor->getTypes($request->reflectionClass->getName(), $fieldName);
         $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
 
@@ -305,12 +274,9 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
-    /**
-     * @param EmbeddedClassMapping $embeddedMapping
-     */
-    protected function addEmbedded(GenerateEntityRequest $request, string $fieldName, array $embeddedMapping): void
+    protected function addEmbedded(GenerateEntityRequest $request, string $fieldName, EmbeddedClassMapping $embeddedMapping): void
     {
-        $targetClass = $embeddedMapping['class'];
+        $targetClass = $embeddedMapping->class;
         $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
 
         $targetClassAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetClass);
@@ -346,50 +312,47 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
-    /**
-     * @param AssociationMapping $associationMapping
-     */
-    protected function addAssociation(GenerateEntityRequest $request, array $associationMapping): void
+    protected function addAssociation(GenerateEntityRequest $request, AssociationMapping $associationMapping): void
     {
-        if ($associationMapping['type'] & ClassMetadataInfo::TO_ONE && $associationMapping['mappedBy']) {
+        if ($associationMapping->type() & ClassMetadata::TO_ONE && $associationMapping instanceof InverseSideMapping) {
             $this->addAssociationToOne(
                 $request,
                 $associationMapping,
                 'assocation_one_to_one_reverse',
-                $this->buildMethodName(self::TYPE_SET, $associationMapping['mappedBy'])
+                $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy)
             );
-        } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_ONE && $associationMapping['inversedBy']) {
+        } elseif ($associationMapping->type() & ClassMetadata::TO_ONE && $associationMapping instanceof OwningSideMapping) {
             $this->addAssociationToOne(
                 $request,
                 $associationMapping,
                 'assocation_one_to_one_owning',
                 null
             );
-        } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_ONE) {
+        } elseif ($associationMapping->type() & ClassMetadata::TO_ONE) {
             $this->addAssociationToOne(
                 $request,
                 $associationMapping,
                 'assocation_one_to_one_unidirectional',
                 null
             );
-        } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_MANY) {
-            if ($associationMapping['type'] & ClassMetadataInfo::ONE_TO_MANY && $associationMapping['mappedBy']) {
+        } elseif ($associationMapping->type() & ClassMetadata::TO_MANY) {
+            if ($associationMapping->type() & ClassMetadata::ONE_TO_MANY && $associationMapping instanceof InverseSideMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
                     'assocation_one_to_many_reverse',
-                    $this->buildMethodName(self::TYPE_SET, $associationMapping['mappedBy']),
-                    $this->buildMethodName(self::TYPE_SET, $associationMapping['mappedBy'])
+                    $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy),
+                    $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy)
                 );
-            } elseif ($associationMapping['type'] & ClassMetadataInfo::MANY_TO_MANY && $associationMapping['mappedBy']) {
+            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY && $associationMapping instanceof InverseSideMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
                     'assocation_many_to_many_reverse',
-                    $this->buildMethodName(self::TYPE_ADD, $associationMapping['mappedBy']),
-                    $this->buildMethodName(self::TYPE_REMOVE, $associationMapping['mappedBy'])
+                    $this->buildMethodName(self::TYPE_ADD, $associationMapping->mappedBy),
+                    $this->buildMethodName(self::TYPE_REMOVE, $associationMapping->mappedBy)
                 );
-            } elseif ($associationMapping['type'] & ClassMetadataInfo::MANY_TO_MANY && $associationMapping['inversedBy']) {
+            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY && $associationMapping instanceof OwningSideMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
@@ -397,7 +360,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     null,
                     null
                 );
-            } elseif ($associationMapping['type'] & ClassMetadataInfo::MANY_TO_MANY) {
+            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
@@ -409,13 +372,10 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
-    /**
-     * @param AssociationMapping $associationMapping
-     */
-    protected function addAssociationToOne(GenerateEntityRequest $request, array $associationMapping, string $block, ?string $foreignMethodNameSet): void
+    protected function addAssociationToOne(GenerateEntityRequest $request, AssociationMapping $associationMapping, string $block, ?string $foreignMethodNameSet): void
     {
-        $fieldName = $associationMapping['fieldName'];
-        $targetEntity = $associationMapping['targetEntity'];
+        $fieldName = $associationMapping->fieldName;
+        $targetEntity = $associationMapping->targetEntity;
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
         if ($request->reflectionClass->getName() === $targetEntity) {
@@ -449,13 +409,10 @@ class EntityGenerator implements EntityGeneratorInterface
         }
     }
 
-    /**
-     * @param AssociationMapping $associationMapping
-     */
-    protected function addAssociationToMany(GenerateEntityRequest $request, array $associationMapping, string $block, ?string $foreignMethodNameAdd, ?string $foreignMethodNameRemove): void
+    protected function addAssociationToMany(GenerateEntityRequest $request, AssociationMapping $associationMapping, string $block, ?string $foreignMethodNameAdd, ?string $foreignMethodNameRemove): void
     {
-        $fieldName = $associationMapping['fieldName'];
-        $targetEntity = $associationMapping['targetEntity'];
+        $fieldName = $associationMapping->fieldName;
+        $targetEntity = $associationMapping->targetEntity;
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
         if ($request->reflectionClass->getName() === $targetEntity) {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Model;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 
@@ -28,57 +28,27 @@ use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
  */
 class GenerateEntityRequest
 {
-    /**
-     * @var \ReflectionClass<object>
-     */
-    public $reflectionClass;
-
-    /**
-     * @var FileParts
-     */
-    public $fileParts;
-
-    /**
-     * @var ClassMetadataInfo<object>
-     */
-    public $classMetadata;
-
-    /**
-     * @var DoctrineExtractor
-     */
-    public $doctrineExtractor;
-
-    /**
-     * @var UseStatementManipulator
-     */
-    public $useStatementManipulator;
+    public UseStatementManipulator $useStatementManipulator;
 
     /**
      * @var array<string>
      */
-    public $newBlockContents = [];
+    public array $newBlockContents = [];
 
     /**
      * @var array<string>
      */
-    public $newConstructorLines = [];
+    public array $newConstructorLines = [];
+
+    public bool $addInitializeEntity = false;
 
     /**
-     * @var bool
+     * @param \ReflectionClass<object> $reflectionClass
+     * @param FileParts                $fileParts
+     * @param ClassMetadata<object>    $classMetadata
      */
-    public $addInitializeEntity = false;
-
-    /**
-     * @param \ReflectionClass<object>  $reflectionClass
-     * @param FileParts                 $fileParts
-     * @param ClassMetadataInfo<object> $classMetadata
-     */
-    public function __construct(\ReflectionClass $reflectionClass, array $fileParts, ClassMetadataInfo $classMetadata, DoctrineExtractor $doctrineExtractor)
+    public function __construct(public \ReflectionClass $reflectionClass, public array $fileParts, public ClassMetadata $classMetadata, public DoctrineExtractor $doctrineExtractor)
     {
-        $this->reflectionClass = $reflectionClass;
-        $this->fileParts = $fileParts;
-        $this->classMetadata = $classMetadata;
-        $this->doctrineExtractor = $doctrineExtractor;
         $this->useStatementManipulator = new UseStatementManipulator((string) file_get_contents((string) $reflectionClass->getFileName()));
     }
 

@@ -20,14 +20,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\IgnoreGenerateEntity;
 
 class EntitySearcher implements EntitySearcherInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function search(string $input): array
@@ -84,6 +78,9 @@ class EntitySearcher implements EntitySearcherInterface
         }
 
         $reflectionClass = $metadata->getReflectionClass();
+        if (!$reflectionClass) {
+            return false;
+        }
         if ($reflectionClass->isInterface() || $reflectionClass->isTrait()) {
             return false;
         }

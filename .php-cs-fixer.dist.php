@@ -36,6 +36,9 @@ return (new PhpCsFixer\Config())
         'phpdoc_order' => true,
         'protected_to_private' => false,
         'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress']],
+        'phpdoc_to_param_type' => true,
+        'phpdoc_to_return_type' => true,
+        'phpdoc_to_property_type' => true,
     ])
     ->setFinder($finder)
 ;

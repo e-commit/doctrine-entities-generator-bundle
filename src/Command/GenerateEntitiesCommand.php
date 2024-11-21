@@ -24,21 +24,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'ecommit:doctrine:generate-entities', description: 'Generate Doctrine ORM entities')]
 class GenerateEntitiesCommand extends Command
 {
-    /**
-     * @var EntitySearcherInterface
-     */
-    protected $searcher;
-
-    /**
-     * @var EntityGeneratorInterface
-     */
-    protected $generator;
-
-    public function __construct(EntitySearcherInterface $searcher, EntityGeneratorInterface $generator)
+    public function __construct(protected EntitySearcherInterface $searcher, protected EntityGeneratorInterface $generator)
     {
-        $this->searcher = $searcher;
-        $this->generator = $generator;
-
         parent::__construct();
     }
 

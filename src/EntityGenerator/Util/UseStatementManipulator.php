@@ -29,40 +29,25 @@ use PhpParser\PrettyPrinter\Standard;
  */
 class UseStatementManipulator
 {
-    /**
-     * @var Parser\Php7
-     */
-    protected $parser;
+    protected Parser\Php7 $parser;
+    protected Lexer\Emulative $lexer;
+    protected Standard $printer;
 
-    /**
-     * @var Lexer\Emulative
-     */
-    protected $lexer;
-
-    /**
-     * @var Standard
-     */
-    protected $printer;
-
-    /**
-     * @var string
-     */
-    protected $sourceCode;
-
+    protected string $sourceCode;
     /**
      * @var array<Node\Stmt>|null
      */
-    protected $oldStmts;
+    protected ?array $oldStmts = null;
 
     /**
      * @var array<mixed>
      */
-    protected $oldTokens;
+    protected array $oldTokens;
 
     /**
      * @var array<Node>|null
      */
-    protected $newStmts;
+    protected ?array $newStmts = null;
 
     public function __construct(string $sourceCode)
     {
@@ -209,10 +194,7 @@ class UseStatementManipulator
         return $node;
     }
 
-    /**
-     * @return Node|null
-     */
-    protected function findFirstNode(callable $filterCallback)
+    protected function findFirstNode(callable $filterCallback): ?Node
     {
         if (null === $this->newStmts) {
             return null;

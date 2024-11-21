@@ -143,30 +143,15 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertTrue($subClass->getBooleanField());
     }
 
-    public function testObjectField(): void
-    {
-        $subClass = $this->createSubClass(2);
-        $this->assertInstanceOf(MyObject::class, $subClass->getObjectField());
-        $this->assertSame('world 2', $subClass->getObjectField()->hello);
-        $this->em->flush();
-        $this->em->clear();
-
-        $subClass = $this->em->getRepository(SubClass::class)->find(2);
-        $this->assertInstanceOf(MyObject::class, $subClass->getObjectField());
-        $this->assertSame('world 2', $subClass->getObjectField()->hello);
-    }
-
     public function testArrayField(): void
     {
         $subClass = $this->createSubClass(2);
-        $this->assertSame(['a' => 2], $subClass->getArrayField());
         $this->assertSame(['b' => 2], $subClass->getSimpleArrayField());
         $this->assertSame(['c' => 2], $subClass->getJsonField());
         $this->em->flush();
         $this->em->clear();
 
         $subClass = $this->em->getRepository(SubClass::class)->find(2);
-        $this->assertSame(['a' => 2], $subClass->getArrayField());
         $this->assertSame([0 => '2'], $subClass->getSimpleArrayField());
         $this->assertSame(['c' => 2], $subClass->getJsonField());
     }
@@ -190,8 +175,6 @@ class GeneratedEntityTest extends KernelTestCase
             ['setDateField', 'getDateField'],
             ['setBooleanField', 'getBooleanField'],
             ['setTextField', 'getTextField'],
-            ['setObjectField', 'getObjectField'],
-            ['setArrayField', 'getArrayField'],
             ['setSimpleArrayField', 'getSimpleArrayField'],
             ['setJsonField', 'getJsonField'],
             ['setGuidField', 'getGuidField'],
@@ -553,8 +536,6 @@ class GeneratedEntityTest extends KernelTestCase
             ->setDateField(new \DateTime('2020-01-01 00:00:00'))
             ->setBooleanField(true)
             ->setTextField('Text '.$id)
-            ->setObjectField($object)
-            ->setArrayField(['a' => $id])
             ->setSimpleArrayField(['b' => $id])
             ->setJsonField(['c' => $id])
             ->setGuidField('GUID '.$id)

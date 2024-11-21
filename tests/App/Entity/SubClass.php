@@ -61,12 +61,6 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'text')]
     protected $textField;
 
-    #[ORM\Column(type: 'object')]
-    protected $objectField;
-
-    #[ORM\Column(type: 'array')]
-    protected $arrayField;
-
     #[ORM\Column(type: 'simple_array')]
     protected $simpleArrayField;
 

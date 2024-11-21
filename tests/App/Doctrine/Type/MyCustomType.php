@@ -20,13 +20,13 @@ class MyCustomType extends Type
 {
     public const TYPE = 'my_custom_type';
 
-    public function getName()
+    public function getName(): string
     {
         return self::TYPE;
     }
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+        return $platform->getStringTypeDeclarationSQL($fieldDeclaration);
     }
 }

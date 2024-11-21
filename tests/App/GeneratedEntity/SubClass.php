@@ -64,12 +64,6 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'text')]
     protected $textField;
 
-    #[ORM\Column(type: 'object')]
-    protected $objectField;
-
-    #[ORM\Column(type: 'array')]
-    protected $arrayField;
-
     #[ORM\Column(type: 'simple_array')]
     protected $simpleArrayField;
 
@@ -166,30 +160,6 @@ class SubClass extends MainClass
     public function getTextField(): ?string
     {
         return $this->textField;
-    }
-
-    public function setObjectField(?object $objectField): self
-    {
-        $this->objectField = $objectField;
-
-        return $this;
-    }
-
-    public function getObjectField(): ?object
-    {
-        return $this->objectField;
-    }
-
-    public function setArrayField(?array $arrayField): self
-    {
-        $this->arrayField = $arrayField;
-
-        return $this;
-    }
-
-    public function getArrayField(): ?array
-    {
-        return $this->arrayField;
     }
 
     public function setSimpleArrayField(?array $simpleArrayField): self

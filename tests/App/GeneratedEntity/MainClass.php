@@ -67,4 +67,16 @@ class MainClass
     {
         return $this->toto;
     }
+
+    public function setTutu(?string $tutu): self
+    {
+        $this->tutu = $tutu;
+
+        return $this;
+    }
+
+    public function getTutu(): ?string
+    {
+        return $this->tutu;
+    }
 }
