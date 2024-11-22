@@ -30,14 +30,14 @@
         "doctrine/orm": "^2.7",
         "doctrine/persistence": "^1.1|^2.0|^3.0",
         "nikic/php-parser": "^4.10",
-        "symfony/config": "^6.4|^7.0",
-        "symfony/console": "^6.4|^7.0",
-        "symfony/dependency-injection": "^6.4|^7.0",
-        "symfony/doctrine-bridge": "^6.4|^7.0",
-        "symfony/framework-bundle": "^6.4|^7.0",
-        "symfony/http-kernel": "^6.4|^7.0",
-        "symfony/property-info": "^6.4|^7.0",
-        "symfony/twig-bundle": "^6.4|^7.0",
+        "symfony/config": "^6.4|^7.1",
+        "symfony/console": "^6.4|^7.1",
+        "symfony/dependency-injection": "^6.4|^7.1",
+        "symfony/doctrine-bridge": "^6.4|^7.1",
+        "symfony/framework-bundle": "^6.4|^7.1",
+        "symfony/http-kernel": "^6.4|^7.1",
+        "symfony/property-info": "^6.4|^7.1",
+        "symfony/twig-bundle": "^6.4|^7.1",
         "twig/twig": "^2.12.0|^3.0"
     },
     "require-dev": {
@@ -47,9 +47,9 @@
         "phpstan/phpstan": "^1.9",
         "phpstan/phpstan-symfony": "^1.2",
         "phpunit/phpunit": "^9.5",
-        "symfony/filesystem": "^6.4|^7.0",
-        "symfony/finder": "^6.4|^7.0",
-        "symfony/yaml": "^6.4|^7.0"
+        "symfony/filesystem": "^6.4|^7.1",
+        "symfony/finder": "^6.4|^7.1",
+        "symfony/yaml": "^6.4|^7.1"
     },
     "config": {
         "sort-packages": true,
