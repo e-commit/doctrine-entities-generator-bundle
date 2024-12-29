@@ -351,27 +351,43 @@ class EntityGenerator implements EntityGeneratorInterface
      */
     protected function addAssociation(GenerateEntityRequest $request, array $associationMapping): void
     {
-        if ($associationMapping['type'] & ClassMetadataInfo::TO_ONE && $associationMapping['mappedBy']) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_reverse',
-                $this->buildMethodName(self::TYPE_SET, $associationMapping['mappedBy'])
-            );
-        } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_ONE && $associationMapping['inversedBy']) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_owning',
-                null
-            );
-        } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_ONE) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_unidirectional',
-                null
-            );
+        if ($associationMapping['type'] & ClassMetadataInfo::TO_ONE) {
+            if ($associationMapping['type'] & ClassMetadataInfo::ONE_TO_ONE && $associationMapping['mappedBy']) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_reverse',
+                    $this->buildMethodName(self::TYPE_SET, $associationMapping['mappedBy'])
+                );
+            } elseif ($associationMapping['type'] & ClassMetadataInfo::ONE_TO_ONE && $associationMapping['inversedBy']) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_owning',
+                    null
+                );
+            } elseif ($associationMapping['type'] & ClassMetadataInfo::ONE_TO_ONE) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_unidirectional',
+                    null
+                );
+            } elseif ($associationMapping['type'] & ClassMetadataInfo::MANY_TO_ONE && $associationMapping['inversedBy']) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_many_to_one_owning',
+                    null
+                );
+            } elseif ($associationMapping['type'] & ClassMetadataInfo::MANY_TO_ONE) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_many_to_one_unidirectional',
+                    null
+                );
+            }
         } elseif ($associationMapping['type'] & ClassMetadataInfo::TO_MANY) {
             if ($associationMapping['type'] & ClassMetadataInfo::ONE_TO_MANY && $associationMapping['mappedBy']) {
                 $this->addAssociationToMany(
