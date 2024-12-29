@@ -12,7 +12,8 @@ parameters:
             paths:
                 - tests/App/Entity/
                 - tests/App/GeneratedEntity/
-
+                # legacy Support for doctrine/dbal v3
+                - tests/App/GeneratedEntityDbal3/
 
         # Legacy Support for nikic/php-parser v4
         -

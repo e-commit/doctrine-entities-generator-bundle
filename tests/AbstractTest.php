@@ -70,30 +70,30 @@ abstract class AbstractTest extends KernelTestCase
         return $mock;
     }
 
-    protected function checkGeneratedClass(string $class): void
+    protected function checkGeneratedClass(string $class, ?string $folder = null): void
     {
         $className = $this->getClassSubPath($class);
-
         $file = $this->tempFolder.'/'.str_replace('/', '_', $className).'.php';
-        $expectedContent = null;
-        foreach (['GeneratedEntity'.\PHP_MAJOR_VERSION, 'GeneratedEntity'] as $generatedFolder) {
-            $expectedFile = __DIR__.'/App/'.$generatedFolder.'/'.$className.'.php';
-            if (!file_exists($expectedFile)) {
-                continue;
-            }
-
-            $expectedContent = (string) file_get_contents($expectedFile);
-            $expectedContent = str_replace(
-                'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\\'.$generatedFolder,
-                'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
-                $expectedContent
-            );
-
-            break;
+        if (null === $folder) {
+            $folder = 'GeneratedEntity';
         }
-        if (null === $expectedContent) {
+
+        $expectedFile = __DIR__.'/App/'.$folder.'/'.$className.'.php';
+        if (!file_exists($expectedFile)) {
             throw new \Exception('Template not found: '.$className);
         }
+
+        $expectedContent = (string) file_get_contents($expectedFile);
+        $expectedContent = str_replace(
+            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\\'.$folder,
+            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
+            $expectedContent
+        );
+        $expectedContent = str_replace(
+            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\\GeneratedEntity',
+            'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity',
+            $expectedContent
+        );
 
         $this->assertSame(
             $expectedContent,

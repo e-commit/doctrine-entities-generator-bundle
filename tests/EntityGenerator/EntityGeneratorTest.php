@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntityGenerator;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\EntityGenerator;
@@ -23,6 +24,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\TagNotFoundException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Bigint;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar;
@@ -380,18 +382,24 @@ class EntityGeneratorTest extends AbstractTest
      *
      * @dataProvider getTestGenerateProvider
      */
-    public function testGenerate(string $class): void
+    public function testGenerate(string $class, ?string $folder = null): void
     {
         $entityManager = $this->getEntityGeneratorMock();
         $entityManager->generate($class);
 
-        $this->checkGeneratedClass($class);
+        $this->checkGeneratedClass($class, $folder);
     }
 
     public function getTestGenerateProvider(): array
     {
+        /**
+         * @legacy Support for doctrine/dbal v3
+         */
+        $isDbal3 = method_exists(AbstractMySQLPlatform::class, 'getColumnTypeSQLSnippets');
+
         $data = [
             [Author::class],
+            [Bigint::class, $isDbal3 ? 'GeneratedEntityDbal3' : null],
             [Book::class],
             [Category::class],
             [Initializer1::class],

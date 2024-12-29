@@ -32,30 +32,36 @@
 {% endblock %}
 
 {% block field_hint %}
-    {% set field_hint = '' %}
     {% set block_field_hint_name = 'field_hint_'~fieldMapping.type %}
     {% if block(block_field_hint_name) is defined %}
-        {% set field_hint = block(block_field_hint_name)|spaceless %}
+        {{ block(block_field_hint_name)|spaceless }}
     {% elseif types|length > 0 %}
-        {% if types[0].className  %}
-            {% set field_hint = types[0].className %}
-            {% if field_hint|first != '\\' %}
-                {% set field_hint = '\\' ~ field_hint %}
-            {% endif %}
-        {% elseif types[0].builtinType %}
-            {% set field_hint = types[0].builtinType %}
-        {% endif %}
-    {% endif %}
+        {% set field_hints = [] %}
 
-    {% if field_hint %}
-        ?{{ field_hint }}
+        {% for type in types %}
+            {% if type.className  %}
+                {% set field_hint = type.className %}
+                {% if field_hint|first != '\\' %}
+                    {% set field_hint = '\\' ~ field_hint %}
+                {% endif %}
+                {% set field_hints = field_hints|merge([field_hint]) %}
+            {% elseif type.builtinType %}
+                {% set field_hints = field_hints|merge([type.builtinType]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% if field_hints|length > 1 %}
+            {{ field_hints|join('|') ~ '|null' }}
+        {% elseif field_hints|length > 0 %}
+            ?{{ field_hints|join('|') }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 
 {% block field_hint_decimal %}
 {# Decimal Doctrine type is a PHP string but user can give a double value - Remove hint unless hint equals "string" on the property PHP hint #}
 {% if phpType and (phpType.__toString() == '?string' or phpType.__toString() == 'string') %}
-    string
+    ?string
 {% endif %}
 {% endblock %}
 

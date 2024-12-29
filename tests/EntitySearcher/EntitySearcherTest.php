@@ -16,6 +16,7 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntitySearcher;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Bigint;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar;
@@ -143,6 +144,7 @@ class EntitySearcherTest extends KernelTestCase
     {
         return [
             [Author::class, true],
+            [Bigint::class, true],
             [Book::class, true],
             [Category::class, true],
             [Initializer1::class, true],
@@ -208,6 +210,7 @@ class EntitySearcherTest extends KernelTestCase
 
         $data[] = ['*', [
             Author::class,
+            Bigint::class,
             Book::class,
             Category::class,
             Bar::class,
@@ -225,6 +228,7 @@ class EntitySearcherTest extends KernelTestCase
 
         $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
             Author::class,
+            Bigint::class,
             Book::class,
             Category::class,
             Bar::class,
@@ -242,6 +246,7 @@ class EntitySearcherTest extends KernelTestCase
 
         $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
             Author::class,
+            Bigint::class,
             Book::class,
             Category::class,
             Bar::class,
