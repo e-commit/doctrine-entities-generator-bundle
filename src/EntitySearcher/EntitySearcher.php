@@ -78,9 +78,6 @@ class EntitySearcher implements EntitySearcherInterface
         }
 
         $reflectionClass = $metadata->getReflectionClass();
-        if (!$reflectionClass) {
-            return false;
-        }
         if ($reflectionClass->isInterface() || $reflectionClass->isTrait()) {
             return false;
         }
