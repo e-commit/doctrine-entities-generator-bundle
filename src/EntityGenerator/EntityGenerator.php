@@ -22,8 +22,12 @@ use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\EmbeddedClassMapping;
 use Doctrine\ORM\Mapping\FieldMapping;
-use Doctrine\ORM\Mapping\InverseSideMapping;
-use Doctrine\ORM\Mapping\OwningSideMapping;
+use Doctrine\ORM\Mapping\ManyToManyInverseSideMapping;
+use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
+use Doctrine\ORM\Mapping\ManyToOneAssociationMapping;
+use Doctrine\ORM\Mapping\OneToManyAssociationMapping;
+use Doctrine\ORM\Mapping\OneToOneInverseSideMapping;
+use Doctrine\ORM\Mapping\OneToOneOwningSideMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
@@ -314,29 +318,45 @@ class EntityGenerator implements EntityGeneratorInterface
 
     protected function addAssociation(GenerateEntityRequest $request, AssociationMapping $associationMapping): void
     {
-        if ($associationMapping->type() & ClassMetadata::TO_ONE && $associationMapping instanceof InverseSideMapping) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_reverse',
-                $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy)
-            );
-        } elseif ($associationMapping->type() & ClassMetadata::TO_ONE && $associationMapping instanceof OwningSideMapping) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_owning',
-                null
-            );
-        } elseif ($associationMapping->type() & ClassMetadata::TO_ONE) {
-            $this->addAssociationToOne(
-                $request,
-                $associationMapping,
-                'assocation_one_to_one_unidirectional',
-                null
-            );
+        if ($associationMapping->type() & ClassMetadata::TO_ONE) {
+            if ($associationMapping instanceof OneToOneInverseSideMapping) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_reverse',
+                    $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy)
+                );
+            } elseif ($associationMapping instanceof OneToOneOwningSideMapping && $associationMapping->inversedBy) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_owning',
+                    null
+                );
+            } elseif ($associationMapping instanceof OneToOneOwningSideMapping) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_one_to_one_unidirectional',
+                    null
+                );
+            } elseif ($associationMapping instanceof ManyToOneAssociationMapping && $associationMapping->inversedBy) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_many_to_one_owning',
+                    null
+                );
+            } elseif ($associationMapping instanceof ManyToOneAssociationMapping) {
+                $this->addAssociationToOne(
+                    $request,
+                    $associationMapping,
+                    'assocation_many_to_one_unidirectional',
+                    null
+                );
+            }
         } elseif ($associationMapping->type() & ClassMetadata::TO_MANY) {
-            if ($associationMapping->type() & ClassMetadata::ONE_TO_MANY && $associationMapping instanceof InverseSideMapping) {
+            if ($associationMapping instanceof OneToManyAssociationMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
@@ -344,7 +364,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy),
                     $this->buildMethodName(self::TYPE_SET, $associationMapping->mappedBy)
                 );
-            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY && $associationMapping instanceof InverseSideMapping) {
+            } elseif ($associationMapping instanceof ManyToManyInverseSideMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
@@ -352,7 +372,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     $this->buildMethodName(self::TYPE_ADD, $associationMapping->mappedBy),
                     $this->buildMethodName(self::TYPE_REMOVE, $associationMapping->mappedBy)
                 );
-            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY && $associationMapping instanceof OwningSideMapping) {
+            } elseif ($associationMapping instanceof ManyToManyOwningSideMapping && $associationMapping->inversedBy) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
@@ -360,7 +380,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     null,
                     null
                 );
-            } elseif ($associationMapping->type() & ClassMetadata::MANY_TO_MANY) {
+            } elseif ($associationMapping instanceof ManyToManyOwningSideMapping) {
                 $this->addAssociationToMany(
                     $request,
                     $associationMapping,
