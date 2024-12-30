@@ -132,7 +132,7 @@ jobs:
 
             -   name: Check license year
                 if: matrix.coding-standards
-                run: cat LICENSE |grep -E "\(c\) ([0-9]+\-)*`date +%G`"
+                run: cat LICENSE |grep -E "\(c\) ([0-9]+\-)*`date +%Y`"
 
             -   name: Run PHPStan
                 if: matrix.static-analysis
