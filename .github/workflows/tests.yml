@@ -26,6 +26,10 @@ jobs:
                         symfony-version: '7.2.*'
                         composer-flags: '--prefer-stable --prefer-lowest'
                         description: 'with SF 7.2.* lowest'
+                    -   php-version: '8.2'
+                        symfony-version: '7.3.*'
+                        composer-flags: '--prefer-stable --prefer-lowest'
+                        description: 'with SF 7.3.* lowest'
 
                     #Symfony versions
                     -   php-version: '8.4'
@@ -44,8 +48,14 @@ jobs:
                         symfony-version: '7.2.*@dev'
                         description: 'with SF 7.2.* dev'
                     -   php-version: '8.4'
+                        symfony-version: '7.3.*'
+                        description: 'with SF 7.3.*'
+                    -   php-version: '8.4'
                         symfony-version: '7.3.*@dev'
                         description: 'with SF 7.3.* dev'
+                    -   php-version: '8.4'
+                        symfony-version: '7.4.*@dev'
+                        description: 'with SF 7.4.* dev'
 
                     #PHP versions
                     -   php-version: '8.1'
