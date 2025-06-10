@@ -15,3 +15,14 @@ parameters:
         - # arrays in Doctrine\ORM\Mapping\ClassMetadataInfo -> AssociationMapping not defined
             message: '#Method Ecommit\\DoctrineEntitiesGeneratorBundle\\EntityGenerator\\EntityGenerator::addAssociation.*\(\) has parameter \$associationMapping with no value type specified in iterable type array#'
             path: src/EntityGenerator/EntityGenerator.php
+
+        # Legacy Support for nikic/php-parser v4
+        -
+            message: '#Call to an undefined method PhpParser\\Lexer\\Emulative::getTokens\(\)#'
+            path: src/EntityGenerator/Util/UseStatementManipulator.php
+        -
+            message: '#Parameter \#1 \$phpVersion of class PhpParser\\Lexer\\Emulative constructor expects PhpParser\\PhpVersion\|null, array\<string, array\<int, string\>\> given#'
+            path: src/EntityGenerator/Util/UseStatementManipulator.php
+        -
+            message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array given#'
+            path: src/EntityGenerator/Util/UseStatementManipulator.php
