@@ -21,7 +21,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\ClassNotManagedException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterfaceNotUsedException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\TagNotFoundException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTest;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTestCase;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
@@ -46,7 +46,7 @@ use Twig\Environment;
 /**
  * @phpstan-import-type FileParts from GenerateEntityRequest
  */
-class EntityGeneratorTest extends AbstractTest
+class EntityGeneratorTest extends AbstractTestCase
 {
     public function testServiceIsPrivate(): void
     {
@@ -93,7 +93,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->assertSame(file_get_contents(__DIR__.'/../fixtures/getFileParts/'.$fixturesDir.'/afterBlock.txt'), $result['afterBlock']);
     }
 
-    public function getTestGetFilePartsValidProvider(): array
+    public static function getTestGetFilePartsValidProvider(): array
     {
         return [
             [Author::class, 'author'],
@@ -121,7 +121,7 @@ class EntityGeneratorTest extends AbstractTest
         $method->invokeArgs($entityGenerator, [new \ReflectionClass(Author::class)]);
     }
 
-    public function getTestGetFilePartsTagNotFoundProvider(): array
+    public static function getTestGetFilePartsTagNotFoundProvider(): array
     {
         return [
             ['bad_start_tag.php.twig'],
@@ -154,7 +154,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateClassNotManagedProvider(): array
+    public static function getTestGenerateClassNotManagedProvider(): array
     {
         return [
             [NotEntity::class],
@@ -177,7 +177,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateClassIgnoreProvider(): array
+    public static function getTestGenerateClassIgnoreProvider(): array
     {
         return [
             [
@@ -220,7 +220,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestPropertyIsDefinedInClassFileProvider(): array
+    public static function getTestPropertyIsDefinedInClassFileProvider(): array
     {
         return [
             [Author::class, 'authorId', true],
@@ -274,7 +274,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestMethodIsDefinedOutsideBlockProvider(): array
+    public static function getTestMethodIsDefinedOutsideBlockProvider(): array
     {
         return [
             [Author::class, 'badMethod', false],
@@ -311,7 +311,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestBuildMethodNameProdiver(): array
+    public static function getTestBuildMethodNameProdiver(): array
     {
         return [
             [EntityGenerator::TYPE_GET, 'company', 'getCompany'],
@@ -350,7 +350,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestBuildVariableNameProvider(): array
+    public static function getTestBuildVariableNameProvider(): array
     {
         return [
             [EntityGenerator::TYPE_GET, 'company', 'company'],
@@ -388,7 +388,7 @@ class EntityGeneratorTest extends AbstractTest
         $this->checkGeneratedClass($class);
     }
 
-    public function getTestGenerateProvider(): array
+    public static function getTestGenerateProvider(): array
     {
         $data = [
             [Author::class],
@@ -422,7 +422,7 @@ class EntityGeneratorTest extends AbstractTest
         $entityManager->generate($class);
     }
 
-    public function getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver(): array
+    public static function getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver(): array
     {
         return [
             [Initializer4::class],

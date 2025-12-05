@@ -15,14 +15,14 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\Command;
 
 use Ecommit\DoctrineEntitiesGeneratorBundle\Command\GenerateEntitiesCommand;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTest;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTestCase;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
 
-class GenerateEntitiesCommandTest extends AbstractTest
+class GenerateEntitiesCommandTest extends AbstractTestCase
 {
     public function testExecute(): void
     {

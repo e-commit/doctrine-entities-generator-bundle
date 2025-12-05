@@ -22,7 +22,7 @@ return (new PhpCsFixer\Config())
         '@DoctrineAnnotation' => true,
         '@PHP80Migration' => true,
         '@PHP80Migration:risky' => true,
-        '@PHPUnit84Migration:risky' => true,
+        '@PHPUnit100Migration:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
         'fopen_flags' => true,
         'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],

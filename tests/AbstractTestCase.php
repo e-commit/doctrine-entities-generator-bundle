@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
 
-abstract class AbstractTest extends KernelTestCase
+abstract class AbstractTestCase extends KernelTestCase
 {
     protected string $tempFolder;
 

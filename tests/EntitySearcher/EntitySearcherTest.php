@@ -83,7 +83,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestInputMatchesClassProvider(): array
+    public static function getTestInputMatchesClassProvider(): array
     {
         return [
             ['Foo\Bar\Class', true],
@@ -139,7 +139,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestClassCanBeGeneratedProvider(): array
+    public static function getTestClassCanBeGeneratedProvider(): array
     {
         return [
             [Author::class, true],
@@ -181,7 +181,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function getTestProvider(): array
+    public static function getTestProvider(): array
     {
         $data = [];
 
