@@ -28,22 +28,22 @@ jobs:
                         description: 'with SF 7.4.* lowest'
 
                     #Symfony versions
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '6.4.*'
                         description: 'with SF 6.4.*'
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '6.4.*@dev'
                         description: 'with SF 6.4.* dev'
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '7.3.*'
                         description: 'with SF 7.3.*'
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '7.3.*@dev'
                         description: 'with SF 7.3.* dev'
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '7.4.*'
                         description: 'with SF 7.4.*'
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         symfony-version: '7.4.*@dev'
                         description: 'with SF 7.4.* dev'
 
@@ -52,6 +52,7 @@ jobs:
                     -   php-version: '8.2'
                     -   php-version: '8.3'
                     -   php-version: '8.4'
+                    -   php-version: '8.5'
 
                     #CS
                     -   php-version: '8.2'
@@ -59,7 +60,7 @@ jobs:
                         coding-standards: true
 
                     # Dependencies
-                    -   php-version: '8.4'
+                    -   php-version: '8.5'
                         description: 'with Analyze dependencies'
                         analyze-dependencies: true
 
