@@ -278,7 +278,7 @@ class UseStatementManipulatorTest extends TestCase
         $this->assertSame($namespace, UseStatementManipulator::getNamespace($class));
     }
 
-    public function getTestGetNamespaceProvider(): array
+    public static function getTestGetNamespaceProvider(): array
     {
         return [
             ['Foo\Bar\MyClass', 'Foo\Bar'],
@@ -295,7 +295,7 @@ class UseStatementManipulatorTest extends TestCase
         $this->assertSame($shortClass, UseStatementManipulator::getShortClassName($class));
     }
 
-    public function getTestGetShortClassNameProvider(): array
+    public static function getTestGetShortClassNameProvider(): array
     {
         return [
             ['Foo\Bar\MyClass', 'MyClass'],
@@ -312,7 +312,7 @@ class UseStatementManipulatorTest extends TestCase
         $this->assertSame($expectedResult, UseStatementManipulator::areClassesAlphabetical($class1, $class2));
     }
 
-    public function getTestAreClassesAlphabeticalProvider(): array
+    public static function getTestAreClassesAlphabeticalProvider(): array
     {
         return [
             ['Bar\Foo', 'Foo\Bar', true],

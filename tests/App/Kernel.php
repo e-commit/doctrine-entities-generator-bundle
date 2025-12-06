@@ -31,6 +31,14 @@ class Kernel extends BaseKernel
         $loader->load(function (ContainerBuilder $container): void {
             $container->setParameter('entity_dir', $this->getEntityDir());
             $container->setParameter('entity_prefix', $this->getEntityPrefix());
+
+            if (\PHP_VERSION_ID >= 80400) { // @legacy
+                $container->loadFromExtension('doctrine', [
+                    'orm' => [
+                        'enable_native_lazy_objects' => true,
+                    ],
+                ]);
+            }
         });
     }
 
