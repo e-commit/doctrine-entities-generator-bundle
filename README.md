@@ -1,6 +1,6 @@
 # EcommitDoctrineEntitiesGeneratorBundle
 
-The EcommitDoctrineEntitiesGeneratorBundle bundle (for Symfony) allows the user to re(generate) getters-setters 
+The EcommitDoctrineEntitiesGeneratorBundle bundle (for Symfony) allows the user to (re)generate getters-setters 
 methods for Doctrine ORM entities.
 
 
