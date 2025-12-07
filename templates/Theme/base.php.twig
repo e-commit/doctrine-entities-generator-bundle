@@ -35,25 +35,32 @@
     {% set block_field_hint_name = 'field_hint_'~fieldMapping.type %}
     {% if block(block_field_hint_name) is defined %}
         {{ block(block_field_hint_name)|spaceless }}
-    {% elseif types|length > 0 %}
-        {% set field_hints = [] %}
+    {% elseif type %}
+        {% set hintParts = [] %}
+        {% if helper.is(type, 'Symfony\\Component\\TypeInfo\\Type\\UnionType') %}
+            {% set types = type.types  %}
+        {% else %}
+            {% set types = [type] %}
+        {% endif %}
 
-        {% for type in types %}
-            {% if type.className  %}
-                {% set field_hint = type.className %}
-                {% if field_hint|first != '\\' %}
-                    {% set field_hint = '\\' ~ field_hint %}
+        {% for subType in types %}
+            {% if 'null' != subType.__toString() %}
+                {% if helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\ObjectType') %}
+                    {% set subTypeHint = '\\' ~ subType.className %}
+                {% elseif helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\CollectionType') %}
+                    {% set subTypeHint = 'array' %}
+                {% else %}
+                    {% set subTypeHint = subType.__toString() %}
                 {% endif %}
-                {% set field_hints = field_hints|merge([field_hint]) %}
-            {% elseif type.builtinType %}
-                {% set field_hints = field_hints|merge([type.builtinType]) %}
+
+                {% set hintParts = hintParts|merge([subTypeHint]) %}
             {% endif %}
         {% endfor %}
 
-        {% if field_hints|length > 1 %}
-            {{ field_hints|join('|') ~ '|null' }}
-        {% elseif field_hints|length > 0 %}
-            ?{{ field_hints|join('|') }}
+        {% if hintParts|length > 1 %}
+            {{ hintParts|join('|') }}|null
+        {% else %}
+            ?{{ hintParts|join('|') }}
         {% endif %}
     {% endif %}
 {% endblock %}

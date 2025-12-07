@@ -55,13 +55,13 @@ class EntityGeneratorTest extends AbstractTestCase
     public function testServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
+        self::$kernel?->getContainer()->get('ecommit_doctrine_entities_generator.entity_generator');
     }
 
     public function testAliasServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get(EntityGenerator::class);
+        self::$kernel?->getContainer()->get(EntityGenerator::class);
     }
 
     public function testServiceClass(): void

@@ -46,13 +46,13 @@ class EntitySearcherTest extends KernelTestCase
     public function testServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher');
+        self::$kernel?->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher');
     }
 
     public function testAliasServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get(EntitySearcher::class);
+        self::$kernel?->getContainer()->get(EntitySearcher::class);
     }
 
     public function testServiceClass(): void
@@ -133,7 +133,7 @@ class EntitySearcherTest extends KernelTestCase
     public function testClassCanBeGenerated(string $class, bool $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
-        $managerRegistry = self::$kernel->getContainer()->get('doctrine');
+        $managerRegistry = self::$kernel?->getContainer()->get('doctrine');
         $metadata = $managerRegistry->getManager()->getClassMetadata($class);
 
         $entitySearcher = new EntitySearcher($managerRegistry);
@@ -169,7 +169,7 @@ class EntitySearcherTest extends KernelTestCase
     public function testSearchInManager(string $input, array $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
-        $managerRegistry = self::$kernel->getContainer()->get('doctrine');
+        $managerRegistry = self::$kernel?->getContainer()->get('doctrine');
         $manager = $managerRegistry->getManager();
 
         $entitySearcher = new EntitySearcher($managerRegistry);

@@ -29,7 +29,7 @@ abstract class AbstractTestCase extends KernelTestCase
     {
         self::bootKernel();
 
-        $this->tempFolder = self::$kernel->getProjectDir().'/var/tmp';
+        $this->tempFolder = (string) self::$kernel?->getProjectDir().'/var/tmp';
         $fs = new Filesystem();
         if ($fs->exists($this->tempFolder)) {
             $fs->remove($this->tempFolder);

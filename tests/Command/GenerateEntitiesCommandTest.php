@@ -66,7 +66,11 @@ class GenerateEntitiesCommandTest extends AbstractTestCase
             $this->getEntityGeneratorMock()
         );
 
-        $application->add($command);
+        if (method_exists($application, 'addCommand')) {
+            $application->addCommand($command);
+        } else { // @legacy SF <= 7.4
+            $application->add($command);
+        }
 
         return new CommandTester($application->find('ecommit:doctrine:generate-entities'));
     }

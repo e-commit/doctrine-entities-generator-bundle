@@ -38,6 +38,12 @@ class Kernel extends BaseKernel
                         'enable_native_lazy_objects' => true,
                     ],
                 ]);
+            } else {
+                $container->loadFromExtension('doctrine', [
+                    'orm' => [
+                        'auto_generate_proxy_classes' => false,
+                    ],
+                ]);
             }
         });
     }

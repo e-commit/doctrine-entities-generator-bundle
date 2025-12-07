@@ -31,6 +31,7 @@ use Doctrine\ORM\Mapping\OneToOneOwningSideMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
+use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\TwigHelper;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcherInterface;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\ClassNotManagedException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterfaceNotUsedException;
@@ -279,7 +280,7 @@ class EntityGenerator implements EntityGeneratorInterface
     protected function addField(GenerateEntityRequest $request, FieldMapping $fieldMapping): void
     {
         $fieldName = $fieldMapping->fieldName;
-        $types = $request->doctrineExtractor->getTypes($request->reflectionClass->getName(), $fieldName);
+        $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $phpType = $reflectionProperty->getType();
 
@@ -290,10 +291,11 @@ class EntityGenerator implements EntityGeneratorInterface
                     'methodName' => $setMethodName,
                     'fieldName' => $fieldName,
                     'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
-                    'types' => $types,
+                    'type' => $type,
                     'phpType' => $phpType,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
+                    'helper' => new TwigHelper(),
                 ]);
             }
         }
@@ -303,10 +305,11 @@ class EntityGenerator implements EntityGeneratorInterface
             $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'field_get', [
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
-                'types' => $types,
+                'type' => $type,
                 'phpType' => $phpType,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
+                'helper' => new TwigHelper(),
             ]);
         }
     }
