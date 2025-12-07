@@ -44,13 +44,13 @@ class EntitySearcherTest extends KernelTestCase
     public function testServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher'); // @phpstan-ignore-line
+        self::$kernel->getContainer()->get('ecommit_doctrine_entities_generator.entity_searcher');
     }
 
     public function testAliasServiceIsPrivate(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        self::$kernel->getContainer()->get(EntitySearcher::class); // @phpstan-ignore-line
+        self::$kernel->getContainer()->get(EntitySearcher::class);
     }
 
     public function testServiceClass(): void

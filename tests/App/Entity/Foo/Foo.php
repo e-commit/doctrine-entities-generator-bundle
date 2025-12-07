@@ -22,7 +22,7 @@ class Foo
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'foo_id')]
-    protected $fooId;
+    protected ?int $fooId = null;
 
     /*
      * Getters / Setters (auto-generated)

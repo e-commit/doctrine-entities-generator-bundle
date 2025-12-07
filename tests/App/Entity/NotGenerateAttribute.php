@@ -23,10 +23,10 @@ class NotGenerateAttribute
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'author_id')]
-    protected $Id;
+    protected ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
 
     /*
      * Getters / Setters (auto-generated)

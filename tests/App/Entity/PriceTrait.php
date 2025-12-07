@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait PriceTrait
 {
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $price;
+    protected ?string $price = null;
 
     public function renderPrice(): string
     {

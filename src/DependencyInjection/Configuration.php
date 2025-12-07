@@ -16,6 +16,11 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @phpstan-type ProcessedConfiguration array{
+ *     template: string
+ * }
+ */
 class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
@@ -25,7 +30,13 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('template')->defaultValue('@EcommitDoctrineEntitiesGenerator/Theme/base.php.twig')->end()
+                ->scalarNode('template')
+                    ->defaultValue('@EcommitDoctrineEntitiesGenerator/Theme/base.php.twig')
+                    ->validate()
+                        ->ifTrue(fn (mixed $value) => !\is_string($value))
+                        ->thenInvalid('Invalid template')
+                    ->end()
+                ->end()
             ->end()
         ;
 

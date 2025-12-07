@@ -22,8 +22,13 @@ class Bigint
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected $id;
+    protected ?int $id = null;
 
+    /**
+     * @legacy
+     * DBAL 3 : ?string
+     * DBAL 4 : int|string|null
+     */
     #[ORM\Column(type: 'bigint')]
     protected $bigintField;
 

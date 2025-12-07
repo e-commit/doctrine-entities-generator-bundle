@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
@@ -23,13 +24,16 @@ class Initializer2 implements EntityInitializerInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected $id;
+    protected ?int $id = null;
 
+    /**
+     * @var Collection<int, Author>
+     */
     #[ORM\ManyToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author')]
     #[ORM\JoinTable(name: 'initializer2_author')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'author_id', referencedColumnName: 'author_id')]
-    protected $authors;
+    protected Collection $authors;
 
     public function initializeEntity(): void
     {

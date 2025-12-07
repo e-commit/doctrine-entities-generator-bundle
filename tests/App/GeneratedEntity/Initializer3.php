@@ -24,13 +24,16 @@ class Initializer3
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected $id;
+    protected ?int $id = null;
 
+    /**
+     * @var Collection<int, Author>
+     */
     #[ORM\ManyToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author')]
     #[ORM\JoinTable(name: 'initializer3_author')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'author_id', referencedColumnName: 'author_id')]
-    protected $authors;
+    protected Collection $authors;
 
     /*
      * Getters / Setters (auto-generated)

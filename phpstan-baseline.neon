@@ -7,13 +7,32 @@ parameters:
         -
             message: '#Cannot call method.+(null|false)#'
             path: tests/GeneratedEntityTest.php
+
         -
-            message: '#(Property|Method).+no (return )*type specified#'
+            message: '#Property .+\$customFieldWithoutHint has no type specified#'
             paths:
-                - tests/App/Entity/
-                - tests/App/GeneratedEntity/
-                # legacy Support for doctrine/dbal v3
-                - tests/App/GeneratedEntityDbal3/
+                - tests/App/Entity/Category.php
+                - tests/App/GeneratedEntity/Category.php
+        -
+            message: '#(Property|Method).+(nameWithoutHint|decimalFieldWithoutHint|jsonField|customField).+no (return )*type specified#i'
+            paths:
+                - tests/App/Entity/SubClass.php
+                - tests/App/GeneratedEntity/SubClass.php
+        -
+            message: '#(getCustomFieldWithoutHint|getNameWithoutHint).+ should return string\|null but returns mixed#'
+            path: tests/App/GeneratedEntity/
+        -
+            message: '#(Property|Method).+bigintField.+no (return )*type specified#i'
+            paths:
+                - tests/App/Entity/Bigint.php
+                - tests/App/GeneratedEntity/Bigint.php
+                - tests/App/GeneratedEntityDbal3/Bigint.php
+        -
+            message: '#getBigintField.+ should return int\|string\|null but returns mixed#'
+            path: tests/App/GeneratedEntity/Bigint.php
+        -
+            message: '#getBigintField.+ should return string\|null but returns mixed#'
+            path: tests/App/GeneratedEntityDbal3/Bigint.php
 
         # Legacy Support for nikic/php-parser v4
         -
@@ -26,5 +45,5 @@ parameters:
             message: '#Parameter \#1 \$phpVersion of class PhpParser\\Lexer\\Emulative constructor expects PhpParser\\PhpVersion\|null, array\<string, array\<int, string\>\> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php
         -
-            message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array given#'
+            message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array<mixed> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php

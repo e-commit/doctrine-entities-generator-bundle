@@ -20,13 +20,13 @@ class MainClass
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'id')]
-    private $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $toto;
+    private ?string $toto = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $tutu;
+    protected ?string $tutu = null;
 
     public function getMainMethod(): string
     {
