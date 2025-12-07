@@ -22,14 +22,14 @@ class Sale
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book', inversedBy: 'sales')]
     #[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'book_id', nullable: false)]
-    protected $book;
+    protected ?Book $book;
 
     #[ORM\Id]
     #[ORM\Column(type: 'smallint')]
-    protected $year;
+    protected ?int $year = null;
 
     #[ORM\Column(type: 'integer')]
-    protected $countSales;
+    protected ?int $countSales = null;
 
     /*
      * Getters / Setters (auto-generated)

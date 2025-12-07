@@ -23,7 +23,7 @@ class Initializer5 implements EntityInitializerInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected $id;
+    protected ?int $id = null;
 
     public function initializeEntity(): void
     {

@@ -15,5 +15,5 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
 class MyObject
 {
-    public $hello;
+    public ?string $hello = null;
 }

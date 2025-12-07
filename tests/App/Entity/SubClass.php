@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo as MyFoo;
 
 #[ORM\Entity]
@@ -21,63 +23,69 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo as MyFoo;
 class SubClass extends MainClass
 {
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    protected $nameWithoutHint;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer1', inversedBy: 'sub')]
     #[ORM\JoinColumn(name: 'first_initializer_id', referencedColumnName: 'id')]
-    protected $firstInitializer;
+    protected ?Initializer1 $firstInitializer = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer2')]
     #[ORM\JoinColumn(name: 'second_initializer_id', referencedColumnName: 'id')]
-    protected $secondInitializer;
+    protected ?Initializer2 $secondInitializer = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Foo')]
     #[ORM\JoinColumn(name: 'foo_id', referencedColumnName: 'foo_id')]
-    protected $foo;
+    protected ?MyFoo $foo = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Foo\Bar')]
     #[ORM\JoinColumn(name: 'bar_id', referencedColumnName: 'bar_id')]
-    protected $bar;
+    protected ?Bar $bar = null;
 
     #[ORM\ManyToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass', inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    protected $parent;
+    protected ?SubClass $parent = null;
 
+    /**
+     * @var Collection<int, SubClass>
+     */
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass', mappedBy: 'parent')]
-    protected $children;
+    protected Collection $children;
 
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $decimalField;
+    protected ?string $decimalField;
 
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected ?string $decimalFieldWithHint;
+    protected $decimalFieldWithoutHint;
 
     #[ORM\Column(type: 'datetime')]
-    protected $dateField;
+    protected ?\DateTime $dateField = null;
 
     #[ORM\Column(type: 'boolean')]
-    protected $booleanField;
+    protected ?bool $booleanField = null;
 
     #[ORM\Column(type: 'text')]
-    protected $textField;
+    protected ?string $textField = null;
 
     #[ORM\Column(type: 'object')]
-    protected $objectField;
+    protected ?object $objectField = null;
 
     #[ORM\Column(type: 'array')]
-    protected $arrayField;
+    protected ?array $arrayField = null;
 
     #[ORM\Column(type: 'simple_array')]
-    protected $simpleArrayField;
+    protected ?array $simpleArrayField = null;
 
     #[ORM\Column(type: 'json')]
-    protected $jsonField;
+    protected mixed $jsonField = null;
 
     #[ORM\Column(type: 'guid')]
-    protected $guidField;
+    protected ?string $guidField = null;
 
     #[ORM\Column(type: 'my_custom_type')]
-    protected $customField;
+    protected mixed $customField = null;
 
     public function getMyFoo(): ?MyFoo
     {

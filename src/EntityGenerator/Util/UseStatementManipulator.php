@@ -101,7 +101,9 @@ class UseStatementManipulator
         if (\is_callable([$this->parser, 'getTokens'])) {
             $this->oldTokens = $this->parser->getTokens();
         } elseif (\is_callable($this->lexer->getTokens(...))) {
-            $this->oldTokens = $this->lexer->getTokens();
+            /** @var array<mixed> $oldTokens */
+            $oldTokens = $this->lexer->getTokens();
+            $this->oldTokens = $oldTokens;
         }
 
         if (null === $this->oldStmts) {
@@ -251,6 +253,9 @@ class UseStatementManipulator
         return $currentNamespace->toCodeString() === $namespace;
     }
 
+    /**
+     * @return Node\Stmt\Use_
+     */
     private function createBlankLineNode(): Node
     {
         return (new Builder\Use_('__EXTRA__LINE', Node\Stmt\Use_::TYPE_NORMAL))

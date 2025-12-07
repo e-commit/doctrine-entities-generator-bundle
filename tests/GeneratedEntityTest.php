@@ -75,6 +75,7 @@ class GeneratedEntityTest extends KernelTestCase
     {
         $subClass = $this->createSubClass(2);
         $this->assertSame('Name 2', $subClass->getName());
+        $this->assertSame('Name 2', $subClass->getNameWithoutHint());
         $this->assertSame('Text 2', $subClass->getTextField());
         $this->assertSame('GUID 2', $subClass->getGuidField());
         $this->assertSame('Custom 2', $subClass->getCustomField());
@@ -83,6 +84,7 @@ class GeneratedEntityTest extends KernelTestCase
 
         $subClass = $this->em->getRepository(SubClass::class)->find(2);
         $this->assertSame('Name 2', $subClass->getName());
+        $this->assertSame('Name 2', $subClass->getNameWithoutHint());
         $this->assertSame('Text 2', $subClass->getTextField());
         $this->assertSame('GUID 2', $subClass->getGuidField());
         $this->assertSame('Custom 2', $subClass->getCustomField());
@@ -102,7 +104,7 @@ class GeneratedEntityTest extends KernelTestCase
     public function testDecimalField(): void
     {
         $subClass = $this->createSubClass(2);
-        $this->assertSame(0.55, $subClass->getDecimalField());
+        $this->assertSame('0.55', $subClass->getDecimalField());
         $this->em->flush();
         $this->em->clear();
 
@@ -110,15 +112,15 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertSame('0.55', $subClass->getDecimalField());
     }
 
-    public function testDecimalFieldWithHint(): void
+    public function testDecimalFieldWithoutHint(): void
     {
         $subClass = $this->createSubClass(2);
-        $this->assertSame('0.65', $subClass->getDecimalFieldWithHint());
+        $this->assertSame(0.65, $subClass->getDecimalFieldWithoutHint());
         $this->em->flush();
         $this->em->clear();
 
         $subClass = $this->em->getRepository(SubClass::class)->find(2);
-        $this->assertSame('0.65', $subClass->getDecimalFieldWithHint());
+        $this->assertSame('0.65', $subClass->getDecimalFieldWithoutHint());
     }
 
     public function testDateField(): void
@@ -185,8 +187,9 @@ class GeneratedEntityTest extends KernelTestCase
     {
         return [
             ['setName', 'getName'],
+            ['setNameWithoutHint', 'getNameWithoutHint'],
             ['setDecimalField', 'getDecimalField'],
-            ['setDecimalFieldWithHint', 'getDecimalFieldWithHint'],
+            ['setDecimalFieldWithoutHint', 'getDecimalFieldWithoutHint'],
             ['setDateField', 'getDateField'],
             ['setBooleanField', 'getBooleanField'],
             ['setTextField', 'getTextField'],
@@ -546,10 +549,11 @@ class GeneratedEntityTest extends KernelTestCase
         $subClass = new SubClass();
         $subClass->addValues($id);
         $subClass->setName('Name '.$id)
+            ->setNameWithoutHint('Name '.$id)
             ->setFirstInitializer($firstInitializer)
             ->setSecondInitializer($secondInitializer)
-            ->setDecimalField(0.55) // Give a double - Doctrine will return string
-            ->setDecimalFieldWithHint('0.65')
+            ->setDecimalField('0.55')
+            ->setDecimalFieldWithoutHint(0.65) // Give a double - Doctrine will return string
             ->setDateField(new \DateTime('2020-01-01 00:00:00'))
             ->setBooleanField(true)
             ->setTextField('Text '.$id)
@@ -608,7 +612,8 @@ class GeneratedEntityTest extends KernelTestCase
         $category = new Category();
         $category->setCategoryId($id)
             ->setName('Name '.$id)
-            ->setCustomField('Custom '.$id);
+            ->setCustomField('Custom '.$id)
+            ->setCustomFieldWithoutHint('Custom '.$id);
         if ($book) {
             $category->addBook($book);
         }

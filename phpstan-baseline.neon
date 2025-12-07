@@ -7,14 +7,24 @@ parameters:
         -
             message: '#Cannot call method.+(null|false)#'
             path: tests/GeneratedEntityTest.php
-        -
-            message: '#(Property|Method).+no (return )*type specified#'
-            paths:
-                - tests/App/Entity/
-                - tests/App/GeneratedEntity/
         - # arrays in Doctrine\ORM\Mapping\ClassMetadataInfo -> AssociationMapping not defined
             message: '#Method Ecommit\\DoctrineEntitiesGeneratorBundle\\EntityGenerator\\EntityGenerator::addAssociation.*\(\) has parameter \$associationMapping with no value type specified in iterable type array#'
             path: src/EntityGenerator/EntityGenerator.php
+
+        -
+            message: '#Property .+\$customFieldWithoutHint has no type specified#'
+            paths:
+                - tests/App/Entity/Category.php
+                - tests/App/GeneratedEntity/Category.php
+        -
+            message: '#(Property|Method).+(nameWithoutHint|decimalFieldWithoutHint|jsonField|customField).+no (return )*type specified#i'
+            paths:
+                - tests/App/Entity/SubClass.php
+                - tests/App/GeneratedEntity/SubClass.php
+        -
+            message: '#(getCustomFieldWithoutHint|getNameWithoutHint).+ should return string\|null but returns mixed#'
+            path: tests/App/GeneratedEntity/
+
 
         # Legacy Support for nikic/php-parser v4
         -
@@ -24,5 +34,5 @@ parameters:
             message: '#Parameter \#1 \$phpVersion of class PhpParser\\Lexer\\Emulative constructor expects PhpParser\\PhpVersion\|null, array\<string, array\<int, string\>\> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php
         -
-            message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array given#'
+            message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array<mixed> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php

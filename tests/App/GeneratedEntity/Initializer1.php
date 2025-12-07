@@ -23,13 +23,13 @@ class Initializer1 implements EntityInitializerInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected $id;
+    protected ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass', mappedBy: 'firstInitializer')]
-    protected $sub;
+    protected ?SubClass $sub = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
 
     public function initializeEntity(): void
     {

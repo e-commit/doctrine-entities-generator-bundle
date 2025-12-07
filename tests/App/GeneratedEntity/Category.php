@@ -25,16 +25,22 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected ?int $categoryId = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
 
     #[ORM\Column(type: 'my_custom_type')]
-    protected $customField;
+    protected ?string $customField = null;
 
+    #[ORM\Column(type: 'my_custom_type')]
+    protected $customFieldWithoutHint;
+
+    /**
+     * @var Collection<int, Book>
+     */
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book', mappedBy: 'category')]
-    protected $books;
+    protected Collection $books;
 
     public function methodBeforeBlock(): string
     {
@@ -84,6 +90,18 @@ class Category
     public function getCustomField(): ?string
     {
         return $this->customField;
+    }
+
+    public function setCustomFieldWithoutHint(?string $customFieldWithoutHint): self
+    {
+        $this->customFieldWithoutHint = $customFieldWithoutHint;
+
+        return $this;
+    }
+
+    public function getCustomFieldWithoutHint(): ?string
+    {
+        return $this->customFieldWithoutHint;
     }
 
     public function addBook(Book $book): self

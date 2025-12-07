@@ -24,63 +24,69 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo as
 class SubClass extends MainClass
 {
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    protected $nameWithoutHint;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1', inversedBy: 'sub')]
     #[ORM\JoinColumn(name: 'first_initializer_id', referencedColumnName: 'id')]
-    protected $firstInitializer;
+    protected ?Initializer1 $firstInitializer = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2')]
     #[ORM\JoinColumn(name: 'second_initializer_id', referencedColumnName: 'id')]
-    protected $secondInitializer;
+    protected ?Initializer2 $secondInitializer = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Foo')]
     #[ORM\JoinColumn(name: 'foo_id', referencedColumnName: 'foo_id')]
-    protected $foo;
+    protected ?MyFoo $foo = null;
 
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Foo\Bar')]
     #[ORM\JoinColumn(name: 'bar_id', referencedColumnName: 'bar_id')]
-    protected $bar;
+    protected ?Bar $bar = null;
 
     #[ORM\ManyToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass', inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    protected $parent;
+    protected ?SubClass $parent = null;
 
+    /**
+     * @var Collection<int, SubClass>
+     */
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass', mappedBy: 'parent')]
-    protected $children;
+    protected Collection $children;
 
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $decimalField;
+    protected ?string $decimalField;
 
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected ?string $decimalFieldWithHint;
+    protected $decimalFieldWithoutHint;
 
     #[ORM\Column(type: 'datetime')]
-    protected $dateField;
+    protected ?\DateTime $dateField = null;
 
     #[ORM\Column(type: 'boolean')]
-    protected $booleanField;
+    protected ?bool $booleanField = null;
 
     #[ORM\Column(type: 'text')]
-    protected $textField;
+    protected ?string $textField = null;
 
     #[ORM\Column(type: 'object')]
-    protected $objectField;
+    protected ?object $objectField = null;
 
     #[ORM\Column(type: 'array')]
-    protected $arrayField;
+    protected ?array $arrayField = null;
 
     #[ORM\Column(type: 'simple_array')]
-    protected $simpleArrayField;
+    protected ?array $simpleArrayField = null;
 
     #[ORM\Column(type: 'json')]
-    protected $jsonField;
+    protected mixed $jsonField = null;
 
     #[ORM\Column(type: 'guid')]
-    protected $guidField;
+    protected ?string $guidField = null;
 
     #[ORM\Column(type: 'my_custom_type')]
-    protected $customField;
+    protected mixed $customField = null;
 
     public function getMyFoo(): ?MyFoo
     {
@@ -108,28 +114,40 @@ class SubClass extends MainClass
         return $this->name;
     }
 
-    public function setDecimalField($decimalField): self
+    public function setNameWithoutHint(?string $nameWithoutHint): self
+    {
+        $this->nameWithoutHint = $nameWithoutHint;
+
+        return $this;
+    }
+
+    public function getNameWithoutHint(): ?string
+    {
+        return $this->nameWithoutHint;
+    }
+
+    public function setDecimalField(?string $decimalField): self
     {
         $this->decimalField = $decimalField;
 
         return $this;
     }
 
-    public function getDecimalField()
+    public function getDecimalField(): ?string
     {
         return $this->decimalField;
     }
 
-    public function setDecimalFieldWithHint(?string $decimalFieldWithHint): self
+    public function setDecimalFieldWithoutHint($decimalFieldWithoutHint): self
     {
-        $this->decimalFieldWithHint = $decimalFieldWithHint;
+        $this->decimalFieldWithoutHint = $decimalFieldWithoutHint;
 
         return $this;
     }
 
-    public function getDecimalFieldWithHint(): ?string
+    public function getDecimalFieldWithoutHint()
     {
-        return $this->decimalFieldWithHint;
+        return $this->decimalFieldWithoutHint;
     }
 
     public function setDateField(?\DateTime $dateField): self

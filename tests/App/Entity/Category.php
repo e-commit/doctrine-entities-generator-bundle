@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 
@@ -23,16 +24,22 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected ?int $categoryId = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected ?string $name = null;
 
     #[ORM\Column(type: 'my_custom_type')]
-    protected $customField;
+    protected ?string $customField = null;
 
+    #[ORM\Column(type: 'my_custom_type')]
+    protected $customFieldWithoutHint;
+
+    /**
+     * @var Collection<int, Book>
+     */
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book', mappedBy: 'category')]
-    protected $books;
+    protected Collection $books;
 
     public function methodBeforeBlock(): string
     {
