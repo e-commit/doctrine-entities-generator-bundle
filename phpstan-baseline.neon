@@ -33,6 +33,11 @@ parameters:
         -
             message: '#getBigintField.+ should return string\|null but returns mixed#'
             path: tests/App/GeneratedEntityDbal3/Bigint.php
+        -
+            message: '#ReadOnlyField has an uninitialized readonly property \$readOnlyValue. Assign it in the constructor#'
+            paths:
+                - tests/App/Entity/ReadOnlyField.php
+                - tests/App/GeneratedEntity/ReadOnlyField.php
 
         # Legacy Support for nikic/php-parser v4
         -

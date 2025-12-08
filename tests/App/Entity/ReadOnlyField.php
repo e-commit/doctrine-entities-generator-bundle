@@ -15,14 +15,17 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Embeddable]
-class Address
+#[ORM\Entity]
+#[ORM\Table(name: 'read_only_field')]
+class ReadOnlyField
 {
-    #[ORM\Column(type: 'string', length: 20)]
-    protected ?string $postalCode = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', name: 'id')]
+    protected ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 20)]
-    protected ?string $city = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    protected readonly ?string $readOnlyValue;
 
     /*
      * Getters / Setters (auto-generated)

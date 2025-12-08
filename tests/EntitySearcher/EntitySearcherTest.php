@@ -15,6 +15,7 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntitySearcher;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Bigint;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
@@ -29,6 +30,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -143,6 +145,7 @@ class EntitySearcherTest extends KernelTestCase
     public static function getTestClassCanBeGeneratedProvider(): array
     {
         return [
+            [Address::class, true],
             [Author::class, true],
             [Bigint::class, true],
             [Book::class, true],
@@ -154,6 +157,7 @@ class EntitySearcherTest extends KernelTestCase
             [Initializer5::class, true],
             [MainClass::class, true],
             [NotGenerateAttribute::class, false],
+            [ReadOnlyField::class, true],
             [Sale::class, true],
             [SubClass::class, true],
         ];
@@ -209,6 +213,7 @@ class EntitySearcherTest extends KernelTestCase
         ]];
 
         $data[] = ['*', [
+            Address::class,
             Author::class,
             Bigint::class,
             Book::class,
@@ -222,11 +227,13 @@ class EntitySearcherTest extends KernelTestCase
             Initializer5::class,
             MainClass::class,
             OverrideTemplate::class,
+            ReadOnlyField::class,
             Sale::class,
             SubClass::class,
         ]];
 
         $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
+            Address::class,
             Author::class,
             Bigint::class,
             Book::class,
@@ -240,11 +247,13 @@ class EntitySearcherTest extends KernelTestCase
             Initializer5::class,
             MainClass::class,
             OverrideTemplate::class,
+            ReadOnlyField::class,
             Sale::class,
             SubClass::class,
         ]];
 
         $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
+            Address::class,
             Author::class,
             Bigint::class,
             Book::class,
@@ -258,6 +267,7 @@ class EntitySearcherTest extends KernelTestCase
             Initializer5::class,
             MainClass::class,
             OverrideTemplate::class,
+            ReadOnlyField::class,
             Sale::class,
             SubClass::class,
         ]];

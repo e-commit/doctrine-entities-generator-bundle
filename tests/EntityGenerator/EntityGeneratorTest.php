@@ -23,6 +23,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterface
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\TagNotFoundException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTestCase;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Bigint;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
@@ -39,6 +40,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
@@ -398,6 +400,7 @@ class EntityGeneratorTest extends AbstractTestCase
         $isDbal3 = method_exists(AbstractMySQLPlatform::class, 'getColumnTypeSQLSnippets');
 
         $data = [
+            [Address::class],
             [Author::class],
             [Bigint::class, $isDbal3 ? 'GeneratedEntityDbal3' : null],
             [Book::class],
@@ -407,6 +410,7 @@ class EntityGeneratorTest extends AbstractTestCase
             [Initializer3::class],
             [MainClass::class],
             [OverrideTemplate::class],
+            [ReadOnlyField::class],
             [Sale::class],
             [SubClass::class],
             [Foo::class],

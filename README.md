@@ -1,6 +1,6 @@
 # EcommitDoctrineEntitiesGeneratorBundle
 
-The EcommitDoctrineEntitiesGeneratorBundle bundle (for Symfony) allows the user to re(generate) getters-setters 
+The EcommitDoctrineEntitiesGeneratorBundle bundle (for Symfony) allows the user to (re)generate getters-setters 
 methods for Doctrine ORM entities.
 
 
@@ -290,6 +290,7 @@ The bundle only works under the following conditions :
 
 * The Doctrine attributes are used (Doctrine annotations are not compatible).
 * Only one entity (PHP class) per PHP file
+* The getters and setters of an embeddable are generated only if it's embedded at least once in an entity
 * Inside each entity (PHP class) :
     * Only one property per line
     * Only one method per line (but a method can be defined through over lines)

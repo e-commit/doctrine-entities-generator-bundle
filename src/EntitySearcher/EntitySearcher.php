@@ -52,6 +52,14 @@ class EntitySearcher implements EntitySearcherInterface
             if ($this->inputMatchesClass($className, $input) && $this->classCanBeGenerated($metadata)) {
                 $classes[] = $className;
             }
+            if ($metadata instanceof \Doctrine\ORM\Mapping\ClassMetadata) {
+                foreach ($metadata->embeddedClasses as $embedded) {
+                    $embeddedMetadata = $manager->getClassMetadata($embedded->class);
+                    if ($this->inputMatchesClass($embedded->class, $input) && $this->classCanBeGenerated($embeddedMetadata)) {
+                        $classes[] = $embedded->class;
+                    }
+                }
+            }
         }
 
         return $classes;

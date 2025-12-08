@@ -24,10 +24,9 @@ class Address
     #[ORM\Column(type: 'string', length: 20)]
     protected ?string $city = null;
 
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
+    /*
+     * Getters / Setters (auto-generated)
+     */
 
     public function setPostalCode(?string $postalCode): self
     {
@@ -36,9 +35,9 @@ class Address
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getPostalCode(): ?string
     {
-        return $this->city;
+        return $this->postalCode;
     }
 
     public function setCity(?string $city): self
@@ -48,7 +47,8 @@ class Address
         return $this;
     }
 
-    /*
-     * Getters / Setters (auto-generated)
-     */
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
 }
