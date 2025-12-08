@@ -22,6 +22,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterface
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\TagNotFoundException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\AbstractTestCase;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
@@ -391,6 +392,7 @@ class EntityGeneratorTest extends AbstractTestCase
     public static function getTestGenerateProvider(): array
     {
         $data = [
+            [Address::class],
             [Author::class],
             [Book::class],
             [Category::class],

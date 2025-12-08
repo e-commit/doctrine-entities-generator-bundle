@@ -15,6 +15,7 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntitySearcher;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcher;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Category;
@@ -142,6 +143,7 @@ class EntitySearcherTest extends KernelTestCase
     public static function getTestClassCanBeGeneratedProvider(): array
     {
         return [
+            [Address::class, true],
             [Author::class, true],
             [Book::class, true],
             [Category::class, true],
@@ -207,6 +209,7 @@ class EntitySearcherTest extends KernelTestCase
         ]];
 
         $data[] = ['*', [
+            Address::class,
             Author::class,
             Book::class,
             Category::class,
@@ -224,6 +227,7 @@ class EntitySearcherTest extends KernelTestCase
         ]];
 
         $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
+            Address::class,
             Author::class,
             Book::class,
             Category::class,
@@ -241,6 +245,7 @@ class EntitySearcherTest extends KernelTestCase
         ]];
 
         $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
+            Address::class,
             Author::class,
             Book::class,
             Category::class,

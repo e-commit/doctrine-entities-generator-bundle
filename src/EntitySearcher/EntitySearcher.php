@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
@@ -57,6 +58,14 @@ class EntitySearcher implements EntitySearcherInterface
             $className = $metadata->getReflectionClass()->getName();
             if ($this->inputMatchesClass($className, $input) && $this->classCanBeGenerated($metadata)) {
                 $classes[] = $className;
+            }
+            if ($metadata instanceof ClassMetadataInfo) {
+                foreach ($metadata->embeddedClasses as $embedded) {
+                    $embeddedMetadata = $manager->getClassMetadata($embedded['class']);
+                    if ($this->inputMatchesClass($embedded['class'], $input) && $this->classCanBeGenerated($embeddedMetadata)) {
+                        $classes[] = $embedded['class'];
+                    }
+                }
             }
         }
 

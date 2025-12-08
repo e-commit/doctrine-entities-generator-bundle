@@ -80,14 +80,7 @@ class EntityGenerator implements EntityGeneratorInterface
     public function generate(string $className): void
     {
         $reflectionClass = new \ReflectionClass($className);
-        $entityManager = $this->registry->getManagerForClass($className);
-        if (!$entityManager || !$entityManager instanceof EntityManagerInterface) {
-            throw new ClassNotManagedException(\sprintf('Class "%s" not managed', $className));
-        }
-        $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
-        if (!$metadata instanceof ClassMetadataInfo) {
-            throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Metatada not found)', $className));
-        }
+        [$entityManager, $metadata] = $this->getManagerAndMetadata($reflectionClass);
 
         if (!$this->searcher->classCanBeGenerated($metadata)) {
             throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
@@ -143,6 +136,48 @@ class EntityGenerator implements EntityGeneratorInterface
         /** @var string $content */
         $content = preg_replace($this->getPattern($reflectionClass), \sprintf('$1$2%s$4$5', $newBlockContent), $request->getSourceCode());
         $this->writeFile($reflectionClass, $content);
+    }
+
+    /**
+     * @phpstan-template T of object
+     *
+     * @param \ReflectionClass<T> $reflectionClass
+     *
+     * @return array{0: EntityManagerInterface, 1: ClassMetadataInfo<T>}
+     */
+    protected function getManagerAndMetadata(\ReflectionClass $reflectionClass): array
+    {
+        $entityManager = $this->registry->getManagerForClass($reflectionClass->getName());
+        if ($entityManager instanceof EntityManagerInterface) {
+            $metadata = $entityManager->getClassMetadata($reflectionClass->getName());
+            if (!$metadata instanceof ClassMetadataInfo) {
+                throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Metatada not found)', $reflectionClass->getName()));
+            }
+
+            return [$entityManager, $metadata];
+        }
+
+        // Search embedded
+        foreach ($this->registry->getManagers() as $entityManager) {
+            if (!$entityManager instanceof EntityManagerInterface) {
+                continue;
+            }
+            $metadataFactory = $entityManager->getMetadataFactory();
+            foreach ($metadataFactory->getAllMetadata() as $metadata) {
+                foreach ($metadata->embeddedClasses as $embedded) {
+                    if ($embedded['class'] === $reflectionClass->getName()) {
+                        $embeddedMetadata = $entityManager->getClassMetadata($embedded['class']);
+                        if (!$embeddedMetadata instanceof ClassMetadataInfo) {
+                            throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Metatada not found)', $reflectionClass->getName()));
+                        }
+
+                        return [$entityManager, $embeddedMetadata];
+                    }
+                }
+            }
+        }
+
+        throw new ClassNotManagedException(\sprintf('Class "%s" not managed', $reflectionClass->getName()));
     }
 
     /**
