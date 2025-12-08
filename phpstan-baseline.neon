@@ -24,6 +24,11 @@ parameters:
         -
             message: '#(getCustomFieldWithoutHint|getNameWithoutHint).+ should return string\|null but returns mixed#'
             path: tests/App/GeneratedEntity/
+        -
+            message: '#ReadOnlyField has an uninitialized readonly property \$readOnlyValue. Assign it in the constructor#'
+            paths:
+                - tests/App/Entity/ReadOnlyField.php
+                - tests/App/GeneratedEntity/ReadOnlyField.php
 
 
         # Legacy Support for nikic/php-parser v4

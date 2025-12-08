@@ -38,6 +38,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
@@ -401,6 +402,7 @@ class EntityGeneratorTest extends AbstractTestCase
             [Initializer3::class],
             [MainClass::class],
             [OverrideTemplate::class],
+            [ReadOnlyField::class],
             [Sale::class],
             [SubClass::class],
             [Foo::class],

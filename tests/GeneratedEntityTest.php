@@ -24,6 +24,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Category;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer1;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initializer2;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\MyObject;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntityKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -539,6 +540,14 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertTrue($book->getAuthors()->contains($author1));
         $this->assertTrue($book->getAuthors()->contains($author2));
         // $author1 and $author2 are not tested (because reverse side)
+    }
+
+    public function testReadOnly(): void
+    {
+        $this->em->getConnection()->executeQuery('INSERT INTO read_only_field (read_only_value) VALUES (\'Value\')');
+        $readOnlyField = $this->em->getRepository(ReadOnlyField::class)->find(1);
+
+        $this->assertSame('Value', $readOnlyField?->getReadOnlyValue());
     }
 
     protected function createSubClass(int $id, ?Initializer1 $firstInitializer = null, ?Initializer2 $secondInitializer = null): SubClass

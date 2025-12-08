@@ -310,9 +310,10 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $fieldName = $fieldMapping['fieldName'];
         $types = $request->doctrineExtractor->getTypes($request->reflectionClass->getName(), $fieldName);
-        $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
+        $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
+        $phpType = $reflectionProperty->getType();
 
-        if (null === $request->doctrineExtractor->isWritable($request->reflectionClass->getName(), $fieldName)) {
+        if (null === $request->doctrineExtractor->isWritable($request->reflectionClass->getName(), $fieldName) && !$reflectionProperty->isReadOnly()) {
             $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
             if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
                 $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'field_set', [
