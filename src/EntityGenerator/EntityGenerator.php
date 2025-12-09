@@ -283,7 +283,6 @@ class EntityGenerator implements EntityGeneratorInterface
         $fieldName = $fieldMapping->fieldName;
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
-        $phpType = $reflectionProperty->getType();
 
         $blockPrefix = 'field';
         $enum = $fieldMapping->enumType;
@@ -300,7 +299,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     'fieldName' => $fieldName,
                     'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                     'type' => $type,
-                    'phpType' => $phpType,
+                    'reflectionProperty' => $reflectionProperty,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
                     'enum' => $enum,
@@ -316,7 +315,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'type' => $type,
-                'phpType' => $phpType,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
                 'enum' => $enum,
@@ -329,7 +328,8 @@ class EntityGenerator implements EntityGeneratorInterface
     protected function addEmbedded(GenerateEntityRequest $request, string $fieldName, EmbeddedClassMapping $embeddedMapping): void
     {
         $targetClass = $embeddedMapping->class;
-        $phpType = (new \ReflectionProperty($request->reflectionClass->getName(), $fieldName))->getType();
+        $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
 
         $targetClassAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetClass);
         if ($request->reflectionClass->getName() === $targetClass) {
@@ -344,7 +344,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                 'targetClass' => $targetClass,
                 'targetClassAlias' => $targetClassAlias,
-                'phpType' => $phpType,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
             ]);
@@ -357,7 +358,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'targetClass' => $targetClass,
                 'targetClassAlias' => $targetClassAlias,
-                'phpType' => $phpType,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
             ]);
@@ -443,6 +445,8 @@ class EntityGenerator implements EntityGeneratorInterface
     protected function addAssociationToOne(GenerateEntityRequest $request, AssociationMapping $associationMapping, string $block, ?string $foreignMethodNameSet): void
     {
         $fieldName = $associationMapping->fieldName;
+        $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $targetEntity = $associationMapping->targetEntity;
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
@@ -459,6 +463,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                 'targetEntity' => $targetEntity,
                 'targetEntityAlias' => $targetEntityAlias,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
             ]);
@@ -471,6 +477,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
                 'targetEntityAlias' => $targetEntityAlias,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
             ]);
@@ -480,6 +488,8 @@ class EntityGenerator implements EntityGeneratorInterface
     protected function addAssociationToMany(GenerateEntityRequest $request, AssociationMapping $associationMapping, string $block, ?string $foreignMethodNameAdd, ?string $foreignMethodNameRemove): void
     {
         $fieldName = $associationMapping->fieldName;
+        $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $targetEntity = $associationMapping->targetEntity;
 
         $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
@@ -498,6 +508,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'variableName' => $this->buildVariableName(self::TYPE_ADD, $fieldName),
                 'targetEntity' => $targetEntity,
                 'targetEntityAlias' => $targetEntityAlias,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
@@ -513,6 +525,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'variableName' => $this->buildVariableName(self::TYPE_REMOVE, $fieldName),
                 'targetEntity' => $targetEntity,
                 'targetEntityAlias' => $targetEntityAlias,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
@@ -526,6 +540,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
                 'targetEntityAlias' => $targetEntityAlias,
+                'type' => $type,
+                'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
@@ -536,6 +552,8 @@ class EntityGenerator implements EntityGeneratorInterface
             'fieldName' => $fieldName,
             'targetEntity' => $targetEntity,
             'targetEntityAlias' => $targetEntityAlias,
+            'type' => $type,
+            'reflectionProperty' => $reflectionProperty,
             'request' => $request,
             'associationMapping' => $associationMapping,
             'collectionAlias' => $collectionAlias,
