@@ -236,10 +236,7 @@ class UseStatementManipulator
         return $currentNamespace->toCodeString() === $namespace;
     }
 
-    /**
-     * @return Node\Stmt\Use_
-     */
-    private function createBlankLineNode(): Node
+    private function createBlankLineNode(): Node\Stmt\Use_
     {
         return (new Builder\Use_('__EXTRA__LINE', Node\Stmt\Use_::TYPE_NORMAL))
             ->getNode()
