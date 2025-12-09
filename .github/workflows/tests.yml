@@ -15,6 +15,10 @@ jobs:
                 include:
                     #Mini (for each Symfony version)
                     -   php-version: '8.2'
+                        symfony-version: '6.4.*'
+                        composer-flags: '--prefer-stable --prefer-lowest'
+                        description: 'with SF 6.4.* lowest'
+                    -   php-version: '8.2'
                         symfony-version: '7.3.*'
                         composer-flags: '--prefer-stable --prefer-lowest'
                         description: 'with SF 7.3.* lowest'
@@ -28,6 +32,12 @@ jobs:
                         description: 'with SF 8.0.* lowest'
 
                     #Symfony versions
+                    -   php-version: '8.2'
+                        symfony-version: '6.4.*'
+                        description: 'with SF 6.4.*'
+                    -   php-version: '8.2'
+                        symfony-version: '6.4.*@dev'
+                        description: 'with SF 6.4.* dev'
                     -   php-version: '8.5'
                         symfony-version: '7.3.*'
                         description: 'with SF 7.3.*'
