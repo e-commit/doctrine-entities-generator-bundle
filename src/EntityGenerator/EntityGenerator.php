@@ -37,6 +37,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterface
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\TagNotFoundException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
+use Symfony\Component\PropertyInfo\Type;
 use Twig\Environment;
 
 /**
@@ -283,10 +284,17 @@ class EntityGenerator implements EntityGeneratorInterface
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $phpType = $reflectionProperty->getType();
 
+        $blockPrefix = 'field';
+        $enum = $fieldMapping->enumType;
+        if ($enum && isset($types[0]) && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()) {
+            $enumAlias = $request->useStatementManipulator->addUseStatementIfNecessary($enum);
+            $blockPrefix = 'enum';
+        }
+
         if (null === $request->doctrineExtractor->isWritable($request->reflectionClass->getName(), $fieldName) && !$reflectionProperty->isReadOnly()) {
             $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
             if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
-                $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'field_set', [
+                $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, $blockPrefix.'_set', [
                     'methodName' => $setMethodName,
                     'fieldName' => $fieldName,
                     'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
@@ -294,19 +302,23 @@ class EntityGenerator implements EntityGeneratorInterface
                     'phpType' => $phpType,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
+                    'enum' => $enum,
+                    'enumAlias' => $enumAlias ?? null,
                 ]);
             }
         }
 
         $getMethodName = $this->buildMethodName(self::TYPE_GET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $getMethodName)) {
-            $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, 'field_get', [
+            $request->newBlockContents[] = $this->renderBlock($request->reflectionClass, $blockPrefix.'_get', [
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'types' => $types,
                 'phpType' => $phpType,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
+                'enum' => $enum,
+                'enumAlias' => $enumAlias ?? null,
             ]);
         }
     }
