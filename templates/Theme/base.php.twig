@@ -89,6 +89,24 @@
 {% endblock %}
 {% endautoescape %}
 
+{# Enum #}
+
+{% block enum_get %}
+    public function {{ methodName }}(): ?{{ enumAlias }}
+    {
+        return $this->{{ fieldName }};
+    }
+{% endblock %}
+
+{% block enum_set %}
+    public function {{ methodName }}(?{{ enumAlias }} ${{ variableName }}): self
+    {
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
 {# Embedded #}
 
 {% block embedded_get %}

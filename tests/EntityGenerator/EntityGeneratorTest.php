@@ -43,6 +43,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
@@ -415,6 +416,7 @@ class EntityGeneratorTest extends AbstractTestCase
             [SubClass::class],
             [Foo::class],
             [Bar::class],
+            [WithEnum::class],
         ];
 
         return $data;
