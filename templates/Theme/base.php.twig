@@ -47,7 +47,7 @@
             {% if 'null' != subType.__toString() %}
                 {% if helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\ObjectType') %}
                     {% set subTypeHint = '\\' ~ subType.className %}
-                {% elseif helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\CollectionType') %}
+                {% elseif helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\CollectionType') and subType.isIdentifiedBy(constant('Symfony\\Component\\TypeInfo\\TypeIdentifier::ARRAY')) %}
                     {% set subTypeHint = 'array' %}
                 {% else %}
                     {% set subTypeHint = subType.__toString() %}
