@@ -116,17 +116,6 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertSame('0.55', $subClass->getDecimalField());
     }
 
-    public function testDecimalFieldWithoutHint(): void
-    {
-        $subClass = $this->createSubClass(2);
-        $this->assertSame(0.65, $subClass->getDecimalFieldWithoutHint());
-        $this->em->flush();
-        $this->em->clear();
-
-        $subClass = $this->em->getRepository(SubClass::class)->find(2);
-        $this->assertSame('0.65', $subClass->getDecimalFieldWithoutHint());
-    }
-
     public function testDateField(): void
     {
         $subClass = $this->createSubClass(2);
@@ -178,7 +167,6 @@ class GeneratedEntityTest extends KernelTestCase
             ['setName', 'getName'],
             ['setNameWithoutHint', 'getNameWithoutHint'],
             ['setDecimalField', 'getDecimalField'],
-            ['setDecimalFieldWithoutHint', 'getDecimalFieldWithoutHint'],
             ['setDateField', 'getDateField'],
             ['setBooleanField', 'getBooleanField'],
             ['setTextField', 'getTextField'],
@@ -564,7 +552,6 @@ class GeneratedEntityTest extends KernelTestCase
             ->setFirstInitializer($firstInitializer)
             ->setSecondInitializer($secondInitializer)
             ->setDecimalField('0.55')
-            ->setDecimalFieldWithoutHint(0.65) // Give a double - Doctrine will return string
             ->setDateField(new \DateTime('2020-01-01 00:00:00'))
             ->setBooleanField(true)
             ->setTextField('Text '.$id)

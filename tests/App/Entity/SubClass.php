@@ -57,9 +57,6 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     protected ?string $decimalField;
 
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $decimalFieldWithoutHint;
-
     #[ORM\Column(type: 'datetime')]
     protected ?\DateTime $dateField = null;
 

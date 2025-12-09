@@ -58,9 +58,6 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     protected ?string $decimalField;
 
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
-    protected $decimalFieldWithoutHint;
-
     #[ORM\Column(type: 'datetime')]
     protected ?\DateTime $dateField = null;
 
@@ -130,18 +127,6 @@ class SubClass extends MainClass
     public function getDecimalField(): ?string
     {
         return $this->decimalField;
-    }
-
-    public function setDecimalFieldWithoutHint($decimalFieldWithoutHint): self
-    {
-        $this->decimalFieldWithoutHint = $decimalFieldWithoutHint;
-
-        return $this;
-    }
-
-    public function getDecimalFieldWithoutHint()
-    {
-        return $this->decimalFieldWithoutHint;
     }
 
     public function setDateField(?\DateTime $dateField): self
