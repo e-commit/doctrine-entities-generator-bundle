@@ -32,6 +32,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
@@ -158,6 +159,7 @@ class EntitySearcherTest extends KernelTestCase
             [ReadOnlyField::class, true],
             [Sale::class, true],
             [SubClass::class, true],
+            [WithEnum::class, true],
         ];
     }
 
@@ -227,6 +229,7 @@ class EntitySearcherTest extends KernelTestCase
             ReadOnlyField::class,
             Sale::class,
             SubClass::class,
+            WithEnum::class,
         ]];
 
         $data[] = ['Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\*', [
@@ -246,6 +249,7 @@ class EntitySearcherTest extends KernelTestCase
             ReadOnlyField::class,
             Sale::class,
             SubClass::class,
+            WithEnum::class,
         ]];
 
         $data[] = ['Ecommit/DoctrineEntitiesGeneratorBundle/Tests/App/Entity/*', [
@@ -265,6 +269,7 @@ class EntitySearcherTest extends KernelTestCase
             ReadOnlyField::class,
             Sale::class,
             SubClass::class,
+            WithEnum::class,
         ]];
 
         return $data;

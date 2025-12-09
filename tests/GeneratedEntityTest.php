@@ -17,6 +17,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumInt;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumString;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book;
@@ -26,6 +28,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Initialize
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\MyObject;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntityKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -548,6 +551,22 @@ class GeneratedEntityTest extends KernelTestCase
         $readOnlyField = $this->em->getRepository(ReadOnlyField::class)->find(1);
 
         $this->assertSame('Value', $readOnlyField?->getReadOnlyValue());
+    }
+
+    public function testEnum(): void
+    {
+        $object = new WithEnum();
+        $object->setEnumInt(EnumInt::Value1)
+            ->setEnumString(EnumString::Value1)
+            ->setEnumStringSimpleArray([EnumString::Value1]);
+        $this->em->persist($object);
+        $this->em->flush();
+        $this->em->clear();
+
+        $object = $this->em->getRepository(WithEnum::class)->find(1);
+        $this->assertSame(EnumInt::Value1, $object->getEnumInt());
+        $this->assertSame(EnumString::Value1, $object->getEnumString());
+        $this->assertSame([EnumString::Value1], $object->getEnumStringSimpleArray());
     }
 
     protected function createSubClass(int $id, ?Initializer1 $firstInitializer = null, ?Initializer2 $secondInitializer = null): SubClass
