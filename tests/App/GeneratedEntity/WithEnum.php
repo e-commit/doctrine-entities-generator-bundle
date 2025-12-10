@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumInt;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumString;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumInt;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumString;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'with_enum')]
