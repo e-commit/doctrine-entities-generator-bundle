@@ -69,7 +69,7 @@ class EntitySearcher implements EntitySearcherInterface
             }
         }
 
-        return $classes;
+        return array_unique($classes);
     }
 
     protected function inputMatchesClass(string $className, string $input): bool
