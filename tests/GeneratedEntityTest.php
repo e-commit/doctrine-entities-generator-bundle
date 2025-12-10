@@ -17,8 +17,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumInt;
-use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum\EnumString;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Address;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Author;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\Book;
@@ -30,6 +28,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\ReadOnlyFi
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntityKernel;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumInt;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumString;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GeneratedEntityTest extends KernelTestCase

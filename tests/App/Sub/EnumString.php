@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Enum;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub;
 
 enum EnumString: string
 {
