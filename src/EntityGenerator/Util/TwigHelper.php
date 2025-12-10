@@ -22,4 +22,11 @@ class TwigHelper
     {
         return $value instanceof $class;
     }
+
+    public function isNullable(\ReflectionProperty $reflectionProperty): bool
+    {
+        $type = $reflectionProperty->getType();
+
+        return null === $type || $type->allowsNull();
+    }
 }

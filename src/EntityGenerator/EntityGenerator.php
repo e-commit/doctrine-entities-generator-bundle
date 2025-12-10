@@ -348,6 +348,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
+                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -362,6 +363,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
+                'helper' => new TwigHelper(),
             ]);
         }
     }
@@ -467,6 +469,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
+                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -481,6 +484,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
+                'helper' => new TwigHelper(),
             ]);
         }
     }
@@ -513,6 +517,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
+                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -530,6 +535,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
+                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -545,6 +551,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'collectionAlias' => $collectionAlias,
+                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -558,6 +565,7 @@ class EntityGenerator implements EntityGeneratorInterface
             'associationMapping' => $associationMapping,
             'collectionAlias' => $collectionAlias,
             'collectionAliasInConstructor' => $collectionAliasInConstructor,
+            'helper' => new TwigHelper(),
         ]);
     }
 
