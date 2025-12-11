@@ -64,7 +64,25 @@ parameters:
             message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array<mixed> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php
 
-        #Temp
+        # Legacy support for phpstan/phpdoc-parser v1
         -
-            message: '#^Property .+::\$jsonField \(array<string, int>\|null\) does not accept array\|null\.$#'
-            path: tests/App/GeneratedEntity/SubClass.php
+            message: '#Class PHPStan\\PhpDocParser\\Lexer\\Lexer constructor invoked with 0 parameters, 1 required#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Class PHPStan\\PhpDocParser\\Parser\\ConstExprParser constructor invoked with 0 parameters, 1 required#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Parameter \#1 \$config of class PHPStan\\PhpDocParser\\Parser\\TypeParser constructor expects PHPStan\\PhpDocParser\\ParserConfig, PHPStan\\PhpDocParser\\Parser\\ConstExprParser given#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Class PHPStan\\PhpDocParser\\Parser\\TypeParser constructor invoked with 1 parameter, 2 required#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Class PHPStan\\PhpDocParser\\Parser\\PhpDocParser constructor invoked with 2 parameters, 3 required#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Parameter \#1 \$config of class PHPStan\\PhpDocParser\\Parser\\PhpDocParser constructor expects PHPStan\\PhpDocParser\\ParserConfig, PHPStan\\PhpDocParser\\Parser\\TypeParser given#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php
+        -
+            message: '#Parameter \#2 \$typeParser of class PHPStan\\PhpDocParser\\Parser\\PhpDocParser constructor expects PHPStan\\PhpDocParser\\Parser\\TypeParser, PHPStan\\PhpDocParser\\Parser\\ConstExprParser given#'
+            path: src/EntityGenerator/Util/PhpDocPropertyTypeExtractor.php

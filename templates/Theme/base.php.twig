@@ -68,6 +68,12 @@
 {% endblock %}
 
 {% block field_set %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @param {{ phpdoc }} ${{ variableName }}
+     */
+{% endif %}
     public function {{ methodName }}({{ (block('field_hint')|spaceless) ? block('field_hint')|spaceless ~ ' ' : '' }}${{ variableName }}): self
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -77,16 +83,27 @@
 {% endblock %}
 
 {% block field_get %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @return {{ phpdoc }}
+     */
+{% endif %}
     public function {{ methodName }}(){{ (block('field_hint')|spaceless) ? ': ' ~  block('field_hint')|spaceless : '' }}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
-{% endautoescape %}
 
 {# Enum #}
 
 {% block enum_get %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @return {{ phpdoc }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
@@ -98,6 +115,12 @@
 {% endblock %}
 
 {% block enum_set %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @param {{ phpdoc }} ${{ variableName }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
@@ -113,6 +136,12 @@
 {# Embedded #}
 
 {% block embedded_get %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @return {{ phpdoc }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
@@ -124,6 +153,12 @@
 {% endblock %}
 
 {% block embedded_set %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @param {{ phpdoc }} ${{ variableName }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
@@ -139,6 +174,12 @@
 {# Associations To One #}
 
 {% block assocation_to_one_get %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @return {{ phpdoc }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
@@ -150,6 +191,12 @@
 {% endblock %}
 
 {% block assocation_one_to_one_unidirectional_set %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @param {{ phpdoc }} ${{ variableName }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
@@ -171,6 +218,12 @@
 {% endblock %}
 
 {% block assocation_one_to_one_reverse_set_nullable %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @return {{ phpdoc }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
@@ -191,6 +244,12 @@
 {% endblock %}
 
 {% block assocation_one_to_one_reverse_set_not_null %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
+    /**
+     * @param {{ phpdoc }} ${{ variableName }}
+     */
+{% endif %}
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
@@ -215,9 +274,12 @@
 {# Associations To Many #}
 
 {% block assocation_to_many_get %}
+{% set phpdoc = phpDocPropertyType|spaceless %}
+{% if phpdoc|length > 0 %}
     /**
-     * @return {{ request.useStatementManipulator.addUseStatementIfNecessary('Doctrine\\Common\\Collections\\Collection') }}<int, {{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}>
+     * @return {{ phpdoc }}
      */
+{% endif %}
     public function {{ methodName }}(): {{ (sourceType|length > 0) ? sourceType : request.useStatementManipulator.addUseStatementIfNecessary('Doctrine\\Common\\Collections\\Collection') }}
     {
         return $this->{{ fieldName }};
@@ -307,3 +369,4 @@
         return $this;
     }
 {% endblock %}
+{% endautoescape %}

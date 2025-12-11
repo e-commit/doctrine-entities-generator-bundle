@@ -116,6 +116,9 @@ Getter-setter generation follows PHP nullability: when a PHP property type is pr
 only if the property type is nullable. When the PHP type is missing, generated types default to nullable.
 This behavior can be changed by customizing the template (see the FAQ).
 
+If a property has a PHPDoc `@var` annotation, it will also be included in the generated getter-setter (except for `addXXX` and `removeXXX` methods on to-many relationships).
+This behavior can be changed by customizing the template (see the FAQ).
+
 ## FAQ ##
 
 ### How can I change the generated code ? ###

@@ -198,6 +198,9 @@ class SubClass extends MainClass
         return $this->simpleArrayField;
     }
 
+    /**
+     * @param ?array<string, int> $jsonField
+     */
     public function setJsonField(?array $jsonField): self
     {
         $this->jsonField = $jsonField;
@@ -205,6 +208,9 @@ class SubClass extends MainClass
         return $this;
     }
 
+    /**
+     * @return ?array<string, int>
+     */
     public function getJsonField(): ?array
     {
         return $this->jsonField;
@@ -315,7 +321,7 @@ class SubClass extends MainClass
     }
 
     /**
-     * @return Collection<int, self>
+     * @return Collection<int, SubClass>
      */
     public function getChildren(): Collection
     {

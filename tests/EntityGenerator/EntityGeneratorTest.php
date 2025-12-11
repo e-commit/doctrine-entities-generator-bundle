@@ -47,6 +47,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithNotNull;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithPhpDoc;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
@@ -423,6 +424,7 @@ class EntityGeneratorTest extends AbstractTestCase
             [WithNotNull::class],
             [WithoutType::class],
             [WithoutTypeRelation::class],
+            [WithPhpDoc::class],
         ];
 
         return $data;

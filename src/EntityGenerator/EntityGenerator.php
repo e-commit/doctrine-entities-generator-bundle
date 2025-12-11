@@ -284,6 +284,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
+        $phpDocPropertyType = $request->phpDocPropertyTypeExtractor->getPropertyPhpDocVarType($reflectionProperty);
 
         $blockPrefix = 'field';
         $enum = $fieldMapping->enumType;
@@ -301,6 +302,7 @@ class EntityGenerator implements EntityGeneratorInterface
                     'type' => $type,
                     'sourceType' => $sourceType,
                     'reflectionProperty' => $reflectionProperty,
+                    'phpDocPropertyType' => $phpDocPropertyType,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
                     'enum' => $enum,
@@ -317,6 +319,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
                 'enum' => $enum,
@@ -331,6 +334,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
+        $phpDocPropertyType = $request->phpDocPropertyTypeExtractor->getPropertyPhpDocVarType($reflectionProperty);
 
         $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
@@ -342,6 +346,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
                 'helper' => new TwigHelper(),
@@ -357,6 +362,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
                 'helper' => new TwigHelper(),
@@ -446,6 +452,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
+        $phpDocPropertyType = $request->phpDocPropertyTypeExtractor->getPropertyPhpDocVarType($reflectionProperty);
         $targetEntity = $associationMapping->targetEntity;
         $targetProperty = $associationMapping instanceof OwningSideMapping ? $associationMapping->inversedBy : ($associationMapping instanceof InverseSideMapping ? $associationMapping->mappedBy : null);
         $reflectionTargetProperty = $targetProperty ? new \ReflectionProperty($targetEntity, $targetProperty) : null;
@@ -462,6 +469,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
@@ -479,6 +487,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
@@ -493,6 +502,7 @@ class EntityGenerator implements EntityGeneratorInterface
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
         $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
+        $phpDocPropertyType = $request->phpDocPropertyTypeExtractor->getPropertyPhpDocVarType($reflectionProperty);
         $targetEntity = $associationMapping->targetEntity;
         $targetProperty = $associationMapping instanceof OwningSideMapping ? $associationMapping->inversedBy : ($associationMapping instanceof InverseSideMapping ? $associationMapping->mappedBy : null);
         $reflectionTargetProperty = $targetProperty ? new \ReflectionProperty($targetEntity, $targetProperty) : null;
@@ -509,6 +519,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
@@ -528,6 +539,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
@@ -545,6 +557,7 @@ class EntityGenerator implements EntityGeneratorInterface
                 'type' => $type,
                 'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'phpDocPropertyType' => $phpDocPropertyType,
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
@@ -559,6 +572,7 @@ class EntityGenerator implements EntityGeneratorInterface
             'type' => $type,
             'sourceType' => $sourceType,
             'reflectionProperty' => $reflectionProperty,
+            'phpDocPropertyType' => $phpDocPropertyType,
             'reflectionTargetProperty' => $reflectionTargetProperty,
             'request' => $request,
             'associationMapping' => $associationMapping,

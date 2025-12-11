@@ -29,6 +29,9 @@ class WithoutTypeRelation
     #[ORM\OneToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\OtherNamespace\WithoutType', mappedBy: 'relation2')]
     protected $relation2;
 
+    /**
+     * @var Collection<int, WithoutType>
+     */
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\OtherNamespace\WithoutType', mappedBy: 'relation4')]
     protected $relation4s;
 
