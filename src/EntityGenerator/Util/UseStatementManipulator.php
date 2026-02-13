@@ -121,11 +121,9 @@ class UseStatementManipulator
     public function addUseStatementIfNecessary(string $class): string
     {
         $shortClassName = self::getShortClassName($class);
-        if ($this->isInSameNamespace($class)) {
-            return $shortClassName;
-        }
 
         $namespaceNode = $this->getNamespaceNode();
+        $classNode = $this->getClassNode();
 
         $targetIndex = null;
         $addLineBreak = false;
@@ -184,6 +182,17 @@ class UseStatementManipulator
             throw new \Exception('Could not find a class!');
         }
 
+        if ($classNode->name?->toString() === $shortClassName) {
+            // we have a conflicting alias!
+            // to be safe, use the fully-qualified class name
+            // everywhere and do not add another use statement
+            return '\\'.$class;
+        }
+
+        if ($this->isInSameNamespace($class)) {
+            return $shortClassName;
+        }
+
         $newUseNode = (new Builder\Use_($class, Node\Stmt\Use_::TYPE_NORMAL))->getNode();
         array_splice(
             $namespaceNode->stmts,
@@ -221,6 +230,17 @@ class UseStatementManipulator
 
         if (!$node || !$node instanceof Node\Stmt\Namespace_) {
             throw new \Exception('Could not find namespace node');
+        }
+
+        return $node;
+    }
+
+    protected function getClassNode(): Node\Stmt\Class_
+    {
+        $node = $this->findFirstNode(/* @param mixed $node */ static fn ($node) => $node instanceof Node\Stmt\Class_);
+
+        if (!$node || !$node instanceof Node\Stmt\Class_) {
+            throw new \Exception('Could not find a class!');
         }
 
         return $node;
