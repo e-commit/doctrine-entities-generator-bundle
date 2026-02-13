@@ -81,7 +81,7 @@ class EntitySearcher implements EntitySearcherInterface
 
     public function classCanBeGenerated(ClassMetadata $metadata): bool
     {
-        if (!($metadata instanceof \Doctrine\ORM\Mapping\ClassMetadata)) {
+        if (!$metadata instanceof \Doctrine\ORM\Mapping\ClassMetadata) {
             return false;
         }
 

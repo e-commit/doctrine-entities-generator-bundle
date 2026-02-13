@@ -81,6 +81,38 @@ class UseStatementManipulatorTest extends TestCase
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
     }
 
+    public function testAddUseStatementIfNecessarySameClassNameButOtherNamespace(): void
+    {
+        $sourceCode = <<<'CODE'
+            <?php
+            namespace Foo\Bar;
+
+            class MyClass
+            {
+            }
+            CODE;
+        $manipulator = new UseStatementManipulator($sourceCode);
+        $this->assertSame('\Foo\Bar\Sub\MyClass', $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\MyClass'));
+        $this->assertSame($sourceCode, $manipulator->getSourceCode());
+    }
+
+    public function testAddUseStatementIfNecessarySameNamespaceAliasAlreadyExist(): void
+    {
+        $sourceCode = <<<'CODE'
+            <?php
+            namespace Foo\Bar;
+            
+            use MyClass2 as MySecondClass;
+
+            class MyClass
+            {
+            }
+            CODE;
+        $manipulator = new UseStatementManipulator($sourceCode);
+        $this->assertSame('\Foo\Bar\MySecondClass', $manipulator->addUseStatementIfNecessary('Foo\Bar\MySecondClass'));
+        $this->assertSame($sourceCode, $manipulator->getSourceCode());
+    }
+
     public function testAddUseStatementIfNecessaryConflict(): void
     {
         $sourceCode = <<<'CODE'
