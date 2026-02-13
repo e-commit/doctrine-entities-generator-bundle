@@ -113,6 +113,21 @@ class UseStatementManipulatorTest extends TestCase
         $this->assertSame($sourceCode, $manipulator->getSourceCode());
     }
 
+    public function testAddUseStatementIfNecessarySelf(): void
+    {
+        $sourceCode = <<<'CODE'
+            <?php
+            namespace Foo\Bar;
+
+            class MyClass
+            {
+            }
+            CODE;
+        $manipulator = new UseStatementManipulator($sourceCode);
+        $this->assertSame('self', $manipulator->addUseStatementIfNecessary('Foo\Bar\MyClass'));
+        $this->assertSame($sourceCode, $manipulator->getSourceCode());
+    }
+
     public function testAddUseStatementIfNecessaryConflict(): void
     {
         $sourceCode = <<<'CODE'
@@ -298,7 +313,7 @@ class UseStatementManipulatorTest extends TestCase
             CODE;
         $manipulator = new UseStatementManipulator($sourceCode);
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not find a class!');
+        $this->expectExceptionMessage('Could not found class node');
         $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean');
     }
 

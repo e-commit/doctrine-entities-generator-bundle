@@ -553,6 +553,7 @@ class GeneratedEntityTest extends KernelTestCase
             ->setSecondInitializer($secondInitializer)
             ->setDecimalField('0.55')
             ->setDateField(new \DateTime('2020-01-01 00:00:00'))
+            ->setDateFieldWithOtherType(new \DateTime('2020-01-01 00:00:00'))
             ->setBooleanField(true)
             ->setTextField('Text '.$id)
             ->setSimpleArrayField(['b' => $id])

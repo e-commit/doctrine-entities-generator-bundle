@@ -33,7 +33,9 @@
 
 {% block field_hint %}
     {% set block_field_hint_name = 'field_hint_'~fieldMapping.type %}
-    {% if block(block_field_hint_name) is defined %}
+    {% if sourceType|length > 0 %}
+        {{ sourceType }}
+    {% elseif block(block_field_hint_name) is defined %}
         {{ block(block_field_hint_name)|spaceless }}
     {% elseif type %}
         {% set hintParts = [] %}
@@ -85,14 +87,22 @@
 {# Enum #}
 
 {% block enum_get %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ enumAlias }}
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}(): {{ sourceType }}
+    {%- else %}
+    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }}
+    {%- endif ~%}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block enum_set %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ enumAlias }} ${{ variableName }}): self
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
+    {%- else %}
+    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }} ${{ variableName }}): self
+    {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -103,14 +113,22 @@
 {# Embedded #}
 
 {% block embedded_get %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ targetClassAlias }}
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}(): {{ sourceType }}
+    {%- else %}
+    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }}
+    {%- endif ~%}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block embedded_set %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ targetClassAlias }} ${{ variableName }}): self
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
+    {%- else %}
+    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }} ${{ variableName }}): self
+    {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -121,14 +139,22 @@
 {# Associations To One #}
 
 {% block assocation_to_one_get %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ targetEntityAlias }}
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}(): {{ sourceType }}
+    {%- else %}
+    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}
+    {%- endif ~%}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block assocation_one_to_one_unidirectional_set %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ targetEntityAlias }} ${{ variableName }}): self
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
+    {%- else %}
+    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
+    {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -141,13 +167,37 @@
 {%- endblock -%}
 
 {% block assocation_one_to_one_reverse_set %}
-    public function {{ methodName }}(?{{ targetEntityAlias }} ${{ variableName }}): self
+    {{- block(helper.isNullable(reflectionProperty) ? 'assocation_one_to_one_reverse_set_nullable' : 'assocation_one_to_one_reverse_set_not_null') -}}
+{% endblock %}
+
+{% block assocation_one_to_one_reverse_set_nullable %}
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
+    {%- else %}
+    public function {{ methodName }}(?{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
+    {%- endif ~%}
     {
         if (null === ${{ variableName }} && null !== $this->{{ fieldName }}) {
             $this->{{ fieldName }}->{{ foreignMethodName }}(null);
+    {%~ if helper.isNullable(reflectionTargetProperty) %}
         } elseif (null !== ${{ variableName }}) {
             ${{ variableName }}->{{ foreignMethodName }}($this);
+    {%- endif ~%}
         }
+        $this->{{ fieldName }} = ${{ variableName }};
+
+        return $this;
+    }
+{% endblock %}
+
+{% block assocation_one_to_one_reverse_set_not_null %}
+    {%- if sourceType|length > 0 %}
+    public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
+    {%- else %}
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
+    {%- endif ~%}
+    {
+        ${{ variableName }}->{{ foreignMethodName }}($this);
         $this->{{ fieldName }} = ${{ variableName }};
 
         return $this;
@@ -166,20 +216,20 @@
 
 {% block assocation_to_many_get %}
     /**
-     * @return {{ collectionAlias }}<int, {{ targetEntityAlias }}>
+     * @return {{ request.useStatementManipulator.addUseStatementIfNecessary('Doctrine\\Common\\Collections\\Collection') }}<int, {{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}>
      */
-    public function {{ methodName }}(): {{ collectionAlias }}
+    public function {{ methodName }}(): {{ (sourceType|length > 0) ? sourceType : request.useStatementManipulator.addUseStatementIfNecessary('Doctrine\\Common\\Collections\\Collection') }}
     {
         return $this->{{ fieldName }};
     }
 {% endblock %}
 
 {% block assocation_to_many_constructor %}
-    $this->{{ fieldName }} = new {{ collectionAliasInConstructor }}();
+    $this->{{ fieldName }} = new {{ request.useStatementManipulator.addUseStatementIfNecessary('Doctrine\\Common\\Collections\\ArrayCollection') }}();
 {% endblock %}
 
 {% block assocation_one_to_many_reverse_add %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         ${{ variableName }}->{{ foreignMethodName }}($this);
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
@@ -191,19 +241,21 @@
 {% endblock %}
 
 {% block assocation_one_to_many_reverse_remove %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
         }
+        {%~ if helper.isNullable(reflectionTargetProperty)  %}
         ${{ variableName }}->{{ foreignMethodName }}(null);
+        {%- endif ~%}
 
         return $this;
     }
 {% endblock %}
 
 {% block assocation_many_to_many_unidirectional_add %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}[] = ${{ variableName }};
@@ -214,7 +266,7 @@
 {% endblock %}
 
 {% block assocation_many_to_many_unidirectional_remove %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
@@ -233,7 +285,7 @@
 {%- endblock -%}
 
 {% block assocation_many_to_many_reverse_add %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         ${{ variableName }}->{{ foreignMethodName }}($this);
         if (!$this->{{ fieldName }}->contains(${{ variableName }})) {
@@ -245,7 +297,7 @@
 {% endblock %}
 
 {% block assocation_many_to_many_reverse_remove %}
-    public function {{ methodName }}({{ targetEntityAlias }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});

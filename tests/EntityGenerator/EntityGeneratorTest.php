@@ -38,6 +38,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotEntity;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OtherNamespace\WithoutType;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OtherNamespace\WithoutTypeRelation;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\PriceTrait;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
@@ -419,6 +421,8 @@ class EntityGeneratorTest extends AbstractTestCase
             [Bar::class],
             [WithEnum::class],
             [WithNotNull::class],
+            [WithoutType::class],
+            [WithoutTypeRelation::class],
         ];
 
         return $data;

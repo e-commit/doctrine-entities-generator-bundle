@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,12 +20,14 @@ use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\EmbeddedClassMapping;
 use Doctrine\ORM\Mapping\FieldMapping;
+use Doctrine\ORM\Mapping\InverseSideMapping;
 use Doctrine\ORM\Mapping\ManyToManyInverseSideMapping;
 use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
 use Doctrine\ORM\Mapping\ManyToOneAssociationMapping;
 use Doctrine\ORM\Mapping\OneToManyAssociationMapping;
 use Doctrine\ORM\Mapping\OneToOneInverseSideMapping;
 use Doctrine\ORM\Mapping\OneToOneOwningSideMapping;
+use Doctrine\ORM\Mapping\OwningSideMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
@@ -282,12 +282,12 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $fieldName = $fieldMapping->fieldName;
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
 
         $blockPrefix = 'field';
         $enum = $fieldMapping->enumType;
         if ($enum && $type?->isIdentifiedBy(TypeIdentifier::OBJECT)) {
-            $enumAlias = $request->useStatementManipulator->addUseStatementIfNecessary($enum);
             $blockPrefix = 'enum';
         }
 
@@ -299,11 +299,11 @@ class EntityGenerator implements EntityGeneratorInterface
                     'fieldName' => $fieldName,
                     'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                     'type' => $type,
+                    'sourceType' => $sourceType,
                     'reflectionProperty' => $reflectionProperty,
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
                     'enum' => $enum,
-                    'enumAlias' => $enumAlias ?? null,
                     'helper' => new TwigHelper(),
                 ]);
             }
@@ -315,11 +315,11 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
                 'enum' => $enum,
-                'enumAlias' => $enumAlias ?? null,
                 'helper' => new TwigHelper(),
             ]);
         }
@@ -329,12 +329,8 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $targetClass = $embeddedMapping->class;
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
-
-        $targetClassAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetClass);
-        if ($request->reflectionClass->getName() === $targetClass) {
-            $targetClassAlias = 'self';
-        }
 
         $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
@@ -343,8 +339,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                 'targetClass' => $targetClass,
-                'targetClassAlias' => $targetClassAlias,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
@@ -358,8 +354,8 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'targetClass' => $targetClass,
-                'targetClassAlias' => $targetClassAlias,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
@@ -448,13 +444,11 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $fieldName = $associationMapping->fieldName;
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $targetEntity = $associationMapping->targetEntity;
-
-        $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
-        if ($request->reflectionClass->getName() === $targetEntity) {
-            $targetEntityAlias = 'self';
-        }
+        $targetProperty = $associationMapping instanceof OwningSideMapping ? $associationMapping->inversedBy : ($associationMapping instanceof InverseSideMapping ? $associationMapping->mappedBy : null);
+        $reflectionTargetProperty = $targetProperty ? new \ReflectionProperty($targetEntity, $targetProperty) : null;
 
         $setMethodName = $this->buildMethodName(self::TYPE_SET, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $setMethodName)) {
@@ -464,9 +458,11 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_SET, $fieldName),
                 'targetEntity' => $targetEntity,
-                'targetEntityAlias' => $targetEntityAlias,
+                'targetProperty' => $targetProperty,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'helper' => new TwigHelper(),
@@ -479,9 +475,11 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
-                'targetEntityAlias' => $targetEntityAlias,
+                'targetProperty' => $targetProperty,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
                 'helper' => new TwigHelper(),
@@ -493,15 +491,11 @@ class EntityGenerator implements EntityGeneratorInterface
     {
         $fieldName = $associationMapping->fieldName;
         $type = $request->doctrineExtractor->getType($request->reflectionClass->getName(), $fieldName);
+        $sourceType = $request->sourcePropertyTypeResolver->getType($fieldName);
         $reflectionProperty = new \ReflectionProperty($request->reflectionClass->getName(), $fieldName);
         $targetEntity = $associationMapping->targetEntity;
-
-        $targetEntityAlias = $request->useStatementManipulator->addUseStatementIfNecessary($targetEntity);
-        if ($request->reflectionClass->getName() === $targetEntity) {
-            $targetEntityAlias = 'self';
-        }
-        $collectionAlias = $request->useStatementManipulator->addUseStatementIfNecessary(Collection::class);
-        $collectionAliasInConstructor = $request->useStatementManipulator->addUseStatementIfNecessary(ArrayCollection::class);
+        $targetProperty = $associationMapping instanceof OwningSideMapping ? $associationMapping->inversedBy : ($associationMapping instanceof InverseSideMapping ? $associationMapping->mappedBy : null);
+        $reflectionTargetProperty = $targetProperty ? new \ReflectionProperty($targetEntity, $targetProperty) : null;
 
         $addMethodName = $this->buildMethodName(self::TYPE_ADD, $fieldName);
         if (!$this->methodIsDefinedOutsideBlock($request, $addMethodName)) {
@@ -511,12 +505,13 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_ADD, $fieldName),
                 'targetEntity' => $targetEntity,
-                'targetEntityAlias' => $targetEntityAlias,
+                'targetProperty' => $targetProperty,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'collectionAlias' => $collectionAlias,
                 'helper' => new TwigHelper(),
             ]);
         }
@@ -529,12 +524,13 @@ class EntityGenerator implements EntityGeneratorInterface
                 'fieldName' => $fieldName,
                 'variableName' => $this->buildVariableName(self::TYPE_REMOVE, $fieldName),
                 'targetEntity' => $targetEntity,
-                'targetEntityAlias' => $targetEntityAlias,
+                'targetProperty' => $targetProperty,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'collectionAlias' => $collectionAlias,
                 'helper' => new TwigHelper(),
             ]);
         }
@@ -545,12 +541,13 @@ class EntityGenerator implements EntityGeneratorInterface
                 'methodName' => $getMethodName,
                 'fieldName' => $fieldName,
                 'targetEntity' => $targetEntity,
-                'targetEntityAlias' => $targetEntityAlias,
+                'targetProperty' => $targetProperty,
                 'type' => $type,
+                'sourceType' => $sourceType,
                 'reflectionProperty' => $reflectionProperty,
+                'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'collectionAlias' => $collectionAlias,
                 'helper' => new TwigHelper(),
             ]);
         }
@@ -558,13 +555,13 @@ class EntityGenerator implements EntityGeneratorInterface
         $request->newConstructorLines[] = $this->renderBlock($request->reflectionClass, 'assocation_to_many_constructor', [
             'fieldName' => $fieldName,
             'targetEntity' => $targetEntity,
-            'targetEntityAlias' => $targetEntityAlias,
+            'targetProperty' => $targetProperty,
             'type' => $type,
+            'sourceType' => $sourceType,
             'reflectionProperty' => $reflectionProperty,
+            'reflectionTargetProperty' => $reflectionTargetProperty,
             'request' => $request,
             'associationMapping' => $associationMapping,
-            'collectionAlias' => $collectionAlias,
-            'collectionAliasInConstructor' => $collectionAliasInConstructor,
             'helper' => new TwigHelper(),
         ]);
     }

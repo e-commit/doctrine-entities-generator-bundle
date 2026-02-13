@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Model;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\SourcePropertyTypeResolver;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 
@@ -29,6 +30,7 @@ use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 class GenerateEntityRequest
 {
     public UseStatementManipulator $useStatementManipulator;
+    public SourcePropertyTypeResolver $sourcePropertyTypeResolver;
 
     /**
      * @var array<string>
@@ -49,7 +51,9 @@ class GenerateEntityRequest
      */
     public function __construct(public \ReflectionClass $reflectionClass, public array $fileParts, public ClassMetadata $classMetadata, public DoctrineExtractor $doctrineExtractor)
     {
-        $this->useStatementManipulator = new UseStatementManipulator((string) file_get_contents((string) $reflectionClass->getFileName()));
+        $sourceCode = (string) file_get_contents((string) $reflectionClass->getFileName());
+        $this->useStatementManipulator = new UseStatementManipulator($sourceCode);
+        $this->sourcePropertyTypeResolver = new SourcePropertyTypeResolver($sourceCode);
     }
 
     public function getSourceCode(): string

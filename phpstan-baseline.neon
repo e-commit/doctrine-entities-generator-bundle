@@ -1,4 +1,9 @@
 parameters:
+    excludePaths:
+        - tests/App/Entity/OtherNamespace/WithoutType.php
+        - tests/App/Entity/OtherNamespace/WithoutTypeRelation.php
+        - tests/App/GeneratedEntity/OtherNamespace/WithoutType.php
+        - tests/App/GeneratedEntity/OtherNamespace/WithoutTypeRelation.php
     ignoreErrors:
         - '#is never read, only written#'
         -
@@ -52,7 +57,14 @@ parameters:
             path: src/EntityGenerator/Util/UseStatementManipulator.php
         -
             message: '#Parameter \#1 \$phpVersion of class PhpParser\\Lexer\\Emulative constructor expects PhpParser\\PhpVersion\|null, array\<string, array\<int, string\>\> given#'
-            path: src/EntityGenerator/Util/UseStatementManipulator.php
+            paths:
+                - src/EntityGenerator/Util/SourcePropertyTypeResolver.php
+                - src/EntityGenerator/Util/UseStatementManipulator.php
         -
             message: '#Parameter \#3 \$origTokens of method PhpParser\\PrettyPrinterAbstract::printFormatPreserving\(\) expects array\<PhpParser\\Token\>, array<mixed> given#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php
+
+        #Temp
+        -
+            message: '#^Property .+::\$jsonField \(array<string, int>\|null\) does not accept array\|null\.$#'
+            path: tests/App/GeneratedEntity/SubClass.php

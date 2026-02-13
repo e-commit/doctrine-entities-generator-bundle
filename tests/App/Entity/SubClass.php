@@ -46,7 +46,7 @@ class SubClass extends MainClass
 
     #[ORM\ManyToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass', inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    protected ?SubClass $parent = null;
+    protected ?self $parent = null;
 
     /**
      * @var Collection<int, SubClass>
@@ -60,6 +60,12 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'datetime')]
     protected ?\DateTime $dateField = null;
 
+    /**
+     * Custom type.
+     */
+    #[ORM\Column(type: 'datetime')]
+    protected ?\DateTimeInterface $dateFieldWithOtherType = null;
+
     #[ORM\Column(type: 'boolean')]
     protected ?bool $booleanField = null;
 
@@ -69,8 +75,11 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'simple_array')]
     protected ?array $simpleArrayField = null;
 
+    /**
+     * @var ?array<string, int>
+     */
     #[ORM\Column(type: 'json')]
-    protected mixed $jsonField = null;
+    protected ?array $jsonField = null;
 
     #[ORM\Column(type: 'guid')]
     protected ?string $guidField = null;

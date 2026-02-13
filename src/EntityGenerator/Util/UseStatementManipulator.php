@@ -106,6 +106,10 @@ class UseStatementManipulator
 
     public function addUseStatementIfNecessary(string $class): string
     {
+        if ($this->isSameClass($class)) {
+            return 'self';
+        }
+
         $shortClassName = self::getShortClassName($class);
 
         $namespaceNode = $this->getNamespaceNode();
@@ -165,7 +169,7 @@ class UseStatementManipulator
         }
 
         if (null === $targetIndex) {
-            throw new \Exception('Could not find a class!');
+            throw new \Exception('Could not found class node');
         }
 
         if ($classNode->name?->toString() === $shortClassName) {
@@ -226,7 +230,7 @@ class UseStatementManipulator
         $node = $this->findFirstNode(/* @param mixed $node */ static fn ($node) => $node instanceof Node\Stmt\Class_);
 
         if (!$node || !$node instanceof Node\Stmt\Class_) {
-            throw new \Exception('Could not find a class!');
+            throw new \Exception('Could not found class node');
         }
 
         return $node;
@@ -254,6 +258,16 @@ class UseStatementManipulator
         }
 
         return $currentNamespace->toCodeString() === $namespace;
+    }
+
+    protected function isSameClass(string $class): bool
+    {
+        $currentClass = $this->getClassNode()->namespacedName;
+        if (null === $currentClass) {
+            return false;
+        }
+
+        return $currentClass->toCodeString() === $class;
     }
 
     private function createBlankLineNode(): Node\Stmt\Use_

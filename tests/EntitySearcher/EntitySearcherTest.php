@@ -29,6 +29,8 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer4;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Initializer5;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\MainClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\NotGenerateAttribute;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OtherNamespace\WithoutType;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OtherNamespace\WithoutTypeRelation;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\OverrideTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\ReadOnlyField;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
@@ -158,6 +160,8 @@ class EntitySearcherTest extends KernelTestCase
             [Initializer4::class, true],
             [Initializer5::class, true],
             [MainClass::class, true],
+            [WithoutType::class, true],
+            [WithoutTypeRelation::class, true],
             [NotGenerateAttribute::class, false],
             [ReadOnlyField::class, true],
             [Sale::class, true],
@@ -230,6 +234,8 @@ class EntitySearcherTest extends KernelTestCase
             Initializer4::class,
             Initializer5::class,
             MainClass::class,
+            WithoutType::class,
+            WithoutTypeRelation::class,
             OverrideTemplate::class,
             ReadOnlyField::class,
             Sale::class,
@@ -252,6 +258,8 @@ class EntitySearcherTest extends KernelTestCase
             Initializer4::class,
             Initializer5::class,
             MainClass::class,
+            WithoutType::class,
+            WithoutTypeRelation::class,
             OverrideTemplate::class,
             ReadOnlyField::class,
             Sale::class,
@@ -274,6 +282,8 @@ class EntitySearcherTest extends KernelTestCase
             Initializer4::class,
             Initializer5::class,
             MainClass::class,
+            WithoutType::class,
+            WithoutTypeRelation::class,
             OverrideTemplate::class,
             ReadOnlyField::class,
             Sale::class,

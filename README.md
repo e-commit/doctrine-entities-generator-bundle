@@ -58,10 +58,10 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected int $categoryId;
 
     #[ORM\Column(type: 'string', length: 255)]
-    protected $name;
+    protected string $name;
 
     /*
      * Getters / Setters (auto-generated)
@@ -107,6 +107,15 @@ The bundle generates getters-setters methods for an entity property only if :
 * The property is not public; and
 * The methods (getters-setters) do not exist (except if the method is defined between the start and end tags).
 
+Getter-setter generation prioritizes PHP property types over Doctrine types.
+If a property has a PHP type, it will be used for the generated getters-setters.
+If no PHP type is declared, the getter-setter type will be inferred from the Doctrine type.
+This behavior can be changed by customizing the template (see the FAQ).
+
+Getter-setter generation follows PHP nullability: when a PHP property type is present, generated types are nullable
+only if the property type is nullable. When the PHP type is missing, generated types default to nullable.
+This behavior can be changed by customizing the template (see the FAQ).
+
 ## FAQ ##
 
 ### How can I change the generated code ? ###
@@ -146,7 +155,7 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected int $categoryId;
     //...
 }
 ```
@@ -186,7 +195,7 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected int $categoryId;
     //...
 
     /*
@@ -209,6 +218,7 @@ Instead, you can use the `Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityI
 and its `initializeEntity` method.
 
 ```php
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
 
@@ -218,13 +228,13 @@ class Category implements EntityInitializerInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected int $categoryId;
 
     #[ORM\OneToMany(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Book', mappedBy: 'category')]
-    protected $books;
+    protected Collection $books;
 
     #[ORM\Column(type: 'datetime')]
-    protected $createdAt;
+    protected \DateTime $createdAt;
 
     public function initializeEntity(): void
     {
@@ -269,7 +279,7 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer', name: 'category_id')]
-    protected $categoryId;
+    protected int $categoryId;
     //...
 }
 ```

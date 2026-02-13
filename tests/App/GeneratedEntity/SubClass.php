@@ -47,7 +47,7 @@ class SubClass extends MainClass
 
     #[ORM\ManyToOne(targetEntity: 'Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\SubClass', inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    protected ?SubClass $parent = null;
+    protected ?self $parent = null;
 
     /**
      * @var Collection<int, SubClass>
@@ -61,6 +61,12 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'datetime')]
     protected ?\DateTime $dateField = null;
 
+    /**
+     * Custom type.
+     */
+    #[ORM\Column(type: 'datetime')]
+    protected ?\DateTimeInterface $dateFieldWithOtherType = null;
+
     #[ORM\Column(type: 'boolean')]
     protected ?bool $booleanField = null;
 
@@ -70,8 +76,11 @@ class SubClass extends MainClass
     #[ORM\Column(type: 'simple_array')]
     protected ?array $simpleArrayField = null;
 
+    /**
+     * @var ?array<string, int>
+     */
     #[ORM\Column(type: 'json')]
-    protected mixed $jsonField = null;
+    protected ?array $jsonField = null;
 
     #[ORM\Column(type: 'guid')]
     protected ?string $guidField = null;
@@ -141,6 +150,18 @@ class SubClass extends MainClass
         return $this->dateField;
     }
 
+    public function setDateFieldWithOtherType(?\DateTimeInterface $dateFieldWithOtherType): self
+    {
+        $this->dateFieldWithOtherType = $dateFieldWithOtherType;
+
+        return $this;
+    }
+
+    public function getDateFieldWithOtherType(): ?\DateTimeInterface
+    {
+        return $this->dateFieldWithOtherType;
+    }
+
     public function setBooleanField(?bool $booleanField): self
     {
         $this->booleanField = $booleanField;
@@ -177,14 +198,14 @@ class SubClass extends MainClass
         return $this->simpleArrayField;
     }
 
-    public function setJsonField($jsonField): self
+    public function setJsonField(?array $jsonField): self
     {
         $this->jsonField = $jsonField;
 
         return $this;
     }
 
-    public function getJsonField()
+    public function getJsonField(): ?array
     {
         return $this->jsonField;
     }
@@ -201,14 +222,14 @@ class SubClass extends MainClass
         return $this->guidField;
     }
 
-    public function setCustomField($customField): self
+    public function setCustomField(mixed $customField): self
     {
         $this->customField = $customField;
 
         return $this;
     }
 
-    public function getCustomField()
+    public function getCustomField(): mixed
     {
         return $this->customField;
     }
