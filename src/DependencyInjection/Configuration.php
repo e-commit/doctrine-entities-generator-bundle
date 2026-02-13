@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('template')
                     ->defaultValue('@EcommitDoctrineEntitiesGenerator/Theme/base.php.twig')
                     ->validate()
-                        ->ifTrue(fn (mixed $value) => !\is_string($value))
+                        ->ifTrue(static fn (mixed $value) => !\is_string($value))
                         ->thenInvalid('Invalid template')
                     ->end()
                 ->end()

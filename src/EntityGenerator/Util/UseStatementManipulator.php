@@ -217,7 +217,7 @@ class UseStatementManipulator
 
     protected function getNamespaceNode(): Node\Stmt\Namespace_
     {
-        $node = $this->findFirstNode(/* @param mixed $node */ fn ($node) => $node instanceof Node\Stmt\Namespace_);
+        $node = $this->findFirstNode(/* @param mixed $node */ static fn ($node) => $node instanceof Node\Stmt\Namespace_);
 
         if (!$node || !$node instanceof Node\Stmt\Namespace_) {
             throw new \Exception('Could not find namespace node');
