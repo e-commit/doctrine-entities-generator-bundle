@@ -63,4 +63,19 @@ class GenerateEntityRequest
     {
         return $this->useStatementManipulator->getSourceCode();
     }
+
+    /**
+     * @param class-string $class
+     */
+    public function is(?object $value, string $class): bool
+    {
+        return $value instanceof $class;
+    }
+
+    public function isNullable(\ReflectionProperty $reflectionProperty): bool
+    {
+        $type = $reflectionProperty->getType();
+
+        return null === $type || $type->allowsNull();
+    }
 }

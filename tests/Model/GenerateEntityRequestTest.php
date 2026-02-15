@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntityGenerator\Util;
+namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\Model;
 
-use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\TwigHelper;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
 use PHPUnit\Framework\TestCase;
 
-class TwigHelperTest extends TestCase
+class GenerateEntityRequestTest extends TestCase
 {
     /**
      * @dataProvider getTestIsProvider
@@ -25,7 +25,12 @@ class TwigHelperTest extends TestCase
      */
     public function testIs(?object $object, string $class, bool $expected): void
     {
-        $this->assertSame($expected, (new TwigHelper())->is($object, $class));
+        $request = $this->getMockBuilder(GenerateEntityRequest::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMock();
+
+        $this->assertSame($expected, $request->is($object, $class));
     }
 
     public static function getTestIsProvider(): array

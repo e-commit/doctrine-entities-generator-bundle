@@ -39,7 +39,7 @@
         {{ block(block_field_hint_name)|spaceless }}
     {% elseif type %}
         {% set hintParts = [] %}
-        {% if helper.is(type, 'Symfony\\Component\\TypeInfo\\Type\\UnionType') %}
+        {% if request.is(type, 'Symfony\\Component\\TypeInfo\\Type\\UnionType') %}
             {% set types = type.types  %}
         {% else %}
             {% set types = [type] %}
@@ -47,9 +47,9 @@
 
         {% for subType in types %}
             {% if 'null' != subType.__toString() %}
-                {% if helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\ObjectType') %}
+                {% if request.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\ObjectType') %}
                     {% set subTypeHint = '\\' ~ subType.className %}
-                {% elseif helper.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\CollectionType') and subType.isIdentifiedBy(constant('Symfony\\Component\\TypeInfo\\TypeIdentifier::ARRAY')) %}
+                {% elseif request.is(subType, 'Symfony\\Component\\TypeInfo\\Type\\CollectionType') and subType.isIdentifiedBy(constant('Symfony\\Component\\TypeInfo\\TypeIdentifier::ARRAY')) %}
                     {% set subTypeHint = 'array' %}
                 {% else %}
                     {% set subTypeHint = subType.__toString() %}
@@ -62,7 +62,7 @@
         {% if hintParts|length > 1 %}
             {{ hintParts|join('|') }}|null
         {% else %}
-            {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ hintParts|join('|') }}
+            {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ hintParts|join('|') }}
         {% endif %}
     {% endif %}
 {% endblock %}
@@ -107,7 +107,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }}
+    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -124,7 +124,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -145,7 +145,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }}
+    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -162,7 +162,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -183,7 +183,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}
+    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -200,7 +200,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ helper.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
+    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -214,7 +214,7 @@
 {%- endblock -%}
 
 {% block assocation_one_to_one_reverse_set %}
-    {{- block(helper.isNullable(reflectionProperty) ? 'assocation_one_to_one_reverse_set_nullable' : 'assocation_one_to_one_reverse_set_not_null') -}}
+    {{- block(request.isNullable(reflectionProperty) ? 'assocation_one_to_one_reverse_set_nullable' : 'assocation_one_to_one_reverse_set_not_null') -}}
 {% endblock %}
 
 {% block assocation_one_to_one_reverse_set_nullable %}
@@ -232,7 +232,7 @@
     {
         if (null === ${{ variableName }} && null !== $this->{{ fieldName }}) {
             $this->{{ fieldName }}->{{ foreignMethodName }}(null);
-    {%~ if helper.isNullable(reflectionTargetProperty) %}
+    {%~ if request.isNullable(reflectionTargetProperty) %}
         } elseif (null !== ${{ variableName }}) {
             ${{ variableName }}->{{ foreignMethodName }}($this);
     {%- endif ~%}
@@ -308,7 +308,7 @@
         if ($this->{{ fieldName }}->contains(${{ variableName }})) {
             $this->{{ fieldName }}->removeElement(${{ variableName }});
         }
-        {%~ if helper.isNullable(reflectionTargetProperty)  %}
+        {%~ if request.isNullable(reflectionTargetProperty)  %}
         ${{ variableName }}->{{ foreignMethodName }}(null);
         {%- endif ~%}
 

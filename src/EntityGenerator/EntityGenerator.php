@@ -31,7 +31,6 @@ use Doctrine\ORM\Mapping\OwningSideMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Attribute\GenerateEntityTemplate;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Entity\EntityInitializerInterface;
-use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\TwigHelper;
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntitySearcher\EntitySearcherInterface;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\ClassNotManagedException;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Exception\EntityInitializerInterfaceNotUsedException;
@@ -306,7 +305,6 @@ class EntityGenerator implements EntityGeneratorInterface
                     'request' => $request,
                     'fieldMapping' => $fieldMapping,
                     'enum' => $enum,
-                    'helper' => new TwigHelper(),
                 ]);
             }
         }
@@ -323,7 +321,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'request' => $request,
                 'fieldMapping' => $fieldMapping,
                 'enum' => $enum,
-                'helper' => new TwigHelper(),
             ]);
         }
     }
@@ -349,7 +346,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'phpDocPropertyType' => $phpDocPropertyType,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -365,7 +361,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'phpDocPropertyType' => $phpDocPropertyType,
                 'request' => $request,
                 'embeddedMapping' => $embeddedMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
     }
@@ -473,7 +468,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -491,7 +485,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
     }
@@ -523,7 +516,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -543,7 +535,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -561,7 +552,6 @@ class EntityGenerator implements EntityGeneratorInterface
                 'reflectionTargetProperty' => $reflectionTargetProperty,
                 'request' => $request,
                 'associationMapping' => $associationMapping,
-                'helper' => new TwigHelper(),
             ]);
         }
 
@@ -576,7 +566,6 @@ class EntityGenerator implements EntityGeneratorInterface
             'reflectionTargetProperty' => $reflectionTargetProperty,
             'request' => $request,
             'associationMapping' => $associationMapping,
-            'helper' => new TwigHelper(),
         ]);
     }
 
