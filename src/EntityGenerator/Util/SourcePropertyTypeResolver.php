@@ -98,6 +98,6 @@ final class SourcePropertyTypeResolver
             return null;
         }
 
-        return mb_substr($this->code, $start, $end - $start + 1);
+        return mb_strcut($this->code, $start, $end - $start + 1);
     }
 }
