@@ -22,7 +22,7 @@ class Bigint
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected ?int $id = null;
+    protected int|string|null $id = null;
 
     /**
      * @legacy
@@ -36,7 +36,7 @@ class Bigint
      * Getters / Setters (auto-generated)
      */
 
-    public function getId(): ?int
+    public function getId(): int|string|null
     {
         return $this->id;
     }

@@ -22,7 +22,7 @@ class Bigint
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'id')]
-    protected ?int $id = null;
+    protected int|string|null $id = null;
 
     /**
      * @legacy
