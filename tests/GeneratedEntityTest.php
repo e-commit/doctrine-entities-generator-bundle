@@ -30,10 +30,13 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\GeneratedEntityKernel;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumInt;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Sub\EnumString;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GeneratedEntityTest extends KernelTestCase
 {
+    use RestoreExceptionHandlerTrait;
+
     protected EntityManagerInterface $em;
 
     protected bool $databaseIsInitialized = false;
@@ -67,6 +70,8 @@ class GeneratedEntityTest extends KernelTestCase
         $this->em->clear();
 
         parent::tearDown();
+
+        $this->restoreExceptionHandler();
     }
 
     public function testMapping(): void
@@ -151,9 +156,7 @@ class GeneratedEntityTest extends KernelTestCase
         $this->assertSame(['c' => 2], $subClass->getJsonField());
     }
 
-    /**
-     * @dataProvider getTestSetNullFieldProvider
-     */
+    #[DataProvider('getTestSetNullFieldProvider')]
     public function testSetNullField(string $setter, string $getter): void
     {
         $subClass = new SubClass();

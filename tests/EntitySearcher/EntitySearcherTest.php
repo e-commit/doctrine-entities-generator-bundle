@@ -39,14 +39,25 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithNotNull;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithOnlyPublic;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithPhpDoc;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\RestoreExceptionHandlerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class EntitySearcherTest extends KernelTestCase
 {
+    use RestoreExceptionHandlerTrait;
+
     protected function setUp(): void
     {
         self::bootKernel();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->restoreExceptionHandler();
     }
 
     public function testServiceIsPrivate(): void
@@ -73,9 +84,7 @@ class EntitySearcherTest extends KernelTestCase
         $this->assertInstanceOf(EntitySearcher::class, $service);
     }
 
-    /**
-     * @dataProvider getTestInputMatchesClassProvider
-     */
+    #[DataProvider('getTestInputMatchesClassProvider')]
     public function testInputMatchesClass(string $input, bool $expectedResult): void
     {
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -133,9 +142,8 @@ class EntitySearcherTest extends KernelTestCase
 
     /**
      * @param class-string<object> $class
-     *
-     * @dataProvider getTestClassCanBeGeneratedProvider
      */
+    #[DataProvider('getTestClassCanBeGeneratedProvider')]
     public function testClassCanBeGenerated(string $class, bool $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
@@ -175,9 +183,7 @@ class EntitySearcherTest extends KernelTestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestProvider
-     */
+    #[DataProvider('getTestProvider')]
     public function testSearchInManager(string $input, array $expectedResult): void
     {
         /** @var ManagerRegistry $managerRegistry */
@@ -305,9 +311,7 @@ class EntitySearcherTest extends KernelTestCase
         return $data;
     }
 
-    /**
-     * @dataProvider getTestProvider
-     */
+    #[DataProvider('getTestProvider')]
     public function testSearch(string $input, array $expectedResult): void
     {
         $result = self::getContainer()->get(EntitySearcher::class)->search($input);

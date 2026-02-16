@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\Model;
 
 use Ecommit\DoctrineEntitiesGeneratorBundle\Model\GenerateEntityRequest;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GenerateEntityRequestTest extends TestCase
 {
     /**
-     * @dataProvider getTestIsProvider
-     *
      * @param class-string $class
      */
+    #[DataProvider('getTestIsProvider')]
     public function testIs(?object $object, string $class, bool $expected): void
     {
         $request = $this->getMockBuilder(GenerateEntityRequest::class)

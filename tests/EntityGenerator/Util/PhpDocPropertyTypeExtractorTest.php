@@ -15,15 +15,15 @@ namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntityGenerator\Util;
 
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\PhpDocPropertyTypeExtractor;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithPhpDoc;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class PhpDocPropertyTypeExtractorTest extends TestCase
 {
     /**
-     * @dataProvider getGetPropertyPhpDocVarTypeProvider
-     *
      * @param class-string $class
      */
+    #[DataProvider('getGetPropertyPhpDocVarTypeProvider')]
     public function testGetPropertyPhpDocVarType(string $class, string $property, ?string $expected): void
     {
         $reflectionMethod = new \ReflectionProperty($class, $property);

@@ -49,6 +49,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithNotNull;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithOnlyPublic;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithPhpDoc;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
@@ -84,9 +85,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestGetFilePartsValidProvider
      */
+    #[DataProvider('getTestGetFilePartsValidProvider')]
     public function testGetFilePartsValid(string $class, string $fixturesDir): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
@@ -111,9 +111,7 @@ class EntityGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestGetFilePartsTagNotFoundProvider
-     */
+    #[DataProvider('getTestGetFilePartsTagNotFoundProvider')]
     public function testGetFilePartsTagNotFound(string $template): void
     {
         $entityGenerator = new EntityGenerator(
@@ -152,9 +150,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestGenerateClassNotManagedProvider
      */
+    #[DataProvider('getTestGenerateClassNotManagedProvider')]
     public function testGenerateClassNotManaged(string $class): void
     {
         $this->expectException(ClassNotManagedException::class);
@@ -175,9 +172,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestGenerateClassIgnoreProvider
      */
+    #[DataProvider('getTestGenerateClassIgnoreProvider')]
     public function testGenerateClassIgnore(string $class): void
     {
         $this->expectException(ClassNotManagedException::class);
@@ -198,9 +194,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestPropertyIsDefinedInClassFileProvider
      */
+    #[DataProvider('getTestPropertyIsDefinedInClassFileProvider')]
     public function testPropertyIsDefinedInClassFile(string $class, string $property, bool $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
@@ -242,9 +237,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestMethodIsDefinedOutsideBlockProvider
      */
+    #[DataProvider('getTestMethodIsDefinedOutsideBlockProvider')]
     public function testMethodIsDefinedOutsideBlock(string $class, string $method, bool $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
@@ -297,9 +291,7 @@ class EntityGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestBuildMethodNameProdiver
-     */
+    #[DataProvider('getTestBuildMethodNameProdiver')]
     public function testBuildMethodName(string $type, string $fieldName, string $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
@@ -336,9 +328,7 @@ class EntityGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestBuildVariableNameProvider
-     */
+    #[DataProvider('getTestBuildVariableNameProvider')]
     public function testBuildVariableName(string $type, string $variableName, string $expectedResult): void
     {
         $entityGenerator = self::getContainer()->get(EntityGenerator::class);
@@ -377,9 +367,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestGenerateProvider
      */
+    #[DataProvider('getTestGenerateProvider')]
     public function testGenerate(string $class, ?string $folder = null): void
     {
         $entityGenerator = $this->getEntityGeneratorMock();
@@ -426,9 +415,8 @@ class EntityGeneratorTest extends AbstractTestCase
 
     /**
      * @param class-string $class
-     *
-     * @dataProvider getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver
      */
+    #[DataProvider('getTestGenerateEntityInitializerInterfaceNotUsedExceptionProdiver')]
     public function testGenerateEntityInitializerInterfaceNotUsedException(string $class): void
     {
         $this->expectException(EntityInitializerInterfaceNotUsedException::class);

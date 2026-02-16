@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ecommit\DoctrineEntitiesGeneratorBundle\Tests\EntityGenerator\Util;
 
 use Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\Util\UseStatementManipulator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UseStatementManipulatorTest extends TestCase
@@ -317,9 +318,7 @@ class UseStatementManipulatorTest extends TestCase
         $manipulator->addUseStatementIfNecessary('Foo\Bar\Sub\Bean');
     }
 
-    /**
-     * @dataProvider getTestGetNamespaceProvider
-     */
+    #[DataProvider('getTestGetNamespaceProvider')]
     public function testGetNamespace(string $class, string $namespace): void
     {
         $this->assertSame($namespace, UseStatementManipulator::getNamespace($class));
@@ -334,9 +333,7 @@ class UseStatementManipulatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestGetShortClassNameProvider
-     */
+    #[DataProvider('getTestGetShortClassNameProvider')]
     public function testGetShortClassName(string $class, string $shortClass): void
     {
         $this->assertSame($shortClass, UseStatementManipulator::getShortClassName($class));
@@ -351,9 +348,7 @@ class UseStatementManipulatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getTestAreClassesAlphabeticalProvider
-     */
+    #[DataProvider('getTestAreClassesAlphabeticalProvider')]
     public function testAreClassesAlphabetical(string $class1, string $class2, bool $expectedResult): void
     {
         $this->assertSame($expectedResult, UseStatementManipulator::areClassesAlphabetical($class1, $class2));

@@ -23,6 +23,8 @@ use Twig\Environment;
 
 abstract class AbstractTestCase extends KernelTestCase
 {
+    use RestoreExceptionHandlerTrait;
+
     protected string $tempFolder;
 
     protected function setUp(): void
@@ -45,6 +47,8 @@ abstract class AbstractTestCase extends KernelTestCase
         }
 
         parent::tearDown();
+
+        $this->restoreExceptionHandler();
     }
 
     /**
