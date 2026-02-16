@@ -25,3 +25,19 @@
      It has been replaced by the `reflectionProperty` variable, which returns a `\ReflectionProperty` object.
   * The `enumAlias`, `targetClassAlias`, `targetEntityAlias`, `collectionAlias`, and `collectionAliasInConstructor` variables
     passed to the Twig template no longer exist. Use `request.useStatementManipulator.addUseStatementIfNecessary` instead.
+
+## `Ecommit\DoctrineEntitiesGeneratorBundle\EntityGenerator\EntityGenerator` class
+
+The signature of the following method have been modified :
+
+Before :
+
+```php
+protected function propertyIsDefinedInClassFile(GenerateEntityRequest $request, string $property): bool
+```
+
+After :
+
+```php
+protected function propertyIsDefinedInClassFile(\ReflectionClass $reflectionClass, string $property): bool
+```

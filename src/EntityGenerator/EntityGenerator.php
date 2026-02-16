@@ -66,8 +66,17 @@ class EntityGenerator implements EntityGeneratorInterface
             throw new ClassNotManagedException(\sprintf('Class "%s" cannot be generated (Is IgnoreGenerateEntity attribute used ?)', $className));
         }
 
-        $fileParts = $this->getFileParts($reflectionClass);
         $doctrineExtractor = new DoctrineExtractor($entityManager);
+        $properties = $doctrineExtractor->getProperties($className);
+        if (null === $properties) {
+            $properties = [];
+        }
+        $properties = array_filter($properties, fn (string $property): bool => $this->propertyIsDefinedInClassFile($reflectionClass, $property));
+        if (0 === \count($properties)) {
+            return;
+        }
+
+        $fileParts = $this->getFileParts($reflectionClass);
         $request = new GenerateEntityRequest(
             $reflectionClass,
             $fileParts,
@@ -75,15 +84,7 @@ class EntityGenerator implements EntityGeneratorInterface
             $doctrineExtractor
         );
 
-        $properties = $doctrineExtractor->getProperties($className);
-        if (null === $properties) {
-            $properties = [];
-        }
         foreach ($properties as $property) {
-            if (!$this->propertyIsDefinedInClassFile($request, $property)) {
-                continue;
-            }
-
             if ($metadata->hasField($property)) {
                 if (\array_key_exists($property, $metadata->fieldMappings)) {
                     $this->addField($request, $metadata->fieldMappings[$property]);
@@ -219,9 +220,11 @@ class EntityGenerator implements EntityGeneratorInterface
         return $content;
     }
 
-    protected function propertyIsDefinedInClassFile(GenerateEntityRequest $request, string $property): bool
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    protected function propertyIsDefinedInClassFile(\ReflectionClass $reflectionClass, string $property): bool
     {
-        $reflectionClass = $request->reflectionClass;
         try {
             $reflectionProperty = $reflectionClass->getProperty($property);
         } catch (\ReflectionException $e) {

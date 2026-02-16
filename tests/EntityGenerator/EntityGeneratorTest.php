@@ -47,6 +47,7 @@ use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\Sale;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\SubClass;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithEnum;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithNotNull;
+use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithOnlyPublic;
 use Ecommit\DoctrineEntitiesGeneratorBundle\Tests\App\Entity\WithPhpDoc;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -210,19 +211,9 @@ class EntityGeneratorTest extends AbstractTestCase
         $propertyIsDefinedInClassFileReflection->setAccessible(true);
 
         $reflectionClass = new \ReflectionClass($class);
-        /** @var FileParts $fileParts */
-        $fileParts = $getFilePartsReflection->invokeArgs($entityGenerator, [$reflectionClass]);
-        /** @var EntityManagerInterface $em */
-        $em = $this->getContainer()->get(ManagerRegistry::class)->getManagerForClass($class);
-        $request = new GenerateEntityRequest(
-            $reflectionClass,
-            $fileParts,
-            $em->getClassMetadata($class),
-            new DoctrineExtractor($em)
-        );
 
         $result = $propertyIsDefinedInClassFileReflection->invokeArgs($entityGenerator, [
-            $request,
+            $reflectionClass,
             $property,
         ]);
 
@@ -391,8 +382,10 @@ class EntityGeneratorTest extends AbstractTestCase
      */
     public function testGenerate(string $class, ?string $folder = null): void
     {
-        $entityManager = $this->getEntityGeneratorMock();
-        $entityManager->generate($class);
+        $entityGenerator = $this->getEntityGeneratorMock();
+        $reflectionClass = new \ReflectionClass($class);
+        $this->writeFile($reflectionClass, (string) file_get_contents((string) $reflectionClass->getFileName())); // Start by writing the original file to the output file (so there’s still an output even if no getter/setter is generated).
+        $entityGenerator->generate($class);
 
         $this->checkGeneratedClass($class, $folder);
     }
@@ -422,6 +415,7 @@ class EntityGeneratorTest extends AbstractTestCase
             [Bar::class],
             [WithEnum::class],
             [WithNotNull::class],
+            [WithOnlyPublic::class],
             [WithoutType::class],
             [WithoutTypeRelation::class],
             [WithPhpDoc::class],

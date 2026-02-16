@@ -63,11 +63,19 @@ abstract class AbstractTestCase extends KernelTestCase
             ->getMock();
 
         $mock->method('writeFile')->willReturnCallback(function (\ReflectionClass $reflectionClass, string $content): void {
-            $filename = $this->tempFolder.'/'.str_replace('/', '_', $this->getClassSubPath($reflectionClass->getName())).'.php';
-            file_put_contents($filename, $content);
+            $this->writeFile($reflectionClass, $content);
         });
 
         return $mock;
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    protected function writeFile(\ReflectionClass $reflectionClass, string $content): void
+    {
+        $filename = $this->tempFolder.'/'.str_replace('/', '_', $this->getClassSubPath($reflectionClass->getName())).'.php';
+        file_put_contents($filename, $content);
     }
 
     protected function checkGeneratedClass(string $class, ?string $folder = null): void
