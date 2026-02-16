@@ -3,12 +3,12 @@
 ## Main (if default template is used)
 
 * Doctrine decimal type getters and setters now always use string values.
-* Getter/setter generation now prioritizes PHP property types over Doctrine types.
-  If a property has a PHP type, it will be used for the generated getters/setters. 
-  If no PHP type is declared, the getter/setter type will be inferred from the Doctrine type.
+* Getter/setter generation now prioritizes PHP property type hints over Doctrine types.
+  If a property has a PHP type hint, it will be used for the generated getters/setters. 
+  If no PHP type hint is declared, the getter/setter type will be inferred from the Doctrine type.
   This behavior can be changed by customizing the template (see the FAQ).
-* Getter/setter generation now follows PHP nullability: when a PHP property type is present, generated types are nullable
-  only if the property type is nullable. When the PHP type is missing, generated types default to nullable.
+* Getter/setter generation now follows PHP nullability: when a PHP property type hint is present, generated types are nullable
+  only if the property type hint is nullable. When the PHP type hint is missing, generated types default to nullable.
   This behavior can be changed by customizing the template (see the FAQ).
 * Now, if a property has a PHPDoc `@var` annotation, it will also be included in the generated getter/setter (except for `addXXX` and `removeXXX` methods on to-many relationships).
   This behavior can be changed by customizing the template (see the FAQ).

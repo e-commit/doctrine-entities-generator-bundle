@@ -107,13 +107,13 @@ The bundle generates getters-setters methods for an entity property only if :
 * The property is not public; and
 * The methods (getters-setters) do not exist (except if the method is defined between the start and end tags).
 
-Getter-setter generation prioritizes PHP property types over Doctrine types.
-If a property has a PHP type, it will be used for the generated getters-setters.
-If no PHP type is declared, the getter-setter type will be inferred from the Doctrine type.
+Getter-setter generation prioritizes PHP property type hints over Doctrine types.
+If a property has a PHP type hint, it will be used for the generated getters-setters.
+If no PHP type hint is declared, the getter-setter type will be inferred from the Doctrine type.
 This behavior can be changed by customizing the template (see the FAQ).
 
-Getter-setter generation follows PHP nullability: when a PHP property type is present, generated types are nullable
-only if the property type is nullable. When the PHP type is missing, generated types default to nullable.
+Getter-setter generation follows PHP nullability: when a PHP property type hint is present, generated types are nullable
+only if the property type hint is nullable. When the PHP type hint is missing, generated types default to nullable.
 This behavior can be changed by customizing the template (see the FAQ).
 
 If a property has a PHPDoc `@var` annotation, it will also be included in the generated getter-setter (except for `addXXX` and `removeXXX` methods on to-many relationships).
