@@ -62,7 +62,7 @@
         {% if hintParts|length > 1 %}
             {{ hintParts|join('|') }}|null
         {% else %}
-            {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ hintParts|join('|') }}
+            ?{{ hintParts|join('|') }}
         {% endif %}
     {% endif %}
 {% endblock %}
@@ -107,7 +107,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }}
+    public function {{ methodName }}(): ?{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -124,7 +124,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }} ${{ variableName }}): self
+    public function {{ methodName }}(?{{ request.useStatementManipulator.addUseStatementIfNecessary(enum) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -145,7 +145,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }}
+    public function {{ methodName }}(): ?{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -162,7 +162,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }} ${{ variableName }}): self
+    public function {{ methodName }}(?{{ request.useStatementManipulator.addUseStatementIfNecessary(targetClass) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
@@ -183,7 +183,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}(): {{ sourceType }}
     {%- else %}
-    public function {{ methodName }}(): {{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}
+    public function {{ methodName }}(): ?{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }}
     {%- endif ~%}
     {
         return $this->{{ fieldName }};
@@ -200,7 +200,7 @@
     {%- if sourceType|length > 0 %}
     public function {{ methodName }}({{ sourceType }} ${{ variableName }}): self
     {%- else %}
-    public function {{ methodName }}({{ request.isNullable(reflectionProperty) ? '?' : '' }}{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
+    public function {{ methodName }}(?{{ request.useStatementManipulator.addUseStatementIfNecessary(targetEntity) }} ${{ variableName }}): self
     {%- endif ~%}
     {
         $this->{{ fieldName }} = ${{ variableName }};
