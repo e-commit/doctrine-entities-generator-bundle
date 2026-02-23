@@ -9,8 +9,8 @@ methods for Doctrine ORM entities.
 
 | Bundle version | Compatible with Doctrine ORM |
 |----------------|------------------------------|
-| 3.*, 4.*       | ≥ 3.2 ; < 4.0                |
-| 2.*            | ≥ 2.7 ; < 3.0                |
+| 3.\*, 4.\*     | ≥ 3.2 ; < 4.0                |
+| 2.\*           | ≥ 2.7 ; < 3.0                |
 
 
 
