@@ -36,7 +36,7 @@
     {% if sourceType|length > 0 %}
         {{ sourceType }}
     {% elseif block(block_field_hint_name) is defined %}
-        {{ block(block_field_hint_name)|spaceless }}
+        {{ block(block_field_hint_name)|raw|spaceless }}
     {% elseif type %}
         {% set hintParts = [] %}
         {% if request.is(type, 'Symfony\\Component\\TypeInfo\\Type\\UnionType') %}
@@ -68,13 +68,13 @@
 {% endblock %}
 
 {% block field_set %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @param {{ phpdoc }} ${{ variableName }}
      */
 {% endif %}
-    public function {{ methodName }}({{ (block('field_hint')|spaceless) ? block('field_hint')|spaceless ~ ' ' : '' }}${{ variableName }}): self
+    public function {{ methodName }}({{ (block('field_hint')|raw|spaceless) ? block('field_hint')|raw|spaceless ~ ' ' : '' }}${{ variableName }}): self
     {
         $this->{{ fieldName }} = ${{ variableName }};
 
@@ -83,13 +83,13 @@
 {% endblock %}
 
 {% block field_get %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
      */
 {% endif %}
-    public function {{ methodName }}(){{ (block('field_hint')|spaceless) ? ': ' ~  block('field_hint')|spaceless : '' }}
+    public function {{ methodName }}(){{ (block('field_hint')|raw|spaceless) ? ': ' ~  block('field_hint')|raw|spaceless : '' }}
     {
         return $this->{{ fieldName }};
     }
@@ -98,7 +98,7 @@
 {# Enum #}
 
 {% block enum_get %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
@@ -115,7 +115,7 @@
 {% endblock %}
 
 {% block enum_set %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @param {{ phpdoc }} ${{ variableName }}
@@ -136,7 +136,7 @@
 {# Embedded #}
 
 {% block embedded_get %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
@@ -153,7 +153,7 @@
 {% endblock %}
 
 {% block embedded_set %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @param {{ phpdoc }} ${{ variableName }}
@@ -174,7 +174,7 @@
 {# Associations To One #}
 
 {% block assocation_to_one_get %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
@@ -191,7 +191,7 @@
 {% endblock %}
 
 {% block assocation_one_to_one_unidirectional_set %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @param {{ phpdoc }} ${{ variableName }}
@@ -218,7 +218,7 @@
 {% endblock %}
 
 {% block assocation_one_to_one_reverse_set_nullable %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
@@ -244,7 +244,7 @@
 {% endblock %}
 
 {% block assocation_one_to_one_reverse_set_not_null %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @param {{ phpdoc }} ${{ variableName }}
@@ -274,7 +274,7 @@
 {# Associations To Many #}
 
 {% block assocation_to_many_get %}
-{% set phpdoc = phpDocPropertyType|spaceless %}
+{% set phpdoc = phpDocPropertyType|raw|spaceless %}
 {% if phpdoc|length > 0 %}
     /**
      * @return {{ phpdoc }}
