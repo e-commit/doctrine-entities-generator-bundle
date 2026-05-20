@@ -53,9 +53,6 @@ parameters:
             message: '#Call to an undefined method PhpParser\\Lexer\\Emulative::getTokens\(\)#'
             path: src/EntityGenerator/Util/UseStatementManipulator.php
         -
-            message: '#Call to function is_callable\(\) with array\{PhpParser\\Parser, ''getTokens''\} will always evaluate to true#'
-            path: src/EntityGenerator/Util/UseStatementManipulator.php
-        -
             message: '#Parameter \#1 \$phpVersion of class PhpParser\\Lexer\\Emulative constructor expects PhpParser\\PhpVersion\|null, array\<string, array\<int, string\>\> given#'
             paths:
                 - src/EntityGenerator/Util/SourcePropertyTypeResolver.php
