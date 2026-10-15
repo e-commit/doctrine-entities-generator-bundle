@@ -303,10 +303,9 @@ class UseStatementManipulator
 
     public static function areClassesAlphabetical(string $class1, string $class2): bool
     {
-        $arr1 = [$class1, $class2];
-        $arr2 = [$class1, $class2];
-        sort($arr2);
+        $classes = [$class1, $class2];
+        sort($classes);
 
-        return $arr1[0] == $arr2[0];
+        return $class1 == $classes[0];
     }
 }
